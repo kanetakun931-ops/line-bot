@@ -1,5 +1,6 @@
 import os
 import json
+import difflib
 from datetime import datetime
 from flask import Flask, request, abort
 from linebot import LineBotApi, WebhookHandler
@@ -17,7 +18,7 @@ admin_users = ["Uxxxxxxxxxxxxxxxx"]  # ← ちゃんのLINE user_idをここに�
 # 一時的な状態保存（保存確認用）
 user_state = {}
 
-# Copilotに質問を送る関数
+# 🔹 Copilotに質問を送る関数
 def ask_copilot(question):
     response = openai.ChatCompletion.create(
         model="gpt-3.5-turbo",
@@ -29,7 +30,7 @@ def ask_copilot(question):
     )
     return response.choices[0].message.content
 
-# ナレッジを保存する関数
+# 🔹 ナレッジを保存する関数
 def save_knowledge(question, response, user="作成者"):
     data = {
         "question": question,
@@ -49,13 +50,34 @@ def save_knowledge(question, response, user="作成者"):
     with open("knowledge.json", "w", encoding="utf-8") as f:
         json.dump(existing, f, ensure_ascii=False, indent=2)
 
-# LINEメッセージ受信時の処理
+# 🔹 ナレッジを検索する関数
+def search_knowledge(query, threshold=0.6):
+    try:
+        with open("knowledge.json", "r", encoding="utf-8") as f:
+            knowledge = json.load(f)
+    except FileNotFoundError:
+        return []
+
+    results = []
+    for item in knowledge:
+        similarity = difflib.SequenceMatcher(None, query, item["question"]).ratio()
+        if similarity >= threshold:
+            results.append({
+                "question": item["question"],
+                "response": item["response"],
+                "score": similarity
+            })
+
+    results.sort(key=lambda x: x["score"], reverse=True)
+    return results
+
+# 🔹 LINEメッセージ受信時の処理
 @handler.add(MessageEvent, message=TextMessage)
 def handle_message(event):
     user_id = event.source.user_id
     text = event.message.text.strip()
 
-    # 「はい」で保存確認中の処理
+    # 保存確認：「はい」
     if text == "はい" and user_id in user_state and "pending_save" in user_state[user_id]:
         pending = user_state[user_id]["pending_save"]
         save_knowledge(pending["question"], pending["response"], user="作成者")
@@ -66,7 +88,7 @@ def handle_message(event):
         user_state[user_id].pop("pending_save")
         return
 
-    # 「いいえ」の場合は保存せずに終了
+    # 保存確認：「いいえ」
     if text == "いいえ" and user_id in user_state and "pending_save" in user_state[user_id]:
         line_bot_api.reply_message(
             event.reply_token,
@@ -75,7 +97,19 @@ def handle_message(event):
         user_state[user_id].pop("pending_save")
         return
 
-    # 通常の質問処理（Copilotに送信）
+    # 🔍 ナレッジ検索
+    matches = search_knowledge(text)
+
+    if matches:
+        top = matches[0]
+        reply = f"過去のナレッジから見つけたよ！\n\nQ: {top['question']}\nA: {top['response']}"
+        line_bot_api.reply_message(
+            event.reply_token,
+            TextSendMessage(text=reply)
+        )
+        return
+
+    # 🤖 ナレッジがなければ Copilot に聞く
     copilot_response = ask_copilot(text)
 
     if user_id in admin_users:
@@ -95,7 +129,7 @@ def handle_message(event):
             TextSendMessage(text=copilot_response)
         )
 
-# LINEのWebhookエンドポイント
+# 🔹 Flaskのルーティング
 app = Flask(__name__)
 
 @app.route("/callback", methods=["POST"])
@@ -111,6 +145,6 @@ def callback():
 
     return "OK"
 
-# ローカル実行用
+# 🔹 ローカル実行用
 if __name__ == "__main__":
     app.run()
