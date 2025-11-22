@@ -1,6 +1,7 @@
 import os
 import json
 import difflib
+import random
 from datetime import datetime
 from flask import Flask, request, abort
 from linebot import LineBotApi, WebhookHandler
@@ -15,8 +16,9 @@ handler = WebhookHandler(os.getenv("LINE_CHANNEL_SECRET"))
 # 作成者のLINEユーザーID（admin）
 admin_users = ["Uxxxxxxxxxxxxxxxx"]  # ← ちゃんのLINE user_idをここに！
 
-# 一時的な状態保存（保存確認用）
-user_state = {}
+# 状態管理
+user_state = {}     # 保存確認用
+quiz_state = {}     # 出題モード用
 
 # 🔹 Copilotに質問を送る関数
 def ask_copilot(question):
@@ -71,13 +73,54 @@ def search_knowledge(query, threshold=0.6):
     results.sort(key=lambda x: x["score"], reverse=True)
     return results
 
+# 🔹 ランダムに問題を出す関数
+def get_random_question():
+    try:
+        with open("questions.json", "r", encoding="utf-8") as f:
+            questions = json.load(f)
+        return random.choice(questions)
+    except Exception as e:
+        print("問題の読み込みエラー:", e)
+        return None
+
 # 🔹 LINEメッセージ受信時の処理
 @handler.add(MessageEvent, message=TextMessage)
 def handle_message(event):
     user_id = event.source.user_id
     text = event.message.text.strip()
 
-    # 保存確認：「はい」
+    # ① 出題モード中の回答処理
+    if user_id in quiz_state:
+        current = quiz_state[user_id]
+        correct = current["answer"].strip().lower()
+        user_answer = text.strip().lower()
+
+        if user_answer == correct:
+            reply = f"正解！🎉\n\n{current['explanation']}"
+        else:
+            reply = f"ざんねん…💦 正解は「{current['answer']}」だよ！\n\n{current['explanation']}"
+
+        del quiz_state[user_id]
+        line_bot_api.reply_message(event.reply_token, TextSendMessage(text=reply))
+        return
+
+    # ② 出題モード開始
+    if text in ["出題して", "問題ちょうだい", "クイズ出して"]:
+        q = get_random_question()
+        if q:
+            quiz_state[user_id] = q
+            line_bot_api.reply_message(
+                event.reply_token,
+                TextSendMessage(text=f"問題だよ！\n\n{q['question']}")
+            )
+        else:
+            line_bot_api.reply_message(
+                event.reply_token,
+                TextSendMessage(text="ごめんね、問題が読み込めなかったみたい…💦")
+            )
+        return
+
+    # ③ 保存確認：「はい」
     if text == "はい" and user_id in user_state and "pending_save" in user_state[user_id]:
         pending = user_state[user_id]["pending_save"]
         save_knowledge(pending["question"], pending["response"], user="作成者")
@@ -88,7 +131,7 @@ def handle_message(event):
         user_state[user_id].pop("pending_save")
         return
 
-    # 保存確認：「いいえ」
+    # ④ 保存確認：「いいえ」
     if text == "いいえ" and user_id in user_state and "pending_save" in user_state[user_id]:
         line_bot_api.reply_message(
             event.reply_token,
@@ -97,7 +140,7 @@ def handle_message(event):
         user_state[user_id].pop("pending_save")
         return
 
-    # 🔍 ナレッジ検索
+    # ⑤ ナレッジ検索
     matches = search_knowledge(text)
 
     if matches:
@@ -109,7 +152,7 @@ def handle_message(event):
         )
         return
 
-    # 🤖 ナレッジがなければ Copilot に聞く
+    # ⑥ ナレッジがなければ Copilot に聞く
     copilot_response = ask_copilot(text)
 
     if user_id in admin_users:
