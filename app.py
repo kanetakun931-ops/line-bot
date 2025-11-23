@@ -237,17 +237,16 @@ return
             ]
 
             line_bot_api.reply_message(
-    event.reply_token,
-    [
-        TextSendMessage(text=reply),
-        TextSendMessage(
-            text=f"{star}第{progress['current_index']+1}問！\n{next_q.get('question')}",
-            quick_reply=QuickReply(items=quick_reply_items)
-        )
-    ]
-)
-return
-
+                event.reply_token,
+                [
+                    TextSendMessage(text=reply),
+                    TextSendMessage(
+                        text=f"{star}第{progress['current_index']+1}問！\n{next_q.get('question')}",
+                        quick_reply=QuickReply(items=quick_reply_items)
+                    )
+                ]
+            )
+            return
 # Flaskのエントリーポイント
 @app.route("/callback", methods=['POST'])
 def callback():
@@ -264,6 +263,7 @@ def callback():
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))
     app.run(host="0.0.0.0", port=port)
+
 
 
 
