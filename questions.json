@@ -1,12 +1,37 @@
 [
   {
-    "question": "鎌倉幕府を開いた人物は？",
-    "answer": "源頼朝",
-    "explanation": "1192年に鎌倉幕府を開いたのは源頼朝です。"
+    "genre": "理科",
+    "question": "水の化学式はどれ？",
+    "choices": ["H2O", "CO2", "O2", "NaCl"],
+    "answer": "H2O",
+    "explanation": "水は水素（H）が2つ、酸素（O）が1つでできています。"
   },
   {
-    "question": "水の化学式は？",
-    "answer": "H2O",
-    "explanation": "水は水素2つと酸素1つで構成されています。"
+    "genre": "社会",
+    "question": "日本の首都はどこ？",
+    "choices": ["大阪", "京都", "東京", "名古屋"],
+    "answer": "東京",
+    "explanation": "日本の首都は東京です。政治・経済の中心地です。"
+  },
+  {
+    "genre": "英語",
+    "question": "「りんご」は英語でどれ？",
+    "choices": ["Banana", "Apple", "Orange", "Grape"],
+    "answer": "Apple",
+    "explanation": "「りんご」は英語で Apple といいます。"
+  },
+  {
+    "genre": "算数",
+    "question": "5×6 はいくつ？",
+    "choices": ["11", "30", "56", "25"],
+    "answer": "30",
+    "explanation": "5×6＝30 です。九九の「5の段」だね！"
+  },
+  {
+    "genre": "理科",
+    "question": "太陽のエネルギーの元は何？",
+    "choices": ["核融合", "燃焼", "電気", "摩擦"],
+    "answer": "核融合",
+    "explanation": "太陽は水素原子が融合してヘリウムになる「核融合」でエネルギーを出しています。"
   }
 ]
