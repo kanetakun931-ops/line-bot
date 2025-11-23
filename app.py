@@ -17,7 +17,7 @@ line_bot_api = LineBotApi(os.getenv("LINE_CHANNEL_ACCESS_TOKEN"))
 handler = WebhookHandler(os.getenv("LINE_CHANNEL_SECRET"))
 
 # 作成者のLINEユーザーID（admin）
-admin_users = ["Uxxxxxxxxxxxxxxxx"]  # ← ちゃんのLINE user_idをここに！
+admin_users = ["@029fpvxs"]  # ← ちゃんのLINE user_idをここに！
 
 # 状態管理
 user_state = {}
@@ -215,3 +215,4 @@ def callback():
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))
     app.run(host="0.0.0.0", port=port)
+
