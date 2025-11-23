@@ -216,5 +216,7 @@ def callback():
 
     return "OK"
 
-if __
+if __name__ =="__mail__":
+    app.run(port=5000)
+
 
