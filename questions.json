@@ -192,12 +192,222 @@
     "explanation": "「りんご」は英語で Apple といいます。"
   },
   {
-    "id": "sansu001",
+    "id": "sansu026",
     "genre": "算数",
     "question": "5×6 はいくつ？",
     "choices": ["11", "30", "56", "25"],
     "answer": "30",
     "explanation": "5×6＝30 です。九九の「5の段」だね！"
+  },
+  {
+    "id": "sugaku001",
+    "genre": "数学",
+    "question": "連立方程式「2x + y = 7, x - y = 1」を解いたときのxの値は？",
+    "choices": ["2", "3", "4", "5"],
+    "answer": "2",
+    "explanation": "加減法で解くと、x = 2, y = 3 になります。"
+  },
+  {
+    "id": "sugaku002",
+    "genre": "数学",
+    "question": "連立方程式の解が「x = 1, y = 2」のとき、正しい式の組はどれ？",
+    "choices": [
+      "x + y = 3, x - y = -1",
+      "x + y = 2, x - y = 1",
+      "2x + y = 4, x + y = 1",
+      "x - y = 2, x + y = 1"
+    ],
+    "answer": "x + y = 3, x - y = -1",
+    "explanation": "x=1, y=2 を代入して成り立つ式の組を選びます。"
+  },
+  {
+    "id": "sugaku003",
+    "genre": "数学",
+    "question": "一次関数 y = 2x + 1 のグラフが通る点はどれ？",
+    "choices": ["(0,1)", "(1,1)", "(1,3)", "(2,2)"],
+    "answer": "(1,3)",
+    "explanation": "x=1のとき、y=2×1+1=3なので(1,3)を通ります。"
+  },
+  {
+    "id": "sugaku004",
+    "genre": "数学",
+    "question": "一次関数 y = -x + 4 のグラフの傾きは？",
+    "choices": ["1", "-1", "4", "-4"],
+    "answer": "-1",
+    "explanation": "y = ax + b の形で、a が傾き。ここでは a = -1。"
+  },
+  {
+    "id": "sugaku005",
+    "genre": "数学",
+    "question": "次のうち、一次関数でないものはどれ？",
+    "choices": ["y = 3x + 2", "y = -x", "y = x² + 1", "y = 0.5x - 4"],
+    "answer": "y = x² + 1",
+    "explanation": "x²が含まれているので、これは二次関数です。"
+  },
+  {
+    "id": "sugaku006",
+    "genre": "数学",
+    "question": "連立方程式の解が存在しないとき、2つの直線はどうなる？",
+    "choices": ["交わる", "平行になる", "一致する", "垂直に交わる"],
+    "answer": "平行になる",
+    "explanation": "解がない＝交点がない＝直線は平行です。"
+  },
+  {
+    "id": "sugaku007",
+    "genre": "数学",
+    "question": "三角形の内角の和は何度？",
+    "choices": ["90度", "180度", "270度", "360度"],
+    "answer": "180度",
+    "explanation": "どんな三角形でも内角の和は180度です。"
+  },
+  {
+    "id": "sugaku008",
+    "genre": "数学",
+    "question": "平行線に挟まれた同位角はどんな関係？",
+    "choices": ["等しい", "補角", "鈍角と鋭角", "直角になる"],
+    "answer": "等しい",
+    "explanation": "平行線と横切る直線が作る同位角は等しくなります。"
+  },
+  {
+    "id": "sugaku009",
+    "genre": "数学",
+    "question": "「x² - 9」を因数分解すると？",
+    "choices": ["(x - 3)(x + 3)", "(x - 9)(x + 1)", "(x - 1)(x + 9)", "(x + 3)²"],
+    "answer": "(x - 3)(x + 3)",
+    "explanation": "x² - 9 は差の2乗の形で、(x - 3)(x + 3)と因数分解できます。"
+  },
+  {
+    "id": "sugaku010",
+    "genre": "数学",
+    "question": "素因数分解：36 = ?",
+    "choices": ["2² × 3²", "2 × 3 × 6", "3³ × 2", "2³ × 3"],
+    "answer": "2² × 3²",
+    "explanation": "36 = 2×2×3×3 = 2² × 3² です。"
+  },
+  {
+    "id": "sugaku011",
+    "genre": "数学",
+    "question": "「(x + 2)(x - 5)」を展開すると？",
+    "choices": ["x² - 3x - 10", "x² - 3x + 10", "x² - 10x + 2", "x² - 5x + 2x - 10"],
+    "answer": "x² - 3x - 10",
+    "explanation": "x² - 5x + 2x -10 = x² - 3x - 10 に整理されます。"
+  },
+  {
+    "id": "sugaku012",
+    "genre": "数学",
+    "question": "一次関数 y = 3x - 6 の切片は？",
+    "choices": ["3", "-6", "0", "6"],
+    "answer": "-6",
+    "explanation": "y = ax + b の b が切片。ここでは b = -6。"
+  },
+  {
+    "id": "sugaku013",
+    "genre": "数学",
+    "question": "「x = 2 のとき y = 5」この関係が一次関数 y = ax + b に当てはまるとき、a = 2, b = 1 の式は正しい？",
+    "choices": ["〇", "×"],
+    "answer": "〇",
+    "explanation": "y = 2x + 1 に x = 2 を代入すると y = 5 になります。"
+  },
+  {
+    "id": "sugaku014",
+    "genre": "数学",
+    "question": "「x + y = 10, x - y = 4」の連立方程式を解いたときの y の値は？",
+    "choices": ["3", "4", "5", "6"],
+    "answer": "3",
+    "explanation": "加減法で解くと x = 7, y = 3 になります。"
+  },
+  {
+    "id": "sugaku015",
+    "genre": "数学",
+    "question": "「2x + 3y = 12」の式で、x = 0 のときの y の値は？",
+    "choices": ["4", "3", "2", "6"],
+    "answer": "4",
+    "explanation": "2×0 + 3y = 12 → 3y = 12 → y = 4。"
+  },
+  {
+    "id": "sugaku016",
+    "genre": "数学",
+    "question": "「x² + 6x + 9」を因数分解すると？",
+    "choices": ["(x + 3)(x + 3)", "(x + 6)(x + 1)", "(x + 9)(x)", "(x - 3)(x - 3)"],
+    "answer": "(x + 3)(x + 3)",
+    "explanation": "x² + 6x + 9 は (x + 3)² と因数分解できます。"
+  },
+  {
+    "id": "sugaku017",
+    "genre": "数学",
+    "question": "「x + 2y = 10」をyについて解くと？",
+    "choices": ["y = 5x", "y = (10 - x)/2", "y = 2x + 10", "y = x - 10"],
+    "answer": "y = (10 - x)/2",
+    "explanation": "x + 2y = 10 → 2y = 10 - x → y = (10 - x)/2。"
+  },
+  {
+    "id": "sugaku018",
+    "genre": "数学",
+    "question": "「x = -1, y = 2」が解になる連立方程式はどれ？",
+    "choices": [
+      "x + y = 1, 2x - y = -4",
+      "x - y = 3, x + y = 1",
+      "x + y = 2, x - y = -3",
+      "x - y = -1, x + y = 1"
+    ],
+    "answer": "x + y = 1, 2x - y = -4",
+    "explanation": "x = -1, y = 2 を代入して成り立つ式を選びます。"
+  },
+  {
+    "id": "sugaku019",
+    "genre": "数学",
+    "question": "「y = 2x + 1」のグラフがx軸と交わる点の座標は？",
+    "choices": ["(0,1)", "(-0.5,0)", "(-1,0.5)", "(-1,0)"],
+    "answer": "(-0.5,0)",
+    "explanation": "y = 0 のとき、0 = 2x + 1 → x = -0.5。"
+  },
+  {
+    "id": "sugaku020",
+    "genre": "数学",
+    "question": "「x² - 4x = 0」を因数分解すると？",
+    "choices": ["(x - 2)(x + 2)", "x(x - 4)", "x(x - 2)", "x(x - 2)²"],
+    "answer": "x(x - 4)",
+    "explanation": "共通因数 x をくくり出すと x(x - 4) になります。"
+  },
+  {
+    "id": "sugaku021",
+    "genre": "数学",
+    "question": "「y = -2x + 3」のグラフの傾きは？",
+    "choices": ["2", "-2", "3", "-3"],
+    "answer": "-2",
+    "explanation": "y = ax + b の a が傾き。ここでは a = -2。"
+  },
+  {
+    "id": "sugaku022",
+    "genre": "数学",
+    "question": "「x² - 16」を因数分解すると？",
+    "choices": ["(x - 4)(x + 4)", "(x - 8)(x + 2)", "(x - 2)(x + 8)", "(x - 16)(x + 1)"],
+    "answer": "(x - 4)(x + 4)",
+    "explanation": "x² - 16 は差の2乗で (x - 4)(x + 4) に因数分解できます。"
+  },
+  {
+    "id": "sugaku023",
+    "genre": "数学",
+    "question": "「x + y = 6, x - y = 2」の連立方程式を解いたときの x の値は？",
+    "choices": ["2", "3", "4", "5"],
+    "answer": "4",
+    "explanation": "加減法で解くと x = 4, y = 2 になります。"
+  },
+  {
+    "id": "sugaku024",
+    "genre": "数学",
+    "question": "「y = 0.5x - 1」のグラフが通る点は？",
+    "choices": ["(0,-1)", "(1,0)", "(2,0)", "(1,-0.5)"],
+    "answer": "(0,-1)",
+    "explanation": "x = 0 のとき y = -1 なので、(0,-1)を通ります。"
+  },
+  {
+    "id": "sugaku025",
+    "genre": "数学",
+    "question": "「x² + 5x + 6」を因数分解すると？",
+    "choices": ["(x + 2)(x + 3)", "(x + 1)(x + 6)", "(x + 5)(x + 1)", "(x + 3)(x + 4)"],
+    "answer": "(x + 2)(x + 3)",
+    "explanation": "2つの数の積が6、和が5になるのは2と3です。"
   },
   {
     "id": "kokugo025",
