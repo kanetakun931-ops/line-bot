@@ -83,6 +83,17 @@ def get_random_question():
         print("問題の読み込みエラー:", e)
         return None
 
+# 🔹 ジャンル別に問題を出す関数
+def get_question_by_genre(genre):
+    try:
+        with open("questions.json", "r", encoding="utf-8") as f:
+            questions = json.load(f)
+        filtered = [q for q in questions if q.get("genre") == genre]
+        return random.choice(filtered) if filtered else None
+    except Exception as e:
+        print("ジャンル別出題エラー:", e)
+        return None
+
 # 🔹 LINEメッセージ受信時の処理
 @handler.add(MessageEvent, message=TextMessage)
 def handle_message(event):
@@ -95,6 +106,12 @@ def handle_message(event):
         correct = current["answer"].strip().lower()
         user_answer = text.strip().lower()
 
+        # 🔽 数字で答えた場合、選択肢に変換
+        if "choices" in current and user_answer.isdigit():
+            index = int(user_answer) - 1
+            if 0 <= index < len(current["choices"]):
+                user_answer = current["choices"][index].strip().lower()
+
         if user_answer == correct:
             reply = f"正解！🎉\n\n{current['explanation']}"
         else:
@@ -104,19 +121,31 @@ def handle_message(event):
         line_bot_api.reply_message(event.reply_token, TextSendMessage(text=reply))
         return
 
-    # ② 出題モード開始
-    if text in ["出題して", "問題ちょうだい", "クイズ出して"]:
-        q = get_random_question()
+    # ② 出題モード開始（ジャンル指定 or ランダム）
+    if text in ["出題して", "問題ちょうだい", "クイズ出して"] or text.endswith("の問題出して") or text.endswith("のクイズちょうだい"):
+        if text.endswith("の問題出して") or text.endswith("のクイズちょうだい"):
+            genre = text.replace("の問題出して", "").replace("のクイズちょうだい", "").strip()
+            q = get_question_by_genre(genre)
+        else:
+            q = get_random_question()
+
         if q:
             quiz_state[user_id] = q
+            # 🔽 選択肢がある場合は整形して表示
+            if "choices" in q:
+                choices_text = "\n".join([f"{i+1}. {choice}" for i, choice in enumerate(q["choices"])])
+                question_text = f"{q['question']}\n\n{choices_text}"
+            else:
+                question_text = q["question"]
+
             line_bot_api.reply_message(
                 event.reply_token,
-                TextSendMessage(text=f"問題だよ！\n\n{q['question']}")
+                TextSendMessage(text=f"{q.get('genre', '問題')}の問題だよ！\n\n{question_text}")
             )
         else:
             line_bot_api.reply_message(
                 event.reply_token,
-                TextSendMessage(text="ごめんね、問題が読み込めなかったみたい…💦")
+                TextSendMessage(text="ごめんね、問題が見つからなかったみたい…💦")
             )
         return
 
