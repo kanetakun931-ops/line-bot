@@ -5,7 +5,10 @@ import random
 from datetime import datetime
 from flask import Flask, request, abort
 from linebot import LineBotApi, WebhookHandler
-from linebot.models import MessageEvent, TextMessage, TextSendMessage
+from linebot.models import (
+    MessageEvent, TextMessage, TextSendMessage,
+    QuickReply, QuickReplyButton, MessageAction
+)
 import openai
 
 # 環境変数からAPIキーを読み込む
@@ -17,10 +20,10 @@ handler = WebhookHandler(os.getenv("LINE_CHANNEL_SECRET"))
 admin_users = ["Uxxxxxxxxxxxxxxxx"]  # ← ちゃんのLINE user_idをここに！
 
 # 状態管理
-user_state = {}     # 保存確認用
-quiz_state = {}     # 出題モード用
+user_state = {}
+quiz_state = {}
 
-# 🔹 Copilotに質問を送る関数
+# Copilotに質問を送る関数
 def ask_copilot(question):
     response = openai.ChatCompletion.create(
         model="gpt-3.5-turbo",
@@ -32,7 +35,7 @@ def ask_copilot(question):
     )
     return response.choices[0].message.content
 
-# 🔹 ナレッジを保存する関数
+# ナレッジ保存
 def save_knowledge(question, response, user="作成者"):
     data = {
         "question": question,
@@ -40,26 +43,22 @@ def save_knowledge(question, response, user="作成者"):
         "user": user,
         "timestamp": datetime.now().isoformat()
     }
-
     try:
         with open("knowledge.json", "r", encoding="utf-8") as f:
             existing = json.load(f)
     except FileNotFoundError:
         existing = []
-
     existing.append(data)
-
     with open("knowledge.json", "w", encoding="utf-8") as f:
         json.dump(existing, f, ensure_ascii=False, indent=2)
 
-# 🔹 ナレッジを検索する関数
+# ナレッジ検索
 def search_knowledge(query, threshold=0.6):
     try:
         with open("knowledge.json", "r", encoding="utf-8") as f:
             knowledge = json.load(f)
     except FileNotFoundError:
         return []
-
     results = []
     for item in knowledge:
         similarity = difflib.SequenceMatcher(None, query, item["question"]).ratio()
@@ -69,11 +68,10 @@ def search_knowledge(query, threshold=0.6):
                 "response": item["response"],
                 "score": similarity
             })
-
     results.sort(key=lambda x: x["score"], reverse=True)
     return results
 
-# 🔹 ランダムに問題を出す関数
+# ランダム出題
 def get_random_question():
     try:
         with open("questions.json", "r", encoding="utf-8") as f:
@@ -83,7 +81,7 @@ def get_random_question():
         print("問題の読み込みエラー:", e)
         return None
 
-# 🔹 ジャンル別に問題を出す関数
+# ジャンル別出題
 def get_question_by_genre(genre):
     try:
         with open("questions.json", "r", encoding="utf-8") as f:
@@ -94,19 +92,18 @@ def get_question_by_genre(genre):
         print("ジャンル別出題エラー:", e)
         return None
 
-# 🔹 LINEメッセージ受信時の処理
+# メッセージ処理
 @handler.add(MessageEvent, message=TextMessage)
 def handle_message(event):
     user_id = event.source.user_id
     text = event.message.text.strip()
 
-    # ① 出題モード中の回答処理
+    # 回答処理
     if user_id in quiz_state:
         current = quiz_state[user_id]
         correct = current["answer"].strip().lower()
         user_answer = text.strip().lower()
 
-        # 🔽 数字で答えた場合、選択肢に変換
         if "choices" in current and user_answer.isdigit():
             index = int(user_answer) - 1
             if 0 <= index < len(current["choices"]):
@@ -121,7 +118,7 @@ def handle_message(event):
         line_bot_api.reply_message(event.reply_token, TextSendMessage(text=reply))
         return
 
-    # ② 出題モード開始（ジャンル指定 or ランダム）
+    # 出題トリガー
     if text in ["出題して", "問題ちょうだい", "クイズ出して"] or text.endswith("の問題出して") or text.endswith("のクイズちょうだい"):
         if text.endswith("の問題出して") or text.endswith("のクイズちょうだい"):
             genre = text.replace("の問題出して", "").replace("のクイズちょうだい", "").strip()
@@ -131,17 +128,23 @@ def handle_message(event):
 
         if q:
             quiz_state[user_id] = q
-            # 🔽 選択肢がある場合は整形して表示
             if "choices" in q:
-                choices_text = "\n".join([f"{i+1}. {choice}" for i, choice in enumerate(q["choices"])])
-                question_text = f"{q['question']}\n\n{choices_text}"
+                quick_reply_items = [
+                    QuickReplyButton(action=MessageAction(label=choice, text=choice))
+                    for choice in q["choices"]
+                ]
+                line_bot_api.reply_message(
+                    event.reply_token,
+                    TextSendMessage(
+                        text=f"{q.get('genre', '問題')}の問題だよ！\n\n{q['question']}",
+                        quick_reply=QuickReply(items=quick_reply_items)
+                    )
+                )
             else:
-                question_text = q["question"]
-
-            line_bot_api.reply_message(
-                event.reply_token,
-                TextSendMessage(text=f"{q.get('genre', '問題')}の問題だよ！\n\n{question_text}")
-            )
+                line_bot_api.reply_message(
+                    event.reply_token,
+                    TextSendMessage(text=f"{q.get('genre', '問題')}の問題だよ！\n\n{q['question']}")
+                )
         else:
             line_bot_api.reply_message(
                 event.reply_token,
@@ -149,7 +152,7 @@ def handle_message(event):
             )
         return
 
-    # ③ 保存確認：「はい」
+    # 保存確認
     if text == "はい" and user_id in user_state and "pending_save" in user_state[user_id]:
         pending = user_state[user_id]["pending_save"]
         save_knowledge(pending["question"], pending["response"], user="作成者")
@@ -160,7 +163,6 @@ def handle_message(event):
         user_state[user_id].pop("pending_save")
         return
 
-    # ④ 保存確認：「いいえ」
     if text == "いいえ" and user_id in user_state and "pending_save" in user_state[user_id]:
         line_bot_api.reply_message(
             event.reply_token,
@@ -169,21 +171,16 @@ def handle_message(event):
         user_state[user_id].pop("pending_save")
         return
 
-    # ⑤ ナレッジ検索
+    # ナレッジ検索
     matches = search_knowledge(text)
-
     if matches:
         top = matches[0]
         reply = f"過去のナレッジから見つけたよ！\n\nQ: {top['question']}\nA: {top['response']}"
-        line_bot_api.reply_message(
-            event.reply_token,
-            TextSendMessage(text=reply)
-        )
+        line_bot_api.reply_message(event.reply_token, TextSendMessage(text=reply))
         return
 
-    # ⑥ ナレッジがなければ Copilot に聞く
+    # Copilot連携
     copilot_response = ask_copilot(text)
-
     if user_id in admin_users:
         user_state[user_id] = {
             "pending_save": {
@@ -196,12 +193,9 @@ def handle_message(event):
             TextSendMessage(text=f"{copilot_response}\n\nこの会話をナレッジに保存しますか？（はい／いいえ）")
         )
     else:
-        line_bot_api.reply_message(
-            event.reply_token,
-            TextSendMessage(text=copilot_response)
-        )
+        line_bot_api.reply_message(event.reply_token, TextSendMessage(text=copilot_response))
 
-# 🔹 Flaskのルーティング
+# Flaskルーティング
 app = Flask(__name__)
 
 @app.route("/callback", methods=["POST"])
@@ -217,6 +211,6 @@ def callback():
 
     return "OK"
 
-# 🔹 ローカル実行用
+# ローカル実行用
 if __name__ == "__main__":
     app.run()
