@@ -47,62 +47,57 @@ def handle_message(event):
     user_id = event.source.user_id
     text = event.message.text.strip()
 
-    # メインメニュー
-    if text in ["メニュー", "モード切替", "こんにちは", "はじめる"]:
+    # モード切替（リッチメニューから送信されたテキスト）
+    if text == "モード:quiz":
+        user_state[user_id] = {"mode": "quiz"}
         quick_reply_items = [
-            QuickReplyButton(action=MessageAction(label="クイズモード 🎯", text="モード:quiz")),
-            QuickReplyButton(action=MessageAction(label="質問モード 💡", text="モード:ask"))
+            QuickReplyButton(action=MessageAction(label="保健体育 🏃‍♂️", text="ジャンル:保健体育")),
+            QuickReplyButton(action=MessageAction(label="歴史 📜", text="ジャンル:歴史")),
+            QuickReplyButton(action=MessageAction(label="地理 🗾", text="ジャンル:地理")),
+            QuickReplyButton(action=MessageAction(label="国語 📖", text="ジャンル:国語")),
+            QuickReplyButton(action=MessageAction(label="数学 ➗", text="ジャンル:数学")),
+            QuickReplyButton(action=MessageAction(label="理科 🔬", text="ジャンル:理科")),
+            QuickReplyButton(action=MessageAction(label="英語 🇬🇧", text="ジャンル:英語"))
         ]
         line_bot_api.reply_message(
             event.reply_token,
             TextSendMessage(
-                text="モードを選んでね👇",
+                text="🎯 クイズモードに切り替えたよ！ジャンルを選んでね👇",
                 quick_reply=QuickReply(items=quick_reply_items)
             )
         )
         return
 
-    # モード切替
-    if text.startswith("モード:"):
-        mode = text.replace("モード:", "").strip()
-        user_state[user_id] = {"mode": mode}
-        if mode == "quiz":
-            quick_reply_items = [
-                QuickReplyButton(action=MessageAction(label="保健体育 🏃‍♂️", text="ジャンル:保健体育")),
-                QuickReplyButton(action=MessageAction(label="歴史 📜", text="ジャンル:歴史")),
-                QuickReplyButton(action=MessageAction(label="地理 🗾", text="ジャンル:地理")),
-                QuickReplyButton(action=MessageAction(label="国語 📖", text="ジャンル:国語")),
-                QuickReplyButton(action=MessageAction(label="数学 ➗", text="ジャンル:数学")),
-                QuickReplyButton(action=MessageAction(label="理科 🔬", text="ジャンル:理科")),
-                QuickReplyButton(action=MessageAction(label="英語 🇬🇧", text="ジャンル:英語"))
-            ]
-            line_bot_api.reply_message(
-                event.reply_token,
-                TextSendMessage(
-                    text="ジャンルを選んでね👇",
-                    quick_reply=QuickReply(items=quick_reply_items)
-                )
-            )
-        else:
-            line_bot_api.reply_message(
-                event.reply_token,
-                TextSendMessage(text="質問モードに切り替えたよ💡 なんでも聞いてみてね！")
-            )
-        return
-
-    # 質問モード
-    if user_state.get(user_id, {}).get("mode") == "ask":
-        try:
-            copilot_response = ask_copilot(text)
-        except Exception as e:
-            print("Copilot応答エラー:", e)
-            copilot_response = "ごめんね、今は答えられなかった💦"
+    elif text == "モード:ask":
+        user_state[user_id] = {"mode": "ask"}
         line_bot_api.reply_message(
             event.reply_token,
-            TextSendMessage(text=copilot_response)
+            TextSendMessage(text="💡 質問モードに切り替えたよ！なんでも聞いてみてね✨")
         )
         return
 
+    # 質問モードの処理
+    if user_state.get(user_id, {}).get("mode") == "ask":
+        try:
+            response = openai.ChatCompletion.create(
+                model="gpt-4o-mini",
+                messages=[
+                    {"role": "system", "content": "あなたは中学生にわかりやすく答える先生です。答えの最後に豆知識を必ず添えてください。"},
+                    {"role": "user", "content": text}
+                ],
+                max_tokens=300
+            )
+            copilot_response = response["choices"][0]["message"]["content"]
+            reply_text = f"💡いい質問だね！\n{copilot_response}"
+        except Exception as e:
+            print("OpenAI応答エラー:", e)
+            reply_text = "😅ごめんね、今は答えられなかった…また聞いてみて！"
+
+        line_bot_api.reply_message(
+            event.reply_token,
+            TextSendMessage(text=reply_text)
+        )
+        return
     # ジャンル選択後にスタート／戻るを提示
     if text.startswith("ジャンル:"):
         genre = text.replace("ジャンル:", "").strip()
@@ -195,3 +190,4 @@ def handle_message(event):
                 )
             )
             return
+
