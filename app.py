@@ -1,6 +1,14 @@
 import os
 import json
 import random
+image_urls = [
+    "https://raw.githubusercontent.com/kanetakura913/ops/main/1707186602194.jpg",
+    "https://raw.githubusercontent.com/kanetakura913/ops/main/1707186602195.jpg",
+    "https://raw.githubusercontent.com/kanetakura913/ops/main/1707186602196.jpg",
+    "https://raw.githubusercontent.com/kanetakura913/ops/main/1707186602197.jpg",
+    "https://raw.githubusercontent.com/kanetakura913/ops/main/1707186602198.jpg",
+    "https://raw.githubusercontent.com/kanetakura913/ops/main/1707186602199.jpg"
+]
 from datetime import datetime
 from time import time
 from flask import Flask, request, abort
@@ -10,6 +18,7 @@ from linebot.models import (
     QuickReply, QuickReplyButton, MessageAction
 )
 import openai
+import random
 
 # 環境変数
 openai.api_key = os.getenv("OPENAI_API_KEY")
@@ -17,7 +26,7 @@ line_bot_api = LineBotApi(os.getenv("LINE_CHANNEL_ACCESS_TOKEN"))
 handler = WebhookHandler(os.getenv("LINE_CHANNEL_SECRET"))
 
 # 管理者ID（必要に応じて変更）
-admin_users = ["@029fpvxs"]
+admin_users = ["kanetakun"]
 
 # 状態管理
 quiz_state = {}       # 現在の問題
@@ -175,3 +184,4 @@ def callback():
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))
     app.run(host="0.0.0.0", port=port)
+
