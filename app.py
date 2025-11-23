@@ -132,70 +132,85 @@ def handle_message(event):
         return
 
     # クイズ回答中
-    if user_id in quiz_state and user_id in quiz_progress:
-        current = quiz_state[user_id]
-        progress = quiz_progress[user_id]
-        correct = current["answer"].strip().lower()
-        user_answer = text.strip().lower()
-        elapsed = int(time() - progress["start_time"])
+if user_id in quiz_state and user_id in quiz_progress:
+    current = quiz_state[user_id]
+    progress = quiz_progress[user_id]
+    correct = current["answer"].strip().lower()
+    user_answer = text.strip().lower()
+    elapsed = int(time() - progress["start_time"])
 
-        if "choices" in current and user_answer.isdigit():
-            index = int(user_answer) - 1
-            if 0 <= index < len(current["choices"]):
-                user_answer = current["choices"][index].strip().lower()
+    # 数字入力を選択肢に変換
+    if "choices" in current and user_answer.isdigit():
+        index = int(user_answer) - 1
+        if 0 <= index < len(current["choices"]):
+            user_answer = current["choices"][index].strip().lower()
 
-        is_correct = user_answer == correct
-        if is_correct:
-            progress["correct_count"] += 1
-            reply = f"正解！🎉（{elapsed}秒）"
-        else:
-            progress["wrong_ids"].append(current.get("id", current.get("question")))
-            reply = f"ざんねん…💦 正解は「{current['answer']}」だよ！（{elapsed}秒）"
+    # 判定
+    is_correct = user_answer == correct
+    if is_correct:
+        progress["correct_count"] += 1
+        reply = f"正解！🎉 {elapsed}秒で答えられたね！"
+    else:
+        wrong_id = current.get("id", current.get("question"))
+        progress["wrong_ids"].append(wrong_id)
+        reply = f"ざんねん…💦 正解は「{current['answer']}」だよ！ ({elapsed}秒)"
 
-        progress["current_index"] += 1
+    # 次の問題へ進む
+    progress["current_index"] += 1
 
-        if progress["current_index"] >= len(progress["questions"]):
-            total = len(progress["questions"])
-            correct = progress["correct_count"]
-            avg_time = elapsed // total if total else 0
+    # 全問終了か判定
+    if progress["current_index"] >= len(progress["questions"]):
+        total = len(progress["questions"])
+        correct_count = progress["correct_count"]
+        avg_time = elapsed // total if total else 0
 
-            if correct == total:
-                special_msg = "🌟全問正解おめでとう！君は本当にすごい！未来の天才だね！🌟\n\nこの画像を待ち受けにして、これからもがんばろう！"
-                image_url = random.choice(image_urls)
-                line_bot_api.reply_message(
-                    event.reply_token,
-                    [
-                        TextSendMessage(text=special_msg),
-                        TextSendMessage(text=f"スコア：{correct}/{total}問\n平均回答時間：{avg_time}秒"),
-                        TextSendMessage(text=image_url)
-                    ]
-                )
-            else:
-                line_bot_api.reply_message(
-                    event.reply_token,
-                    TextSendMessage(text=f"おつかれさま！\nスコア：{correct}/{total}問\nまたチャレンジしてね！")
-                )
-            del quiz_progress[user_id]
-            del quiz_state[user_id]
-        else:
-            next_q = progress["questions"][progress["current_index"]]
-            quiz_state[user_id] = next_q
-            progress["start_time"] = time()
-
-            star = "★" if next_q.get("id", next_q.get("question")) in progress["wrong_ids"] else ""
-            quick_reply_items = [
-                QuickReplyButton(action=MessageAction(label=choice, text=choice))
-                for choice in next_q.get("choices", [])
-            ]
+        if correct_count == total:
+            special_msg = "🌟全問正解おめでとう！未来の天才だね！🌟"
+            image_url = random.choice(image_urls)
             line_bot_api.reply_message(
                 event.reply_token,
+                [
+                    TextSendMessage(text=reply),
+                    TextSendMessage(text=special_msg),
+                    TextSendMessage(text=f"スコア：{correct_count}/{total}問\n平均回答時間：{avg_time}秒"),
+                    TextSendMessage(text=image_url)
+                ]
+            )
+        else:
+            line_bot_api.reply_message(
+                event.reply_token,
+                [
+                    TextSendMessage(text=reply),
+                    TextSendMessage(text=f"終了！スコア：{correct_count}/{total}問\n平均回答時間：{avg_time}秒")
+                ]
+            )
+        del quiz_progress[user_id]
+        del quiz_state[user_id]
+    else:
+        # 次の問題を出題
+        next_q = progress["questions"][progress["current_index"]]
+        quiz_state[user_id] = next_q
+        progress["start_time"] = time()
+
+        # ★を付ける判定
+        star = "★" if next_q.get("id", next_q.get("question")) in progress["wrong_ids"] else ""
+
+        quick_reply_items = [
+            QuickReplyButton(action=MessageAction(label=choice, text=choice))
+            for choice in next_q.get("choices", [])
+        ]
+
+        line_bot_api.reply_message(
+            event.reply_token,
+            [
+                TextSendMessage(text=reply),  # フィードバック
                 TextSendMessage(
                     text=f"{star}第{progress['current_index']+1}問！\n{next_q.get('question')}",
                     quick_reply=QuickReply(items=quick_reply_items)
                 )
-            )
-        return
-
+            ]
+        )
+    return
     # その他の応答（Copilot）
     copilot_response = ask_copilot(text)
     line_bot_api.reply_message(event.reply_token, TextSendMessage(text=copilot_response))
@@ -218,6 +233,7 @@ def callback():
 
 if __name__ == "__main__":
     app.run(port=5000)
+
 
 
 
