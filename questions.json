@@ -160,14 +160,6 @@
     "explanation": ""
   },
   {
-    "id": "rika026",
-    "genre": "理科",
-    "question": "水の化学式はどれ？",
-    "choices": ["H2O", "CO2", "O2", "NaCl"],
-    "answer": "H2O",
-    "explanation": "水は水素（H）が2つ、酸素（O）が1つでできています。"
-  },
-  {
     "id": "rika001",
     "genre": "理科",
     "question": "水の化学式はどれ？",
@@ -706,8 +698,8 @@
     "explanation": "地方公共団体は都道府県と市町村で構成されます。"
   },
   {
-    "id": "eigo",
-    "genre": "英語026",
+    "id": "eigo026",
+    "genre": "英語",
     "question": "「りんご」は英語でどれ？",
     "choices": ["Banana", "Apple", "Orange", "Grape"],
     "answer": "Apple",
@@ -768,19 +760,19 @@
     "answer": "She is taller than me.",
     "explanation": "比較級「taller」を使い、「than」で比べます。"
   },
-  {
-    "id": "eigo006",
-    "genre": "英語",
-    "question": "「あなたは明日学校へ行くつもりですか？」正しい英文は？",
-    "choices": [
-      "Do you go to school tomorrow?",
-      "Are you going to school tomorrow?",
-      "Will you go to school tomorrow?",
-      "Did you go to school tomorrow?"
-    ],
-    "answer": "Will you go to school tomorrow?",
-    "explanation": "未来の予定は「will + 動詞の原形」で表します。"
-  },
+{
+  "id": "eigo006",
+  "genre": "英語",
+  "question": "「あなたは明日学校へ行くつもりです。」を英語にすると？",
+  "choices": [
+    "You go to school tomorrow.",
+    "You are going to school tomorrow.",
+    "You will go to school tomorrow.",
+    "You went to school tomorrow."
+  ],
+  "answer": "You will go to school tomorrow.",
+  "explanation": "未来の予定を表すには「will + 動詞の原形」を使います。"
+},
   {
     "id": "eigo007",
     "genre": "英語",
