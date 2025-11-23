@@ -1,8 +1,5 @@
-flask==2.3.3
-gunicorn==21.2.0
-line-bot-sdk==2.5.2
-openai==0.28.0
-python-dotenv==1.0.1
-fastapi>=0.100.0
-httpx>=0.24.1
-h11>=0.13,<0.15
+flask
+gunicorn
+line-bot-sdk
+openai
+python-dotenv
