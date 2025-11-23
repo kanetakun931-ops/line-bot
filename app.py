@@ -25,6 +25,13 @@ def load_questions():
     with open("questions.json", encoding="utf-8") as f:
         return json.load(f)
 
+def ask_copilot(text):
+    """
+    Copilotに質問を投げる処理（ここは外部API呼び出しに置き換え）
+    今はダミーで返す
+    """
+    return f"Copilotの答え: {text}について調べてみたよ💡"
+
 @app.route("/callback", methods=['POST'])
 def callback():
     signature = request.headers['X-Line-Signature']
@@ -40,60 +47,76 @@ def handle_message(event):
     user_id = event.source.user_id
     text = event.message.text.strip()
 
-    # メニュー表示
+    # メインメニュー
     if text in ["メニュー", "モード切替", "こんにちは", "はじめる"]:
         quick_reply_items = [
-            QuickReplyButton(action=MessageAction(label="保健体育", text="ジャンル:保健体育")),
-            QuickReplyButton(action=MessageAction(label="歴史", text="ジャンル:歴史")),
-            QuickReplyButton(action=MessageAction(label="地理", text="ジャンル:地理")),
-            QuickReplyButton(action=MessageAction(label="国語", text="ジャンル:国語")),
-            QuickReplyButton(action=MessageAction(label="数学", text="ジャンル:数学")),
-            QuickReplyButton(action=MessageAction(label="理科", text="ジャンル:理科")),
-            QuickReplyButton(action=MessageAction(label="英語", text="ジャンル:英語"))
+            QuickReplyButton(action=MessageAction(label="クイズモード 🎯", text="モード:quiz")),
+            QuickReplyButton(action=MessageAction(label="質問モード 💡", text="モード:ask"))
         ]
         line_bot_api.reply_message(
             event.reply_token,
             TextSendMessage(
-                text="ジャンルを選んでね👇",
+                text="モードを選んでね👇",
                 quick_reply=QuickReply(items=quick_reply_items)
             )
+        )
+        return
+
+    # モード切替
+    if text.startswith("モード:"):
+        mode = text.replace("モード:", "").strip()
+        user_state[user_id] = {"mode": mode}
+        if mode == "quiz":
+            quick_reply_items = [
+                QuickReplyButton(action=MessageAction(label="保健体育 🏃‍♂️", text="ジャンル:保健体育")),
+                QuickReplyButton(action=MessageAction(label="歴史 📜", text="ジャンル:歴史")),
+                QuickReplyButton(action=MessageAction(label="地理 🗾", text="ジャンル:地理")),
+                QuickReplyButton(action=MessageAction(label="国語 📖", text="ジャンル:国語")),
+                QuickReplyButton(action=MessageAction(label="数学 ➗", text="ジャンル:数学")),
+                QuickReplyButton(action=MessageAction(label="理科 🔬", text="ジャンル:理科")),
+                QuickReplyButton(action=MessageAction(label="英語 🇬🇧", text="ジャンル:英語"))
+            ]
+            line_bot_api.reply_message(
+                event.reply_token,
+                TextSendMessage(
+                    text="ジャンルを選んでね👇",
+                    quick_reply=QuickReply(items=quick_reply_items)
+                )
+            )
+        else:
+            line_bot_api.reply_message(
+                event.reply_token,
+                TextSendMessage(text="質問モードに切り替えたよ💡 なんでも聞いてみてね！")
+            )
+        return
+
+    # 質問モード
+    if user_state.get(user_id, {}).get("mode") == "ask":
+        try:
+            copilot_response = ask_copilot(text)
+        except Exception as e:
+            print("Copilot応答エラー:", e)
+            copilot_response = "ごめんね、今は答えられなかった💦"
+        line_bot_api.reply_message(
+            event.reply_token,
+            TextSendMessage(text=copilot_response)
         )
         return
 
     # ジャンル選択後にスタート／戻るを提示
     if text.startswith("ジャンル:"):
         genre = text.replace("ジャンル:", "").strip()
-        user_state[user_id] = {"mode": "quiz", "genre": genre}
+        user_state[user_id]["genre"] = genre
 
         quick_reply_items = [
-            QuickReplyButton(action=MessageAction(label="スタート", text="スタート")),
-            QuickReplyButton(action=MessageAction(label="戻る", text="メニュー"))
+            QuickReplyButton(action=MessageAction(label="スタート 🚀", text="スタート")),
+            QuickReplyButton(action=MessageAction(label="戻る ↩️", text="メニュー"))
         ]
 
         line_bot_api.reply_message(
             event.reply_token,
             TextSendMessage(
                 text=f"{genre}ジャンルを選んだね！👇",
-                quick_reply=QuickReply(items=quick_reply_items)
-            )
-        )
-        return
-
-    # 戻るでジャンル選択に戻る
-    if text == "メニュー":
-        quick_reply_items = [
-            QuickReplyButton(action=MessageAction(label="保健体育 🏃‍♂️", text="ジャンル:保健体育")),
-            QuickReplyButton(action=MessageAction(label="歴史 📜", text="ジャンル:歴史")),
-            QuickReplyButton(action=MessageAction(label="地理 🗾", text="ジャンル:地理")),
-            QuickReplyButton(action=MessageAction(label="国語 📖", text="ジャンル:国語")),
-            QuickReplyButton(action=MessageAction(label="数学 ➗", text="ジャンル:数学")),
-            QuickReplyButton(action=MessageAction(label="理科 🔬", text="ジャンル:理科")),
-            QuickReplyButton(action=MessageAction(label="英語 🇬🇧", text="ジャンル:英語"))
-        ]
-        line_bot_api.reply_message(
-            event.reply_token,
-            TextSendMessage(
-                text="ジャンルを選んでね👇",
                 quick_reply=QuickReply(items=quick_reply_items)
             )
         )
@@ -124,7 +147,7 @@ def handle_message(event):
         line_bot_api.reply_message(
             event.reply_token,
             TextSendMessage(
-                text=f"第1問！\n{q.get('question')}",
+                text=f"第1問！🔥\n{q.get('question')}",
                 quick_reply=QuickReply(items=quick_reply_items)
             )
         )
@@ -139,20 +162,20 @@ def handle_message(event):
         # 回答チェック
         answer = text
         correct = questions[idx]["answer"]
-        reply = "⭕正解！" if answer == correct else f"❌不正解… 正解は「{correct}」"
+        reply = "⭕✨ 正解！" if answer == correct else f"❌😅 不正解… 正解は「{correct}」"
 
         # 次の問題へ
         progress["current_index"] += 1
         if progress["current_index"] >= len(questions):
             # 終了
             quick_reply_items = [
-                QuickReplyButton(action=MessageAction(label="スタート", text="スタート")),
-                QuickReplyButton(action=MessageAction(label="戻る", text="メニュー"))
+                QuickReplyButton(action=MessageAction(label="スタート 🚀", text="スタート")),
+                QuickReplyButton(action=MessageAction(label="戻る ↩️", text="メニュー"))
             ]
             line_bot_api.reply_message(
                 event.reply_token,
                 TextSendMessage(
-                    text=f"{reply}\nクイズ終了！また挑戦する？👇",
+                    text=f"{reply}\nクイズ終了！🎉 また挑戦する？👇",
                     quick_reply=QuickReply(items=quick_reply_items)
                 )
             )
@@ -167,7 +190,7 @@ def handle_message(event):
             line_bot_api.reply_message(
                 event.reply_token,
                 TextSendMessage(
-                    text=f"{reply}\n第{progress['current_index']+1}問！\n{next_q.get('question')}",
+                    text=f"{reply}\n第{progress['current_index']+1}問！🔥\n{next_q.get('question')}",
                     quick_reply=QuickReply(items=quick_reply_items)
                 )
             )
