@@ -1,84 +1,40 @@
-import os
-import json
-import random
-from time import time
 from flask import Flask, request, abort
 from linebot import LineBotApi, WebhookHandler
+from linebot.exceptions import InvalidSignatureError
 from linebot.models import (
     MessageEvent, TextMessage, TextSendMessage,
     QuickReply, QuickReplyButton, MessageAction
 )
-import openai
-from dotenv import load_dotenv
-
-load_dotenv()
-
-# 環境変数
-openai.api_key = os.getenv("OPENAI_API_KEY")
-line_bot_api = LineBotApi(os.getenv("LINE_CHANNEL_ACCESS_TOKEN"))
-handler = WebhookHandler(os.getenv("LINE_CHANNEL_SECRET"))
+import json, random
 
 app = Flask(__name__)
 
-# 状態管理
-quiz_state = {}
-quiz_progress = {}
+line_bot_api = LineBotApi("YOUR_CHANNEL_ACCESS_TOKEN")
+handler = WebhookHandler("YOUR_CHANNEL_SECRET")
+
+# ユーザーごとの状態管理
 user_state = {}
+quiz_state = {}
 
-# ごほうび画像
-image_urls = [
-    "https://raw.githubusercontent.com/kanetakura913/ops/main/1707186602194.jpg",
-    "https://raw.githubusercontent.com/kanetakura913/ops/main/1707186602195.jpg",
-    "https://raw.githubusercontent.com/kanetakura913/ops/main/1707186602196.jpg",
-    "https://raw.githubusercontent.com/kanetakura913/ops/main/1707186602197.jpg",
-    "https://raw.githubusercontent.com/kanetakura913/ops/main/1707186602198.jpg",
-    "https://raw.githubusercontent.com/kanetakura913/ops/main/1707186602199.jpg"
-]
-
-# クイズデータ読み込み
-def load_questions():
-    try:
-        with open("questions.json", "r", encoding="utf-8") as f:
-            return json.load(f)
-    except Exception as e:
-        print("問題読み込みエラー:", e)
-        return []
-
-# 間違えた問題の記録
-def save_wrong_ids(user_id, wrong_ids):
-    try:
-        with open("wrong_ids.json", "r", encoding="utf-8") as f:
-            data = json.load(f)
-    except:
-        data = {}
-    data[user_id] = wrong_ids
-    with open("wrong_ids.json", "w", encoding="utf-8") as f:
-        json.dump(data, f, ensure_ascii=False, indent=2)
-
-def load_wrong_ids(user_id):
-    try:
-        with open("wrong_ids.json", "r", encoding="utf-8") as f:
-            data = json.load(f)
-        return data.get(user_id, [])
-    except:
-        return []
-
-# Copilot応答
-def ask_copilot(question):
-    response = openai.ChatCompletion.create(
-        model="gpt-3.5-turbo",
-        messages=[
-            {"role": "system", "content": "あなたは中学生を励ます優しい先生です。"},
-            {"role": "user", "content": question}
-        ],
-        temperature=0.7
-    )
-    return response.choices[0].message.content
-    
 def shorten_label(label, max_length=20):
+    """QuickReplyのラベルを20文字以内に短縮"""
     return label if len(label) <= max_length else label[:17] + "…"
 
-# メッセージ処理
+def load_questions():
+    """questions.jsonを読み込む"""
+    with open("questions.json", encoding="utf-8") as f:
+        return json.load(f)
+
+@app.route("/callback", methods=['POST'])
+def callback():
+    signature = request.headers['X-Line-Signature']
+    body = request.get_data(as_text=True)
+    try:
+        handler.handle(body, signature)
+    except InvalidSignatureError:
+        abort(400)
+    return "OK"
+
 @handler.add(MessageEvent, message=TextMessage)
 def handle_message(event):
     user_id = event.source.user_id
@@ -87,187 +43,132 @@ def handle_message(event):
     # メニュー表示
     if text in ["メニュー", "モード切替", "こんにちは", "はじめる"]:
         quick_reply_items = [
-            QuickReplyButton(action=MessageAction(label="クイズ", text="クイズに戻る")),
-            QuickReplyButton(action=MessageAction(label="質問", text="質問していい？"))
+            QuickReplyButton(action=MessageAction(label="保健体育", text="ジャンル:保健体育")),
+            QuickReplyButton(action=MessageAction(label="歴史", text="ジャンル:歴史")),
+            QuickReplyButton(action=MessageAction(label="地理", text="ジャンル:地理")),
+            QuickReplyButton(action=MessageAction(label="国語", text="ジャンル:国語")),
+            QuickReplyButton(action=MessageAction(label="数学", text="ジャンル:数学")),
+            QuickReplyButton(action=MessageAction(label="理科", text="ジャンル:理科")),
+            QuickReplyButton(action=MessageAction(label="英語", text="ジャンル:英語"))
         ]
         line_bot_api.reply_message(
             event.reply_token,
             TextSendMessage(
-                text="どっちのモードにする？選んでね👇\nいつでも「メニュー」って送れば戻れるよ🌟",
+                text="ジャンルを選んでね👇",
                 quick_reply=QuickReply(items=quick_reply_items)
             )
         )
         return
 
-    # モード切替
-    if text == "質問していい？":
-        user_state[user_id] = {"mode": "chat", "chat_count": 0}
+    # ジャンル選択後にスタート／戻るを提示
+    if text.startswith("ジャンル:"):
+        genre = text.replace("ジャンル:", "").strip()
+        user_state[user_id] = {"mode": "quiz", "genre": genre}
+
+        quick_reply_items = [
+            QuickReplyButton(action=MessageAction(label="スタート", text="スタート")),
+            QuickReplyButton(action=MessageAction(label="戻る", text="メニュー"))
+        ]
+
         line_bot_api.reply_message(
             event.reply_token,
-            TextSendMessage(text="うん、なんでも聞いてね！🌈")
+            TextSendMessage(
+                text=f"{genre}ジャンルを選んだね！👇",
+                quick_reply=QuickReply(items=quick_reply_items)
+            )
         )
         return
 
-    if text == "クイズに戻る":
-        user_state[user_id] = {"mode": "quiz"}
+    # 戻るでジャンル選択に戻る
+    if text == "メニュー":
+        quick_reply_items = [
+            QuickReplyButton(action=MessageAction(label="保健体育 🏃‍♂️", text="ジャンル:保健体育")),
+            QuickReplyButton(action=MessageAction(label="歴史 📜", text="ジャンル:歴史")),
+            QuickReplyButton(action=MessageAction(label="地理 🗾", text="ジャンル:地理")),
+            QuickReplyButton(action=MessageAction(label="国語 📖", text="ジャンル:国語")),
+            QuickReplyButton(action=MessageAction(label="数学 ➗", text="ジャンル:数学")),
+            QuickReplyButton(action=MessageAction(label="理科 🔬", text="ジャンル:理科")),
+            QuickReplyButton(action=MessageAction(label="英語 🇬🇧", text="ジャンル:英語"))
+        ]
         line_bot_api.reply_message(
             event.reply_token,
-            TextSendMessage(text="クイズモードに戻るよ！「スタート」で始めてね💧")
+            TextSendMessage(
+                text="ジャンルを選んでね👇",
+                quick_reply=QuickReply(items=quick_reply_items)
+            )
         )
         return
 
-    # 質問モード
-    if user_state.get(user_id, {}).get("mode") == "chat":
-        user_state[user_id]["chat_count"] += 1
-        try:
-            copilot_response = ask_copilot(text)
-        except Exception as e:
-            print("Copilot応答エラー:", e)
-            copilot_response = "ごめんね、今は答えられなかった💦"
-
-        messages = [TextSendMessage(text=copilot_response)]
-
-        # 10回目でクイズ招待
-        if user_state[user_id]["chat_count"] == 10:
-            messages.append(TextSendMessage(
-                text="そういえば、クイズにも挑戦できるよ！「メニュー」って送ると選べるよ🌈"
-            ))
-
-        line_bot_api.reply_message(event.reply_token, messages)
-        return
-
-    # クイズ開始
-    if text.startswith("スタート"):
-        genre = text.replace("スタート", "").strip()
+    # スタートでクイズ開始
+    if text == "スタート":
+        genre = user_state.get(user_id, {}).get("genre", "")
         all_questions = load_questions()
         filtered = [q for q in all_questions if genre in q.get("genre", "")] if genre else all_questions
 
-        wrong_ids = load_wrong_ids(user_id)
-        candidates = []
-        for q in filtered:
-            q_id = q.get("id", q.get("question"))
-            if q_id in wrong_ids:
-                candidates.extend([q] * 3)
-            else:
-                candidates.append(q)
-
-        if len(candidates) < 20:
+        if len(filtered) < 20:
             line_bot_api.reply_message(
                 event.reply_token,
-                TextSendMessage(text="問題が足りないみたい…💦 20問以上用意してね！")
+                TextSendMessage(text=f"{genre}ジャンルの問題が足りないみたい💦")
             )
             return
 
-        selected = random.sample(candidates, 20)
-        quiz_progress[user_id] = {
-            "current_index": 0,
-            "correct_count": 0,
-            "start_time": time(),
-            "wrong_ids": [],
-            "questions": selected
-        }
+        selected = random.sample(filtered, 20)
+        quiz_state[user_id] = {"questions": selected, "current_index": 0}
 
         q = selected[0]
-        quiz_state[user_id] = q
-        user_state[user_id] = {"mode": "quiz"}
-
         quick_reply_items = [
             QuickReplyButton(action=MessageAction(label=shorten_label(choice), text=choice))
             for choice in q.get("choices", [])
         ]
-        
+
         line_bot_api.reply_message(
             event.reply_token,
-            [
-                TextSendMessage(text=reply),
-                TextSendMessage(
-                    text=f"{star}第{progress['current_index']+1}問！\n{next_q.get('question')}",
-                    quick_reply=QuickReply(items=quick_reply_items)
-                )
-            ]
+            TextSendMessage(
+                text=f"第1問！\n{q.get('question')}",
+                quick_reply=QuickReply(items=quick_reply_items)
+            )
         )
         return
-    # クイズ回答中
-    if user_id in quiz_state and user_id in quiz_progress:
-        current = quiz_state[user_id]
-        progress = quiz_progress[user_id]
-        correct = current["answer"].strip().lower()
-        user_answer = text.strip().lower()
-        elapsed = int(time() - progress["start_time"])
 
-        if "choices" in current and user_answer.isdigit():
-            index = int(user_answer) - 1
-            if 0 <= index < len(current["choices"]):
-                user_answer = current["choices"][index].strip().lower()
+    # クイズ進行
+    if user_id in quiz_state:
+        progress = quiz_state[user_id]
+        idx = progress["current_index"]
+        questions = progress["questions"]
 
-        is_correct = user_answer == correct
-        if is_correct:
-            progress["correct_count"] += 1
-            reply = f"正解！🎉 {elapsed}秒で答えられたね！"
-        else:
-            wrong_id = current.get("id", current.get("question"))
-            progress["wrong_ids"].append(wrong_id)
-            reply = f"ざんねん…💦 正解は「{current['answer']}」だよ！ ({elapsed}秒)"
+        # 回答チェック
+        answer = text
+        correct = questions[idx]["answer"]
+        reply = "⭕正解！" if answer == correct else f"❌不正解… 正解は「{correct}」"
 
+        # 次の問題へ
         progress["current_index"] += 1
-
-        if progress["current_index"] >= len(progress["questions"]):
-            total = len(progress["questions"])
-            correct_count = progress["correct_count"]
-            avg_time = elapsed // total if total else 0
-            save_wrong_ids(user_id, progress["wrong_ids"])
-
-            line_bot_api.reply_message(
-                event.reply_token,
-                TextSendMessage(
-                    text=f"終了！スコア：{correct_count}/{total}問\n平均回答時間：{avg_time}秒\nまた挑戦したくなったら「スタート」って送ってね！"
-                )
-            )
-            del quiz_progress[user_id]
-            del quiz_state[user_id]
-        else:
-            next_q = progress["questions"][progress["current_index"]]
-            quiz_state[user_id] = next_q
-            progress["start_time"] = time()
-
-            star = "★" if next_q.get("id", next_q.get("question")) in progress["wrong_ids"] else ""
+        if progress["current_index"] >= len(questions):
+            # 終了
             quick_reply_items = [
-                QuickReplyButton(action=MessageAction(label=shorten_label(choice), text=choice))
-                for choice in q.get("choices", [])
+                QuickReplyButton(action=MessageAction(label="スタート", text="スタート")),
+                QuickReplyButton(action=MessageAction(label="戻る", text="メニュー"))
             ]
             line_bot_api.reply_message(
                 event.reply_token,
-                [
-                    TextSendMessage(text=reply),
-                    TextSendMessage(
-                        text=f"{star}第{progress['current_index']+1}問！\n{next_q.get('question')}",
-                        quick_reply=QuickReply(items=quick_reply_items)
-                    )
-                ]
+                TextSendMessage(
+                    text=f"{reply}\nクイズ終了！また挑戦する？👇",
+                    quick_reply=QuickReply(items=quick_reply_items)
+                )
+            )
+            del quiz_state[user_id]
+            return
+        else:
+            next_q = questions[progress["current_index"]]
+            quick_reply_items = [
+                QuickReplyButton(action=MessageAction(label=shorten_label(choice), text=choice))
+                for choice in next_q.get("choices", [])
+            ]
+            line_bot_api.reply_message(
+                event.reply_token,
+                TextSendMessage(
+                    text=f"{reply}\n第{progress['current_index']+1}問！\n{next_q.get('question')}",
+                    quick_reply=QuickReply(items=quick_reply_items)
+                )
             )
             return
-# Flaskのエントリーポイント
-@app.route("/callback", methods=['POST'])
-def callback():
-    signature = request.headers['X-Line-Signature']
-    body = request.get_data(as_text=True)
-    try:
-        handler.handle(body, signature)
-    except Exception as e:
-        print("Webhookエラー:", e)
-        abort(400)
-    return 'OK'
-
-# ローカル実行用
-if __name__ == "__main__":
-    port = int(os.environ.get("PORT", 5000))
-    app.run(host="0.0.0.0", port=port)
-
-
-
-
-
-
-
-
-
