@@ -84,8 +84,8 @@ def handle_message(event):
     # メニュー表示
     if text in ["メニュー", "モード切替", "こんにちは", "はじめる"]:
         quick_reply_items = [
-            QuickReplyButton(action=MessageAction(label="クイズモード", text="クイズに戻る")),
-            QuickReplyButton(action=MessageAction(label="質問モード", text="質問していい？"))
+            QuickReplyButton(action=MessageAction(label="クイズ", text="クイズに戻る")),
+            QuickReplyButton(action=MessageAction(label="質問", text="質問していい？"))
         ]
         line_bot_api.reply_message(
             event.reply_token,
@@ -255,4 +255,5 @@ def callback():
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))
     app.run(host="0.0.0.0", port=port)
+
 
