@@ -1,14 +1,6 @@
 import os
 import json
 import random
-image_urls = [
-    "https://raw.githubusercontent.com/kanetakura913/ops/main/1707186602194.jpg",
-    "https://raw.githubusercontent.com/kanetakura913/ops/main/1707186602195.jpg",
-    "https://raw.githubusercontent.com/kanetakura913/ops/main/1707186602196.jpg",
-    "https://raw.githubusercontent.com/kanetakura913/ops/main/1707186602197.jpg",
-    "https://raw.githubusercontent.com/kanetakura913/ops/main/1707186602198.jpg",
-    "https://raw.githubusercontent.com/kanetakura913/ops/main/1707186602199.jpg"
-]
 from datetime import datetime
 from time import time
 from flask import Flask, request, abort
@@ -18,20 +10,26 @@ from linebot.models import (
     QuickReply, QuickReplyButton, MessageAction
 )
 import openai
-import random
 
 # 環境変数
 openai.api_key = os.getenv("OPENAI_API_KEY")
 line_bot_api = LineBotApi(os.getenv("LINE_CHANNEL_ACCESS_TOKEN"))
 handler = WebhookHandler(os.getenv("LINE_CHANNEL_SECRET"))
 
-# 管理者ID（必要に応じて変更）
-admin_users = ["kanetakun"]
-
 # 状態管理
-quiz_state = {}       # 現在の問題
-quiz_progress = {}    # 出題数・正解数・時間・間違い記録など
-user_state = {}       # ナレッジ保存などに使う
+quiz_state = {}
+quiz_progress = {}
+user_state = {}
+
+# ごほうび画像（GitHub Raw URL）
+image_urls = [
+    "https://raw.githubusercontent.com/kanetakura913/ops/main/1707186602194.jpg",
+    "https://raw.githubusercontent.com/kanetakura913/ops/main/1707186602195.jpg",
+    "https://raw.githubusercontent.com/kanetakura913/ops/main/1707186602196.jpg",
+    "https://raw.githubusercontent.com/kanetakura913/ops/main/1707186602197.jpg",
+    "https://raw.githubusercontent.com/kanetakura913/ops/main/1707186602198.jpg",
+    "https://raw.githubusercontent.com/kanetakura913/ops/main/1707186602199.jpg"
+]
 
 # クイズデータ読み込み
 def load_questions():
@@ -60,17 +58,53 @@ def handle_message(event):
     user_id = event.source.user_id
     text = event.message.text.strip()
 
-    # クイズ開始
-    if text == "スタート":
+    # モード切り替え
+    if text == "質問していい？":
+        user_state[user_id] = {"mode": "chat"}
+        line_bot_api.reply_message(
+            event.reply_token,
+            TextSendMessage(text="うん、なんでも聞いてね！勉強のことでも、気になることでもOKだよ🌈")
+        )
+        return
+
+    if text == "クイズに戻る":
+        user_state[user_id] = {"mode": "quiz"}
+        line_bot_api.reply_message(
+            event.reply_token,
+            TextSendMessage(text="クイズモードに戻るよ！「スタート」で始めてね💧")
+        )
+        return
+
+    # 質問モード
+    if user_state.get(user_id, {}).get("mode") == "chat":
+        copilot_response = ask_copilot(text)
+        line_bot_api.reply_message(event.reply_token, TextSendMessage(text=copilot_response))
+        return
+
+    # クイズ開始（教科別）
+    if text.startswith("スタート"):
+        genre = text.replace("スタート", "").strip()
         all_questions = load_questions()
-        if len(all_questions) < 50:
+        filtered = [q for q in all_questions if genre in q.get("genre", "")] if genre else all_questions
+
+        # 出題候補を調整（間違えた問題は3倍に）
+        wrong_ids = quiz_progress.get(user_id, {}).get("wrong_ids", [])
+        candidates = []
+        for q in filtered:
+            q_id = q.get("id", q.get("question"))
+            if q_id in wrong_ids:
+                candidates.extend([q] * 3)
+            else:
+                candidates.append(q)
+
+        if len(candidates) < 50:
             line_bot_api.reply_message(
                 event.reply_token,
                 TextSendMessage(text="問題が足りないみたい…💦 50問以上用意してね！")
             )
             return
 
-        selected = random.sample(all_questions, 50)
+        selected = random.sample(candidates, 50)
         quiz_progress[user_id] = {
             "current_index": 0,
             "correct_count": 0,
@@ -81,6 +115,7 @@ def handle_message(event):
 
         q = selected[0]
         quiz_state[user_id] = q
+        user_state[user_id] = {"mode": "quiz"}
 
         quick_reply_items = [
             QuickReplyButton(action=MessageAction(label=choice, text=choice))
@@ -126,7 +161,7 @@ def handle_message(event):
 
             if correct == total:
                 special_msg = "🌟全問正解おめでとう！君は本当にすごい！未来の天才だね！🌟\n\nこの画像を待ち受けにして、これからもがんばろう！"
-                image_url = "https://your-github-raw-url.com/special_image.jpg"  # ← ここに画像URLを入れてね！
+                image_url = random.choice(image_urls)
                 line_bot_api.reply_message(
                     event.reply_token,
                     [
@@ -181,7 +216,4 @@ def callback():
 
     return "OK"
 
-if __name__ == "__main__":
-    port = int(os.environ.get("PORT", 5000))
-    app.run(host="0.0.0.0", port=port)
-
+if __
