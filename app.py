@@ -97,7 +97,13 @@ def get_question_by_genre(genre):
 def handle_message(event):
     user_id = event.source.user_id
     text = event.message.text.strip()
-
+# スタート
+    if text == "スタート":
+        line_bot_api.reply_message(
+            event.reply_token,
+            TextSendMessage(text="やっほー！アクアだよ💧\nクイズ出題してほしいときは「出題して」って言ってね！")
+        )
+        return
     # 回答処理
     if user_id in quiz_state:
         current = quiz_state[user_id]
@@ -215,4 +221,5 @@ def callback():
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))
     app.run(host="0.0.0.0", port=port)
+
 
