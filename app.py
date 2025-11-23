@@ -236,4 +236,23 @@ def handle_message(event):
                 [
                     TextSendMessage(text=reply),
                     TextSendMessage(
-                        text=f"{
+    text=f"{star}第{progress['current_index']+1}問！\n{next_q.get('question')}",
+    quick_reply=QuickReply(items=quick_reply_items)
+)
+# Flaskのエントリーポイント
+@app.route("/callback", methods=['POST'])
+def callback():
+    signature = request.headers['X-Line-Signature']
+    body = request.get_data(as_text=True)
+    try:
+        handler.handle(body, signature)
+    except Exception as e:
+        print("Webhookエラー:", e)
+        abort(400)
+    return 'OK'
+
+# ローカル実行用
+if __name__ == "__main__":
+    port = int(os.environ.get("PORT", 5000))
+    app.run(host="0.0.0.0", port=port)
+
