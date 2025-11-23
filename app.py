@@ -97,14 +97,14 @@ def handle_message(event):
             else:
                 candidates.append(q)
 
-        if len(candidates) < 50:
+        if len(candidates) < 20:
             line_bot_api.reply_message(
                 event.reply_token,
-                TextSendMessage(text="問題が足りないみたい…💦 50問以上用意してね！")
+                TextSendMessage(text="問題が足りないみたい…💦 20問以上用意してね！")
             )
             return
 
-        selected = random.sample(candidates, 50)
+        selected = random.sample(candidates, 20)
         quiz_progress[user_id] = {
             "current_index": 0,
             "correct_count": 0,
@@ -217,3 +217,4 @@ def callback():
     return "OK"
 
 if __
+
