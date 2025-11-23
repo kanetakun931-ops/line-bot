@@ -1,3 +1,4 @@
+{
 def load_wrong_ids(user_id):
     try:
         with open("wrong_ids.json", "r", encoding="utf-8") as f:
@@ -16,3 +17,4 @@ def save_wrong_ids(user_id, wrong_ids):
 
     with open("wrong_ids.json", "w", encoding="utf-8") as f:
         json.dump(data, f, ensure_ascii=False, indent=2)
+}
