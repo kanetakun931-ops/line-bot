@@ -74,6 +74,9 @@ def ask_copilot(question):
         temperature=0.7
     )
     return response.choices[0].message.content
+    
+def shorten_label(label, max_length=20):
+    return label if len(label) <= max_length else label[:17] + "…"
 
 # メッセージ処理
 @handler.add(MessageEvent, message=TextMessage)
@@ -169,9 +172,10 @@ def handle_message(event):
         user_state[user_id] = {"mode": "quiz"}
 
         quick_reply_items = [
-            QuickReplyButton(action=MessageAction(label=choice, text=choice))
+            QuickReplyButton(action=MessageAction(label=shorten_label(choice), text=choice))
             for choice in q.get("choices", [])
         ]
+        
         line_bot_api.reply_message(
             event.reply_token,
             [
@@ -228,10 +232,9 @@ def handle_message(event):
 
             star = "★" if next_q.get("id", next_q.get("question")) in progress["wrong_ids"] else ""
             quick_reply_items = [
-                QuickReplyButton(action=MessageAction(label=choice, text=choice))
-                for choice in next_q.get("choices", [])
+                QuickReplyButton(action=MessageAction(label=shorten_label(choice), text=choice))
+                for choice in q.get("choices", [])
             ]
-
             line_bot_api.reply_message(
                 event.reply_token,
                 [
@@ -259,6 +262,7 @@ def callback():
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))
     app.run(host="0.0.0.0", port=port)
+
 
 
 
