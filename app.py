@@ -40,160 +40,130 @@ def handle_message(event):
     text = event.message.text.strip()
     print(f"[DEBUG] text: '{text}'")
 
-    # ユーザー状態を取得 or 初期化
     if user_id not in user_states:
         user_states[user_id] = UserState()
     state = user_states[user_id]
 
     # 🔽 ジャンル選択メニュー
     if text == "ジャンル選択":
-        quick_reply_items = [
-            QuickReplyButton(action=MessageAction(label=genre, text=f"ジャンル:{genre}"))
-            for genre in genre_list
-        ]
-        line_bot_api.reply_message(
-            event.reply_token,
-            TextSendMessage(
-                text="📚 ジャンルを選んでね！",
-                quick_reply=QuickReply(items=quick_reply_items)
-            )
-        )
-        return
+        ...
 
     # 🔽 ジャンル設定
     if text.startswith("ジャンル:"):
-        genre = text.replace("ジャンル:", "").strip()
-        if genre not in quiz_data:
+        ...
+
+    # 🔽 スタートで問題出題 ← ここを関数の中に！
+    if text == "スタート":
+        genre = state.genre
+        if not genre:
             line_bot_api.reply_message(
                 event.reply_token,
-                TextSendMessage(text="そのジャンルは見つからなかったよ！")
+                TextSendMessage(text="まずジャンルを選んでね！")
             )
             return
-        state.set_genre(genre)
+
+        questions = quiz_data.get(genre, [])
+        unanswered = [q for q in questions if q["id"] not in state.answered]
+        if not unanswered:
+            line_bot_api.reply_message(
+                event.reply_token,
+                TextSendMessage(text="もう全部解いちゃったみたい！ジャンルを変えてみてね！")
+            )
+            return
+
+        next_q = random.choice(unanswered)
+        state.current_question = next_q
+        if not hasattr(state, "start_time"):
+            state.start_time = time.time()
+
+        choices = next_q["choices"]
         quick_reply_items = [
-            QuickReplyButton(action=MessageAction(label="スタート 🚀", text="スタート")),
-            QuickReplyButton(action=MessageAction(label="ジャンル選択 ↩️", text="ジャンル選択"))
+            QuickReplyButton(action=MessageAction(label=choice, text=choice))
+            for choice in choices
         ]
         line_bot_api.reply_message(
             event.reply_token,
-            TextSendMessage(
-                text=f"{genre}ジャンルを選んだよ！スタートする？",
-                quick_reply=QuickReply(items=quick_reply_items)
-            )
-        )
-        return
-
-    # 🔽 スタートで問題出題
-if text == "スタート":
-    genre = state.genre
-    if not genre:
-        line_bot_api.reply_message(
-            event.reply_token,
-            TextSendMessage(text="まずジャンルを選んでね！")
-        )
-        return
-
-    questions = quiz_data.get(genre, [])
-    unanswered = [q for q in questions if q["id"] not in state.answered]
-    if not unanswered:
-        line_bot_api.reply_message(
-            event.reply_token,
-            TextSendMessage(text="もう全部解いちゃったみたい！ジャンルを変えてみてね！")
-        )
-        return
-
-    next_q = random.choice(unanswered)
-    state.current_question = next_q
-    if not hasattr(state, "start_time"):
-        state.start_time = time.time()
-
-    choices = next_q["choices"]
-    quick_reply_items = [
-        QuickReplyButton(action=MessageAction(label=choice, text=choice))
-        for choice in choices
-    ]
-    line_bot_api.reply_message(
-        event.reply_token,
-        TextSendMessage(
-            text=f"Q. {next_q['question']}",
-            quick_reply=QuickReply(items=quick_reply_items)
-        )
-    )
-    return
-
-# 🔽 回答処理
-current_q = state.current_question
-print("[DEBUG] current_question:", current_q)
-
-if current_q:
-    normalized = text.strip()
-    print("[DEBUG] normalized:", repr(normalized))
-
-    valid_choices = [c.strip() for c in current_q.get("choices", [])]
-    print("[DEBUG] valid_choices:", [repr(c) for c in valid_choices])
-
-    if normalized not in valid_choices:
-        print("[DEBUG] 選択肢に一致しない！")
-        line_bot_api.reply_message(
-            event.reply_token,
-            TextSendMessage(text="その選択肢は見つからなかったよ！もう一度選んでね！")
-        )
-        return
-
-    correct = current_q["answer"].strip()
-    explanation = current_q.get("explanation", "")
-    print("[DEBUG] 正解:", repr(correct))
-
-    feedback = ""
-    if normalized == correct:
-        feedback = "⭕ 正解！すごい！"
-        state.score += 1
-    else:
-        feedback = f"❌ 残念！正解は「{correct}」だったよ！"
-        state.mistakes.append(current_q["id"])
-
-    if explanation:
-        feedback += f"\n💡 {explanation}"
-
-    state.answered.append(current_q["id"])
-    state.current_question = None
-    print("[DEBUG] 回答処理完了！")
-
-    # 🔽 次の問題を探す
-    questions = quiz_data.get(state.genre, [])
-    unanswered = [q for q in questions if q["id"] not in state.answered]
-
-    if not unanswered:
-        total = len(state.answered)
-        score = state.score
-        elapsed = int(time.time() - getattr(state, "start_time", time.time()))
-        line_bot_api.reply_message(
-            event.reply_token,
-            TextSendMessage(
-                text=f"{feedback}\n🎉 全{total}問中、{score}問正解だったよ！\n⏱️ 所要時間：{elapsed}秒\nまた挑戦してね！"
-            )
-        )
-        user_states.pop(user_id, None)
-        return
-
-    # 🔽 次の問題へ
-    next_q = random.choice(unanswered)
-    state.current_question = next_q
-    choices = next_q["choices"]
-    choice_text = "\n".join([f"・{c}" for c in choices])
-    quick_reply_items = [
-        QuickReplyButton(action=MessageAction(label=choice, text=choice))
-        for choice in choices
-    ]
-
-    line_bot_api.reply_message(
-        event.reply_token,
-        [
-            TextSendMessage(text=feedback),
             TextSendMessage(
                 text=f"Q. {next_q['question']}",
                 quick_reply=QuickReply(items=quick_reply_items)
             )
+        )
+        return
+
+    # 🔽 回答処理
+    current_q = state.current_question
+    print("[DEBUG] current_question:", current_q)
+
+    if current_q:
+        normalized = text.strip()
+        print("[DEBUG] normalized:", repr(normalized))
+
+        valid_choices = [c.strip() for c in current_q.get("choices", [])]
+        print("[DEBUG] valid_choices:", [repr(c) for c in valid_choices])
+
+        if normalized not in valid_choices:
+            print("[DEBUG] 選択肢に一致しない！")
+            line_bot_api.reply_message(
+                event.reply_token,
+                TextSendMessage(text="その選択肢は見つからなかったよ！もう一度選んでね！")
+            )
+            return
+
+        correct = current_q["answer"].strip()
+        explanation = current_q.get("explanation", "")
+        print("[DEBUG] 正解:", repr(correct))
+
+        feedback = ""
+        if normalized == correct:
+            feedback = "⭕ 正解！すごい！"
+            state.score += 1
+        else:
+            feedback = f"❌ 残念！正解は「{correct}」だったよ！"
+            state.mistakes.append(current_q["id"])
+
+        if explanation:
+            feedback += f"\n💡 {explanation}"
+
+        state.answered.append(current_q["id"])
+        state.current_question = None
+        print("[DEBUG] 回答処理完了！")
+
+        # 🔽 次の問題を探す
+        questions = quiz_data.get(state.genre, [])
+        unanswered = [q for q in questions if q["id"] not in state.answered]
+
+        if not unanswered:
+            total = len(state.answered)
+            score = state.score
+            elapsed = int(time.time() - getattr(state, "start_time", time.time()))
+            line_bot_api.reply_message(
+                event.reply_token,
+                TextSendMessage(
+                    text=f"{feedback}\n🎉 全{total}問中、{score}問正解だったよ！\n⏱️ 所要時間：{elapsed}秒\nまた挑戦してね！"
+                )
+            )
+            user_states.pop(user_id, None)
+            return
+
+        # 🔽 次の問題へ
+        next_q = random.choice(unanswered)
+        state.current_question = next_q
+        choices = next_q["choices"]
+        choice_text = "\n".join([f"・{c}" for c in choices])
+        quick_reply_items = [
+            QuickReplyButton(action=MessageAction(label=choice, text=choice))
+            for choice in choices
         ]
-    )
-    return
+
+        line_bot_api.reply_message(
+            event.reply_token,
+            [
+                TextSendMessage(text=feedback),
+                TextSendMessage(
+                    text=f"Q. {next_q['question']}",
+                    quick_reply=QuickReply(items=quick_reply_items)
+                )
+            ]
+        )
+        return
+
