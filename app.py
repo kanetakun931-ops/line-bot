@@ -12,6 +12,10 @@ import openai
 
 # 環境変数を読み込む
 load_dotenv()
+
+#OPENAIdebug
+print("APIキー:", os.getenv("OPENAI_API_KEY"))
+
 openai.api_key = os.getenv("OPENAI_API_KEY")
 
 # FlaskアプリとLINE Botの初期化
@@ -23,9 +27,6 @@ handler = WebhookHandler(os.getenv("LINE_CHANNEL_SECRET"))
 # ユーザーごとの状態管理
 user_state = {}
 quiz_state = {}
-
-#OPENAIdebug
-print("APIキー:", os.getenv("OPENAI_API_KEY"))
 
 def shorten_label(label, max_length=20):
     """QuickReplyのラベルを20文字以内に短縮"""
@@ -201,6 +202,7 @@ def handle_message(event):
                 )
             )
             return
+
 
 
 
