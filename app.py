@@ -126,6 +126,10 @@ def handle_message(event):
         answered_ids = state.get("answered", [])
         questions = quiz_data.get(genre, [])
         next_q = next((q for q in questions if q["id"] not in answered_ids), None)
+#debug
+        print("[DEBUG] answered_ids:", answered_ids)
+        print("[DEBUG] genre:", genre)
+        print("[DEBUG] next_q:", next_q)
 
         if not next_q:
             line_bot_api.reply_message(
@@ -240,6 +244,7 @@ def handle_message(event):
             TextSendMessage(text=reply_text)
         )
         return
+
 
 
 
