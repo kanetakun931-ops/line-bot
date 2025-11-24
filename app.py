@@ -127,7 +127,11 @@ def handle_message(event):
         normalized = text.strip()
         valid_choices = [c.strip() for c in current_q.get("choices", [])]
 
-        if normalized not in valid_choices:
+        normalized = text.strip()
+        valid_choices = [c.strip() for c in current_q.get("choices", [])]
+
+        # 大文字小文字や全角半角も無視したい場合はさらに工夫できるよ！
+        if not any(normalized == choice for choice in valid_choices):
             line_bot_api.reply_message(
                 event.reply_token,
                 TextSendMessage(text="その選択肢は見つからなかったよ！もう一度選んでね！")
@@ -186,3 +190,4 @@ def handle_message(event):
             ]
         )
         return
+
