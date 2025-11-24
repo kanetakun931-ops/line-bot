@@ -110,6 +110,11 @@ def handle_message(event):
     # ジャンル選択後にスタート／戻るを提示
     if text.startswith("ジャンル:"):
         genre = text.replace("ジャンル:", "").strip()
+
+        # ✅ ここで user_state を初期化！
+    if user_id not in user_state:
+        user_state[user_id] = {}
+        
         user_state[user_id]["genre"] = genre
 
         quick_reply_items = [
@@ -206,6 +211,7 @@ def handle_message(event):
                 )
             )
             return
+
 
 
 
