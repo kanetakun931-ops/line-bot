@@ -105,6 +105,10 @@ def handle_message(event):
 
     # ジャンル選択メニュー
     if text == "ジャンル選択":
+        print("[DEBUG] ジャンル選択が押されたよ！")
+        if user_id not in user_state:
+            user_state[user_id] = {}
+        user_state[user_id]["mode"] = "quiz"
         quick_reply_items = [
             QuickReplyButton(action=MessageAction(label="保健体育 🏃‍♂️", text="ジャンル:保健体育")),
             QuickReplyButton(action=MessageAction(label="歴史 📜", text="ジャンル:歴史")),
@@ -263,6 +267,7 @@ def handle_message(event):
             TextSendMessage(text=reply_text)
         )
         return
+
 
 
 
