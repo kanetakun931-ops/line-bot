@@ -46,14 +46,56 @@ def handle_message(event):
 
     # 🔽 ジャンル選択メニュー
     if text == "ジャンル選択":
-        ...
+    print("[DEBUG] ジャンル選択ブロックに入った！")
+    quick_reply_items = [
+        QuickReplyButton(action=MessageAction(label=genre, text=f"ジャンル:{genre}"))
+        for genre in genre_list
+    ]
+    print("[DEBUG] QuickReply items:", [btn.action.label for btn in quick_reply_items])
+    try:
+        line_bot_api.reply_message(
+            event.reply_token,
+            TextSendMessage(
+                text="📚 ジャンルを選んでね！",
+                quick_reply=QuickReply(items=quick_reply_items)
+            )
+        )
+        print("[DEBUG] 応答送信成功！")
+    except Exception as e:
+        print("[ERROR] 応答失敗:", e)
+    return
 
     # 🔽 ジャンル設定
     if text.startswith("ジャンル:"):
-        ...
+        print(f"[DEBUG] ジャンル設定ブロックに入った！ text={text}")
+        genre = text.replace("ジャンル:", "").strip()
+        print(f"[DEBUG] 選ばれたジャンル: {genre}")
+        if genre not in quiz_data:
+            line_bot_api.reply_message(
+                event.reply_token,
+                TextSendMessage(text="そのジャンルは見つからなかったよ！")
+            )
+            return
 
+        state.set_genre(genre)
+        quick_reply_items = [
+            QuickReplyButton(action=MessageAction(label="スタート 🚀", text="スタート")),
+            QuickReplyButton(action=MessageAction(label="ジャンル選択 ↩️", text="ジャンル選択"))
+        ]
+        line_bot_api.reply_message(
+            event.reply_token,
+            TextSendMessage(
+                text=f"{genre}ジャンルを選んだよ！スタートする？",
+                quick_reply=QuickReply(items=quick_reply_items)
+            )
+        )
+        return
     # 🔽 スタートで問題出題 ← ここを関数の中に！
     if text == "スタート":
+        #debugジャンル一覧の確認
+        print("[DEBUG] quiz_data keys:", list(quiz_data.keys()))
+        print("[DEBUG] genre_list:", genre_list)
+
         genre = state.genre
         if not genre:
             line_bot_api.reply_message(
@@ -166,4 +208,5 @@ def handle_message(event):
             ]
         )
         return
+
 
