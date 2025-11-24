@@ -61,6 +61,7 @@ def callback():
 def handle_message(event):
     user_id = event.source.user_id
     text = event.message.text.strip()
+    print(f"[DEBUG] text: '{text}'")
     # ユーザー状態を初期化
     if user_id not in user_state:
         user_state[user_id] = {}
@@ -125,7 +126,8 @@ def handle_message(event):
         # 問題取得
         answered_ids = state.get("answered", [])
         questions = quiz_data.get(genre, [])
-        next_q = next((q for q in questions if q["id"] not in answered_ids), None)
+        next_q = next((q for q in questions if q["id"] not in state["answered"]), None)
+
 #debug
         print("[DEBUG] answered_ids:", answered_ids)
         print("[DEBUG] genre:", genre)
@@ -244,6 +246,7 @@ def handle_message(event):
             TextSendMessage(text=reply_text)
         )
         return
+
 
 
 
