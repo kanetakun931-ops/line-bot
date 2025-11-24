@@ -103,10 +103,10 @@ def handle_message(event):
 
     # ジャンル選択メニュー
     if text == "ジャンル選択":
-    print("[DEBUG] ジャンル選択が押されたよ！")
-    if user_id not in user_state:
-        user_state[user_id] = {}
-    user_state[user_id]["mode"] = "quiz"
+        print("[DEBUG] ジャンル選択が押されたよ！")
+        if user_id not in user_state:
+            user_state[user_id] = {}
+        user_state[user_id]["mode"] = "quiz"
 
     try:
         quick_reply_items = [
@@ -270,6 +270,7 @@ def handle_message(event):
             TextSendMessage(text=reply_text)
         )
         return
+
 
 
 
