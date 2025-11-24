@@ -77,15 +77,15 @@ def handle_message(event):
         )
         return
 
-    if text == "モード:quiz":
-        user_state[user_id] = {"mode": "quiz"}
-        if user_id in quiz_state:
-            del quiz_state[user_id]
-        line_bot_api.reply_message(
-            event.reply_token,
+    if text == "ジャンル選択":
+        if user_id not in user_state:
+            user_state[user_id] = {}
+            user_state[user_id]["mode"] = "quiz"
+            line_bot_api.reply_message(
+                event.reply_token,
             TextSendMessage(text="📚 クイズモードに切り替えたよ！ジャンルを選んでね！")
-        )
-        return
+            )
+            return
 
     # クイズ中断
     if text == "やめる":
@@ -262,6 +262,7 @@ def handle_message(event):
             TextSendMessage(text=reply_text)
         )
         return
+
 
 
 
