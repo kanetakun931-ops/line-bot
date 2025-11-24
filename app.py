@@ -49,7 +49,7 @@ def handle_message(event):
     print(f"[DEBUG] text: '{text}'")
 
     if user_id not in user_state:
-        user_state[user_id] = {}
+    user_state[user_id] = {}
     state = user_state[user_id]
 
     # 🔧 自由入力でもジャンル選択できるように補完
@@ -168,6 +168,9 @@ def handle_message(event):
         valid_choices = current_q.get("choices", ["〇", "○", "×", "✕"])
         normalized = "〇" if text in ["〇", "○"] else "×" if text in ["×", "✕"] else text
 
+        normalized = text.strip()
+        valid_choices = [c.strip() for c in current_q.get("choices", [])]
+
         if normalized not in valid_choices:
             line_bot_api.reply_message(
                 event.reply_token,
@@ -244,6 +247,7 @@ def handle_message(event):
             TextSendMessage(text=reply_text)
         )
         return
+
 
 
 
