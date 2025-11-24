@@ -24,6 +24,9 @@ handler = WebhookHandler(os.getenv("LINE_CHANNEL_SECRET"))
 user_state = {}
 quiz_state = {}
 
+#OPENAIdebug
+print("APIキー:", os.getenv("OPENAI_API_KEY"))
+
 def shorten_label(label, max_length=20):
     """QuickReplyのラベルを20文字以内に短縮"""
     return label if len(label) <= max_length else label[:17] + "…"
@@ -88,7 +91,7 @@ def handle_message(event):
     if user_state.get(user_id, {}).get("mode") == "ask":
         try:
             response = openai.ChatCompletion.create(
-                model="gpt-4o-mini",
+                model="gpt-3.5-turbo",  # ← ここを修正！
                 messages=[
                     {"role": "system", "content": "あなたは中学生にわかりやすく答える先生です。答えの最後に豆知識を必ず添えてください。"},
                     {"role": "user", "content": text}
@@ -198,6 +201,7 @@ def handle_message(event):
                 )
             )
             return
+
 
 
 
