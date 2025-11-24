@@ -90,16 +90,16 @@ def handle_message(event):
     if text == "やめる":
         if user_id in quiz_state:
             del quiz_state[user_id]
-            line_bot_api.reply_message(
-                event.reply_token,
-                TextSendMessage(text="🛑 クイズを中断したよ！またいつでも再開してね！")
-            )
-        else:
-            line_bot_api.reply_message(
-                event.reply_token,
-                TextSendMessage(text="今はクイズ中じゃないみたいだよ〜！")
-            )
-        return
+                line_bot_api.reply_message(
+                    event.reply_token,
+                    TextSendMessage(text="🛑 クイズを中断したよ！またいつでも再開してね！")
+                )
+            else:
+                line_bot_api.reply_message(
+                    event.reply_token,
+                    TextSendMessage(text="今はクイズ中じゃないみたいだよ〜！")
+                )
+            return
 
     # ジャンル選択メニュー
     if text == "ジャンル選択":
@@ -270,6 +270,7 @@ def handle_message(event):
             TextSendMessage(text=reply_text)
         )
         return
+
 
 
 
