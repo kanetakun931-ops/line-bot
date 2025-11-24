@@ -131,25 +131,31 @@ def handle_message(event):
             )
         )
         return
+        
+    try:
+        # 🔽 回答処理
+        current_q = state.current_question
+        print("[DEBUG] current_question:", current_q)
 
-    # 🔽 回答処理
-    current_q = state.current_question
-    print("[DEBUG] current_question:", current_q)
+        if current_q:
+            normalized = text.strip()
+            print("[DEBUG] normalized:", repr(normalized))
 
-    if current_q:
-        normalized = text.strip()
-        print("[DEBUG] normalized:", repr(normalized))
+            valid_choices = [c.strip() for c in current_q.get("choices", [])]
+            if normalized not in valid_choices:
 
-        valid_choices = [c.strip() for c in current_q.get("choices", [])]
-        print("[DEBUG] valid_choices:", [repr(c) for c in valid_choices])
+                print("[DEBUG] valid_choices:", valid_choices)  # ← これでOK！
 
-        if normalized not in valid_choices:
-            print("[DEBUG] 選択肢に一致しない！")
-            line_bot_api.reply_message(
-                event.reply_token,
-                TextSendMessage(text="その選択肢は見つからなかったよ！もう一度選んでね！")
-            )
-            return
+                if normalized not in valid_choices:
+                    print("[DEBUG] 選択肢に一致しない！ normalized:", normalized)
+                    print("[DEBUG] valid_choices:", valid_choices)
+                    line_bot_api.reply_message(
+                        event.reply_token,
+                        TextSendMessage(text="その選択肢は見つからなかったよ！もう一度選んでね！")
+                    )
+                return
+    except Exception as e:
+        print("[ERROR] 回答処理で例外:", e)
 
         correct = current_q["answer"].strip()
         explanation = current_q.get("explanation", "")
@@ -208,6 +214,7 @@ def handle_message(event):
             ]
         )
         return
+
 
 
 
