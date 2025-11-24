@@ -34,6 +34,10 @@ def load_quiz_data(folder="questions"):
     for filename in os.listdir(folder):
         if filename.endswith(".json"):
             genre = filename.replace(".json", "")
-            with open(os.path.join(folder, filename), encoding="utf-8") as f:
-                quiz_data[genre] = json.load(f)
+            try:
+                with open(os.path.join(folder, filename), encoding="utf-8") as f:
+                    quiz_data[genre] = json.load(f)
+                print(f"[DEBUG] 読み込み成功: {genre} ({len(quiz_data[genre])}問)")
+            except Exception as e:
+                print(f"[ERROR] 読み込み失敗: {genre} → {e}")
     return quiz_data
