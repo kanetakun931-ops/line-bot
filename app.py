@@ -132,8 +132,10 @@ def handle_message(event):
     if text == "スタート":
         genre = user_state.get(user_id, {}).get("genre", "")
         all_questions = load_questions()
-        filtered = [q for q in all_questions if genre in q.get("genre", "")] if genre else all_questions
-
+        filtered = [
+            q for q in all_questions
+            if genre == q.get("genre") or genre in q.get("genre", [])
+        ]
         if len(filtered) < 20:
             line_bot_api.reply_message(
                 event.reply_token,
@@ -152,10 +154,13 @@ def handle_message(event):
 
         line_bot_api.reply_message(
             event.reply_token,
-            TextSendMessage(
-                text=f"第1問！🔥\n{q.get('question')}",
-                quick_reply=QuickReply(items=quick_reply_items)
-            )
+            [
+                TextSendMessage(text=reply),
+                TextSendMessage(
+                    text=f"第{progress['current_index']+1}問！🔥\n{next_q.get('question')}",
+                    quick_reply=QuickReply(items=quick_reply_items)
+                )
+            ]
         )
         return
 
@@ -201,6 +206,7 @@ def handle_message(event):
                 )
             )
             return
+
 
 
 
