@@ -158,8 +158,16 @@ def handle_message(event):
                 TextSendMessage(text=f"{genre}ジャンルの問題が足りないみたい💦")
             )
             return
+            
         selected = random.sample(filtered, 20)
-        quiz_state[user_id] = {"questions": selected, "current_index": 0}
+        
+            # ✅ ここで初期化！
+        quiz_state[user_id] = {
+            "questions": selected,
+            "current_index": 0,
+            "correct_count": 0  # ← これが必要！
+        }
+        
         q = selected[0]
         quick_reply_items = [
             QuickReplyButton(action=MessageAction(label=shorten_label(choice), text=choice))
@@ -193,9 +201,15 @@ def handle_message(event):
                 TextSendMessage(text="❓その選択肢は見つからなかったよ！もう一度ボタンから選んでね〜！")
             )
             return
+        # ✅ reply をここで必ず定義！
+        if answer == correct:
+            reply = "⭕✨ 正解！"
+            progress["correct_count"] += 1
+        else:
+            reply = f"❌😅 不正解… 正解は「{correct}」"
 
-        reply = "⭕✨ 正解！" if answer == correct else f"❌😅 不正解… 正解は「{correct}」"
-    
+        # ↓ここから reply を使ってOK！
+
         progress["current_index"] += 1
         if progress["current_index"] >= len(questions):
             quick_reply_items = [
@@ -246,6 +260,7 @@ def handle_message(event):
             TextSendMessage(text=reply_text)
         )
         return
+
 
 
 
