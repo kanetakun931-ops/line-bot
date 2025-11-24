@@ -1,0 +1,320 @@
+[
+  {
+    "id": "eigo001",
+    "genre": "英語",
+    "question": "📜「私はピアノをひくことが好きです。」を英語にすると？",
+    "choices": [
+      "I like play the piano.",
+      "I like playing the piano.",
+      "I like to play the piano.",
+      "I like played the piano."
+    ],
+    "answer": "I like to play the piano.",
+    "explanation": "💡「like to 動詞の原形」で「〜することが好き」です。📚"
+  },
+  {
+    "id": "eigo002",
+    "genre": "英語",
+    "question": "🏯「彼はそのときテレビを見ていました。」正しい英文は？",
+    "choices": [
+      "He watches TV then.",
+      "He watched TV then.",
+      "He was watching TV then.",
+      "He is watching TV then."
+    ],
+    "answer": "He was watching TV then.",
+    "explanation": "💡過去進行形は「was/were + 動詞ing」で表します。📚"
+  },
+  {
+    "id": "eigo003",
+    "genre": "英語",
+    "question": "⚔️「must」の意味は？",
+    "choices": ["〜できる", "〜すべき", "〜したい", "〜しているところだ"],
+    "answer": "〜すべき",
+    "explanation": "💡「must」は義務や強い必要を表します。📚"
+  },
+  {
+    "id": "eigo004",
+    "genre": "英語",
+    "question": "📜「もっとも速い」を英語で言うと？",
+    "choices": ["fast", "faster", "fastest", "more fast"],
+    "answer": "fastest",
+    "explanation": "💡「fast」の最上級は「fastest」です。📚"
+  },
+  {
+    "id": "eigo005",
+    "genre": "英語",
+    "question": "🏯「彼女は私より背が高い。」を英語にすると？",
+    "choices": [
+      "She is tall than me.",
+      "She is taller than me.",
+      "She is the tallest than me.",
+      "She is more tall than me."
+    ],
+    "answer": "She is taller than me.",
+    "explanation": "💡比較級「taller」を使い、「than」で比べます。📚"
+  },
+  {
+    "id": "eigo006",
+    "genre": "英語",
+    "question": "⚔️「あなたは明日学校へ行くつもりです。」を英語にすると？",
+    "choices": [
+      "You go to school tomorrow.",
+      "You are going to school tomorrow.",
+      "You will go to school tomorrow.",
+      "You went to school tomorrow."
+    ],
+    "answer": "You will go to school tomorrow.",
+    "explanation": "💡未来の予定を表すには「will + 動詞の原形」を使います。📚"
+  },
+  {
+    "id": "eigo007",
+    "genre": "英語",
+    "question": "📜「私は昼食のあとに図書館へ行きました。」正しい英文は？",
+    "choices": [
+      "I go to the library after lunch.",
+      "I went to the library after lunch.",
+      "I going to the library after lunch.",
+      "I goes to the library after lunch."
+    ],
+    "answer": "I went to the library after lunch.",
+    "explanation": "💡過去の出来事なので「went」を使います。📚"
+  },
+{
+    "id": "eigo008",
+    "genre": "英語",
+    "question": "🏯「彼は速く走ることができます。」正しい英文は？",
+    "choices": [
+      "He can run fast.",
+      "He must run fast.",
+      "He will run fast.",
+      "He is running fast."
+    ],
+    "answer": "He can run fast.",
+    "explanation": "💡「can + 動詞の原形」で「〜できる」を表します。📚"
+  },
+  {
+    "id": "eigo009",
+    "genre": "英語",
+    "question": "⚔️「私は彼に会えてうれしい。」を英語にすると？",
+    "choices": [
+      "I am happy to meet him.",
+      "I am happy meeting him.",
+      "I am happy meet him.",
+      "I am happy met him."
+    ],
+    "answer": "I am happy to meet him.",
+    "explanation": "💡「形容詞 + to 動詞の原形」で感情を表します。📚"
+  },
+  {
+    "id": "eigo010",
+    "genre": "英語",
+    "question": "📜「あなたは何をしていたのですか？」正しい英文は？",
+    "choices": [
+      "What do you do?",
+      "What did you do?",
+      "What are you doing?",
+      "What were you doing?"
+    ],
+    "answer": "What were you doing?",
+    "explanation": "💡過去進行形の疑問文は「What were you doing?」です。📚"
+  },
+  {
+    "id": "eigo011",
+    "genre": "英語",
+    "question": "🏯「私は彼に英語を教えるためにここに来ました。」正しい英文は？",
+    "choices": [
+      "I came here teach him English.",
+      "I came here to teach him English.",
+      "I come here to teach him English.",
+      "I came here teaching him English."
+    ],
+    "answer": "I came here to teach him English.",
+    "explanation": "💡目的を表す「to teach」がポイントです。📚"
+  },
+  {
+    "id": "eigo012",
+    "genre": "英語",
+    "question": "📜「彼女はそのとき料理をしていました。」正しい英文は？",
+    "choices": [
+      "She cooks then.",
+      "She cooked then.",
+      "She was cooking then.",
+      "She is cooking then."
+    ],
+    "answer": "She was cooking then.",
+    "explanation": "💡過去進行形は「was + 動詞ing」で表します。📚"
+  },
+  {
+    "id": "eigo013",
+    "genre": "英語",
+    "question": "⚔️「もっとも美しい花」はどれ？",
+    "choices": ["beautiful flower", "more beautiful flower", "most beautiful flower", "the most beautiful flower"],
+    "answer": "the most beautiful flower",
+    "explanation": "💡最上級には「the」をつけて「the most beautiful flower」となります。📚"
+  },
+  {
+    "id": "eigo014",
+    "genre": "英語",
+    "question": "📜「私は早く起きなければなりません。」正しい英文は？",
+    "choices": [
+      "I must get up early.",
+      "I can get up early.",
+      "I want to get up early.",
+      "I am getting up early."
+    ],
+    "answer": "I must get up early.",
+    "explanation": "💡「must + 動詞の原形」で義務を表します。📚"
+  },
+  {
+    "id": "eigo015",
+    "genre": "英語",
+    "question": "🏯「彼は私よりも速く走る。」正しい英文は？",
+    "choices": [
+      "He runs fast than me.",
+      "He runs faster than me.",
+      "He runs the fastest than me.",
+      "He runs more fast than me."
+    ],
+    "answer": "He runs faster than me.",
+    "explanation": "💡比較級「faster」を使い、「than」で比べます。📚"
+  },
+  {
+    "id": "eigo016",
+    "genre": "英語",
+    "question": "⚔️「彼女は歌うことが好きです。」正しい英文は？",
+    "choices": [
+      "She likes sing.",
+      "She likes singing.",
+      "She like singing.",
+      "She liking singing."
+    ],
+    "answer": "She likes singing.",
+    "explanation": "💡「like + 動詞ing」で「〜することが好き」です。📚"
+  },
+  {
+    "id": "eigo017",
+    "genre": "英語",
+    "question": "📜「私はその映画を見るつもりです。」正しい英文は？",
+    "choices": [
+      "I will watch the movie.",
+      "I watched the movie.",
+      "I watch the movie.",
+      "I watching the movie."
+    ],
+    "answer": "I will watch the movie.",
+    "explanation": "💡未来の予定は「will + 動詞の原形」で表します。📚"
+  },
+  {
+    "id": "eigo018",
+    "genre": "英語",
+    "question": "🏯「彼らは公園で遊んでいました。」正しい英文は？",
+    "choices": [
+      "They played in the park.",
+      "They were playing in the park.",
+      "They are playing in the park.",
+      "They play in the park."
+    ],
+    "answer": "They were playing in the park.",
+    "explanation": "💡過去進行形は「were + 動詞ing」で表します。📚"
+  },
+  {
+    "id": "eigo019",
+    "genre": "英語",
+    "question": "⚔️「あなたはピアノをひくことができますか？」正しい英文は？",
+    "choices": [
+      "Can you play the piano?",
+      "Do you play the piano?",
+      "Will you play the piano?",
+      "Did you play the piano?"
+    ],
+    "answer": "Can you play the piano?",
+    "explanation": "💡能力をたずねるときは「Can you〜？」を使います。📚"
+  },
+  {
+    "id": "eigo020",
+    "genre": "英語",
+    "question": "📜「彼はそのとき何をしていましたか？」正しい英文は？",
+    "choices": [
+      "What did he do then?",
+      "What does he do then?",
+      "What was he doing then?",
+      "What is he doing then?"
+    ],
+    "answer": "What was he doing then?",
+    "explanation": "💡過去進行形の疑問文は「What was he doing?」です。📚"
+  },
+  {
+    "id": "eigo021",
+    "genre": "英語",
+    "question": "🏯「私は図書館で勉強するために早く起きました。」正しい英文は？",
+    "choices": [
+      "I got up early study at the library.",
+      "I got up early to study at the library.",
+      "I get up early to study at the library.",
+      "I got up early studying at the library."
+    ],
+    "answer": "I got up early to study at the library.",
+    "explanation": "💡目的を表す「to study」がポイントです。📚"
+  },
+  {
+    "id": "eigo022",
+    "genre": "英語",
+    "question": "📜「私は昨日の夜、宿題をしていました。」正しい英文は？",
+    "choices": [
+      "I was doing my homework last night.",
+      "I did my homework last night.",
+      "I am doing my homework last night.",
+      "I do my homework last night."
+    ],
+    "answer": "I was doing my homework last night.",
+    "explanation": "💡「was + 動詞ing」で過去進行形を表します。📚"
+  },
+  {
+    "id": "eigo023",
+    "genre": "英語",
+    "question": "⚔️「彼は私よりも上手に英語を話します。」正しい英文は？",
+    "choices": [
+      "He speaks English gooder than me.",
+      "He speaks English better than me.",
+      "He speaks English more good than me.",
+      "He speaks English best than me."
+    ],
+    "answer": "He speaks English better than me.",
+    "explanation": "💡「good」の比較級は「better」です。📚"
+  },
+  {
+    "id": "eigo024",
+    "genre": "英語",
+    "question": "🏯「私はその本を読むことができません。」正しい英文は？",
+    "choices": [
+      "I can read the book.",
+      "I can't read the book.",
+      "I must read the book.",
+      "I will read the book."
+    ],
+    "answer": "I can't read the book.",
+    "explanation": "💡「can't」は「〜できない」という意味です。📚"
+  },
+  {
+    "id": "eigo025",
+    "genre": "英語",
+    "question": "📜「あなたは何を買うつもりですか？」正しい英文は？",
+    "choices": [
+      "What do you buy?",
+      "What did you buy?",
+      "What are you buying?",
+      "What will you buy?"
+    ],
+    "answer": "What will you buy?",
+    "explanation": "💡未来の予定をたずねるときは「will」を使います。📚"
+  },
+  {
+    "id": "eigo026",
+    "genre": "英語",
+    "question": "⚔️「りんご」は英語でどれ？",
+    "choices": ["Banana", "Apple", "Orange", "Grape"],
+    "answer": "Apple",
+    "explanation": "💡「りんご」は英語で Apple といいます。📚"
+  }
+]
