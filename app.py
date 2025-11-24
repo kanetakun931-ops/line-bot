@@ -147,6 +147,13 @@ def handle_message(event):
     # クイズスタート
     if text == "スタート":
         genre = user_state.get(user_id, {}).get("genre", "")
+        if not genre:
+            line_bot_api.reply_message(
+                event.reply_token,
+                TextSendMessage(text="⚠️ ジャンルが選ばれてないみたい！先にジャンルを選んでね〜！")
+            )
+            return
+
         all_questions = load_questions()
         filtered = [
             q for q in all_questions
@@ -158,16 +165,14 @@ def handle_message(event):
                 TextSendMessage(text=f"{genre}ジャンルの問題が足りないみたい💦")
             )
             return
-            
+
         selected = random.sample(filtered, 20)
-        
-            # ✅ ここで初期化！
         quiz_state[user_id] = {
             "questions": selected,
             "current_index": 0,
-            "correct_count": 0  # ← これが必要！
+            "correct_count": 0
         }
-        
+
         q = selected[0]
         quick_reply_items = [
             QuickReplyButton(action=MessageAction(label=shorten_label(choice), text=choice))
@@ -175,13 +180,10 @@ def handle_message(event):
         ]
         line_bot_api.reply_message(
             event.reply_token,
-            [
-                TextSendMessage(text=reply),
-                TextSendMessage(
-                    text=f"第{progress['current_index']+1}問！🔥\n{next_q.get('question')}",
-                    quick_reply=QuickReply(items=quick_reply_items)
-                )
-            ]
+            TextSendMessage(
+                text=f"第1問！🔥\n{q.get('question')}",
+                quick_reply=QuickReply(items=quick_reply_items)
+            )
         )
         return
 
@@ -260,6 +262,7 @@ def handle_message(event):
             TextSendMessage(text=reply_text)
         )
         return
+
 
 
 
