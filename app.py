@@ -155,9 +155,9 @@ if current_q:
     if explanation:
         feedback += f"\n💡 {explanation}"
 
-        state.answered.append(current_q["id"])
-        state.current_question = None
-        print("[DEBUG] 回答処理完了！")
+    state.answered.append(current_q["id"])
+    state.current_question = None
+    print("[DEBUG] 回答処理完了！")
 
         # 次の問題を探す
         questions = quiz_data.get(state.genre, [])
@@ -195,6 +195,7 @@ if current_q:
             ]
         )
         return
+
 
 
 
