@@ -49,7 +49,7 @@ def handle_message(event):
     print(f"[DEBUG] text: '{text}'")
 
     if user_id not in user_state:
-    user_state[user_id] = {}
+        user_state[user_id] = {}
     state = user_state[user_id]
 
     # 🔧 自由入力でもジャンル選択できるように補完
@@ -247,6 +247,7 @@ def handle_message(event):
             TextSendMessage(text=reply_text)
         )
         return
+
 
 
 
