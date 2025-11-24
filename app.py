@@ -120,9 +120,10 @@ def handle_message(event):
                 TextSendMessage(text="ジャンルが選ばれてないみたい！「ジャンル選択」から始めてね！")
             )
             return
+            
 
         # 問題取得
-        answered = state.get("answered", [])
+        answered_ids = state.get("answered", [])
         questions = quiz_data.get(genre, [])
         next_q = next((q for q in questions if q["id"] not in answered_ids), None)
 
@@ -239,6 +240,7 @@ def handle_message(event):
             TextSendMessage(text=reply_text)
         )
         return
+
 
 
 
