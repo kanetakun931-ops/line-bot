@@ -45,6 +45,27 @@ def handle_message(event):
     user_id = event.source.user_id
     text = event.message.text.strip()
 
+    # 🔍 ここからデバッグ用メッセージを追加！
+
+    if text == "ジャンルは？":
+        genre = user_state.get(user_id, {}).get("genre", "（未設定）")
+        line_bot_api.reply_message(
+            event.reply_token,
+            TextSendMessage(text=f"📘 現在のジャンル：{genre}")
+        )
+        return
+
+    if text == "状態は？":
+        mode = user_state.get(user_id, {}).get("mode", "（未設定）")
+        quiz = quiz_state.get(user_id)
+        msg = f"🧭 モード：{mode}\n"
+        msg += "📝 クイズ中！" if quiz else "🛌 クイズ未開始"
+        line_bot_api.reply_message(
+            event.reply_token,
+            TextSendMessage(text=msg)
+        )
+        return
+    
     # モード切替
     if text == "モード:ask":
         user_state[user_id] = {"mode": "ask"}
@@ -225,6 +246,7 @@ def handle_message(event):
             TextSendMessage(text=reply_text)
         )
         return
+
 
 
 
