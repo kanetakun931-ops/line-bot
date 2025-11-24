@@ -80,12 +80,9 @@ def handle_message(event):
         )
         return
 
-    elif text == "モード:ask":
-        user_state[user_id] = {"mode": "ask"}
-        line_bot_api.reply_message(
-            event.reply_token,
-            TextSendMessage(text="💡 質問モードに切り替えたよ！なんでも聞いてみてね✨")
-        )
+    elif user_state.get(user_id, {}).get("mode") == "ask":
+        reply_text = "🛠️ 質問モードは現在開発中だよ！もうちょっと待っててね〜！"
+        line_bot_api.reply_message(event.reply_token, TextSendMessage(text=reply_text))
         return
 
     # 質問モードの処理
@@ -122,12 +119,14 @@ def handle_message(event):
 
         line_bot_api.reply_message(
             event.reply_token,
-            TextSendMessage(
-                text=f"{genre}ジャンルを選んだね！👇",
-                quick_reply=QuickReply(items=quick_reply_items)
-            )
+            [
+                TextSendMessage(text=f"{genre}ジャンルを選んだね！"),
+                TextSendMessage(
+                    text="スタートする？それともメニューに戻る？👇",
+                    quick_reply=QuickReply(items=quick_reply_items)
+                )
+            ]
         )
-        return
 
     # スタートでクイズ開始
     if text == "スタート":
@@ -202,6 +201,7 @@ def handle_message(event):
                 )
             )
             return
+
 
 
 
