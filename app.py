@@ -9,6 +9,7 @@ from linebot.models import (
 )
 import os
 import random
+import time
 
 from state import UserState, user_states, load_quiz_data
 
@@ -103,12 +104,20 @@ def handle_message(event):
 
         next_q = random.choice(unanswered)
         state.current_question = next_q
+        if not hasattr(state, "start_time"):
+            state.start_time = time.time()
 
         choices = next_q["choices"]
-        choice_text = "\n".join([f"・{c}" for c in choices])
+        quick_reply_items = [
+            QuickReplyButton(action=MessageAction(label=choice, text=choice))
+            for choice in choices
+        ]
         line_bot_api.reply_message(
             event.reply_token,
-            TextSendMessage(text=f"Q. {next_q['question']}\n{choice_text}")
+            TextSendMessage(
+                text=f"Q. {next_q['question']}",
+                quick_reply=QuickReply(items=quick_reply_items)
+            )
         )
         return
 
@@ -147,9 +156,12 @@ def handle_message(event):
         if not unanswered:
             total = len(state.answered)
             score = state.score
+            elapsed = int(time.time() - getattr(state, "start_time", time.time()))
             line_bot_api.reply_message(
                 event.reply_token,
-                TextSendMessage(text=f"{feedback}\n🎉 全{total}問中、{score}問正解だったよ！また挑戦してね！")
+                TextSendMessage(
+                    text=f"{feedback}\n🎉 全{total}問中、{score}問正解だったよ！\n⏱️ 所要時間：{elapsed}秒\nまた挑戦してね！"
+                )
             )
             user_states.pop(user_id, None)
             return
@@ -159,11 +171,18 @@ def handle_message(event):
         state.current_question = next_q
         choices = next_q["choices"]
         choice_text = "\n".join([f"・{c}" for c in choices])
+        quick_reply_items = [
+            QuickReplyButton(action=MessageAction(label=choice, text=choice))
+            for choice in choices
+        ]
         line_bot_api.reply_message(
             event.reply_token,
             [
                 TextSendMessage(text=feedback),
-                TextSendMessage(text=f"Q. {next_q['question']}\n{choice_text}")
+                TextSendMessage(
+                    text=f"Q. {next_q['question']}",
+                    quick_reply=QuickReply(items=quick_reply_items)
+                )
             ]
         )
         return
