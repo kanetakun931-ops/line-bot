@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 from flask import Flask, request, abort
 from linebot import LineBotApi, WebhookHandler
 from linebot.models import *
@@ -167,4 +169,5 @@ def send_next_question(event, state, feedback=""):
         )
     )
     line_bot_api.reply_message(event.reply_token, messages)
+
 
