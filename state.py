@@ -1,6 +1,4 @@
-# state.py
-# state.py
-
+#state.py
 import time
 
 class UserState:
@@ -11,6 +9,7 @@ class UserState:
         self.score = 0
         self.current_question = None
         self.start_time = None
+        self.available_ids = []
 
     def reset(self):
         self.answered = []
@@ -18,26 +17,11 @@ class UserState:
         self.score = 0
         self.current_question = None
         self.start_time = time.time()
+        self.available_ids = []
 
-    def set_genre(self, genre):
+    def set_genre(self, genre, quiz_data):
         self.genre = genre
+        self.available_ids = [q["id"] for q in quiz_data[genre]]
+        print(f"[DEBUG] {genre}ジャンルの問題数: {len(self.available_ids)}")
 
-# 🔽 これを忘れずに追加！
 user_states = {}
-
-# 🔽 クイズデータ読み込み関数（仮の例）
-import json
-import os
-
-def load_quiz_data(folder="questions"):
-    quiz_data = {}
-    for filename in os.listdir(folder):
-        if filename.endswith(".json"):
-            genre = filename.replace(".json", "")
-            try:
-                with open(os.path.join(folder, filename), encoding="utf-8") as f:
-                    quiz_data[genre] = json.load(f)
-                print(f"[DEBUG] 読み込み成功: {genre} ({len(quiz_data[genre])}問)")
-            except Exception as e:
-                print(f"[ERROR] 読み込み失敗: {genre} → {e}")
-    return quiz_data
