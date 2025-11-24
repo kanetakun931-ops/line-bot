@@ -122,37 +122,42 @@ def handle_message(event):
         return
 
     # 🔽 回答処理
-    current_q = state.current_question
-    if current_q:
-        normalized = text.strip()
-        valid_choices = [c.strip() for c in current_q.get("choices", [])]
+current_q = state.current_question
+print("[DEBUG] current_question:", current_q)
 
-        normalized = text.strip()
-        valid_choices = [c.strip() for c in current_q.get("choices", [])]
+if current_q:
+    normalized = text.strip()
+    print("[DEBUG] normalized:", repr(normalized))
 
-        # 大文字小文字や全角半角も無視したい場合はさらに工夫できるよ！
-        if not any(normalized == choice for choice in valid_choices):
-            line_bot_api.reply_message(
-                event.reply_token,
-                TextSendMessage(text="その選択肢は見つからなかったよ！もう一度選んでね！")
-            )
-            return
+    valid_choices = [c.strip() for c in current_q.get("choices", [])]
+    print("[DEBUG] valid_choices:", [repr(c) for c in valid_choices])
 
-        correct = current_q["answer"].strip()
-        explanation = current_q.get("explanation", "")
-        feedback = ""
+    if normalized not in valid_choices:
+        print("[DEBUG] 選択肢に一致しない！")
+        line_bot_api.reply_message(
+            event.reply_token,
+            TextSendMessage(text="その選択肢は見つからなかったよ！もう一度選んでね！")
+        )
+        return
 
-        if normalized == correct:
-            feedback = "⭕ 正解！すごい！"
-            state.score += 1
-        else:
-            feedback = f"❌ 残念！正解は「{correct}」だったよ！"
+    correct = current_q["answer"].strip()
+    explanation = current_q.get("explanation", "")
+    print("[DEBUG] 正解:", repr(correct))
 
-        if explanation:
-            feedback += f"\n💡 {explanation}"
+    feedback = ""
+    if normalized == correct:
+        feedback = "⭕ 正解！すごい！"
+        state.score += 1
+    else:
+        feedback = f"❌ 残念！正解は「{correct}」だったよ！"
+        state.mistakes.append(current_q["id"])
 
-        state.answered.append(current_q["id"])
-        state.current_question = None
+    if explanation:
+        feedback += f"\n💡 {explanation}"
+
+    state.answered.append(current_q["id"])
+    state.current_question = None
+    print("[DEBUG] 回答処理完了！")
 
         # 次の問題を探す
         questions = quiz_data.get(state.genre, [])
@@ -190,4 +195,5 @@ def handle_message(event):
             ]
         )
         return
+
 
