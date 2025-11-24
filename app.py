@@ -158,9 +158,20 @@ def handle_message(event):
         progress = quiz_state[user_id]
         idx = progress["current_index"]
         questions = progress["questions"]
-        answer = text
-        correct = questions[idx]["answer"]
+        q = questions[idx]
+        choices = [c.strip() for c in q.get("choices", [])]
+        answer = text.strip()
+        correct = q["answer"].strip()
+
+        if answer not in choices:
+            line_bot_api.reply_message(
+                event.reply_token,
+                TextSendMessage(text="❓その選択肢は見つからなかったよ！もう一度ボタンから選んでね〜！")
+            )
+            return
+
         reply = "⭕✨ 正解！" if answer == correct else f"❌😅 不正解… 正解は「{correct}」"
+    
         progress["current_index"] += 1
         if progress["current_index"] >= len(questions):
             quick_reply_items = [
@@ -188,7 +199,7 @@ def handle_message(event):
                     quick_reply=QuickReply(items=quick_reply_items)
                 )
             )
-        return
+            return
 
     # 質問モード（Copilotに聞く）
     if user_state.get(user_id, {}).get("mode") == "ask":
@@ -211,4 +222,5 @@ def handle_message(event):
             TextSendMessage(text=reply_text)
         )
         return
+
 
