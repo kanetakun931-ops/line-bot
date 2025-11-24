@@ -8,11 +8,15 @@ from linebot.models import (
 from dotenv import load_dotenv
 import os
 import json, random
+import openai
 
+# 環境変数を読み込む
+load_dotenv()
+openai.api_key = os.getenv("OPENAI_API_KEY")
+
+# FlaskアプリとLINE Botの初期化
 app = Flask(__name__)
-
 load_dotenv()  # .envファイルを読み込む
-
 line_bot_api = LineBotApi(os.getenv("LINE_CHANNEL_ACCESS_TOKEN"))
 handler = WebhookHandler(os.getenv("LINE_CHANNEL_SECRET"))
 
@@ -194,5 +198,6 @@ def handle_message(event):
                 )
             )
             return
+
 
 
