@@ -114,7 +114,7 @@ def handle_message(event):
 
         quick_reply_items = [
             QuickReplyButton(action=MessageAction(label="スタート 🚀", text="スタート")),
-            QuickReplyButton(action=MessageAction(label="戻る ↩️", text="メニュー"))
+            QuickReplyButton(action=MessageAction(label="ジャンル選択に戻る ↩️", text="ジャンル選択"))
         ]
 
         line_bot_api.reply_message(
@@ -201,6 +201,7 @@ def handle_message(event):
                 )
             )
             return
+
 
 
 
