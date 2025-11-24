@@ -115,6 +115,16 @@ def handle_message(event):
         answered_ids = state.get("answered", [])
         questions = quiz_data.get(genre, [])
         next_q = next((q for q in questions if q["id"] not in state["answered"]), None)
+        
+        if not next_q:
+            total = len(state["answered"])
+            score = state.get("score", 0)
+            line_bot_api.reply_message(
+                event.reply_token,
+                TextSendMessage(text=f"{feedback}\n🎉 全{total}問中、{score}問正解だったよ！また挑戦してね！")
+            )
+            user_state.pop(user_id, None)
+            return
 
 #debug
         print("[DEBUG] answered_ids:", answered_ids)
@@ -234,6 +244,7 @@ def handle_message(event):
             TextSendMessage(text=reply_text)
         )
         return
+
 
 
 
