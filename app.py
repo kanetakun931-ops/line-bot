@@ -139,7 +139,7 @@ def send_next_question(event, state, feedback=""):
                 ])
             )
         )
-        user_states.pop(event.source.user_id, None)
+        #user_states.pop(event.source.user_id, None)
         return
 
     qid = random.choice(remaining)
@@ -167,3 +167,4 @@ def send_next_question(event, state, feedback=""):
         )
     )
     line_bot_api.reply_message(event.reply_token, messages)
+
