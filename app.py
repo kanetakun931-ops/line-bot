@@ -5,12 +5,16 @@ from linebot.models import (
     MessageEvent, TextMessage, TextSendMessage,
     QuickReply, QuickReplyButton, MessageAction
 )
+from dotenv import load_dotenv
+import os
 import json, random
 
 app = Flask(__name__)
 
-line_bot_api = LineBotApi("YOUR_CHANNEL_ACCESS_TOKEN")
-handler = WebhookHandler("YOUR_CHANNEL_SECRET")
+load_dotenv()  # .envファイルを読み込む
+
+line_bot_api = LineBotApi(os.getenv("LINE_CHANNEL_ACCESS_TOKEN"))
+handler = WebhookHandler(os.getenv("LINE_CHANNEL_SECRET"))
 
 # ユーザーごとの状態管理
 user_state = {}
@@ -190,4 +194,5 @@ def handle_message(event):
                 )
             )
             return
+
 
