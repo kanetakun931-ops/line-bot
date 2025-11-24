@@ -146,10 +146,13 @@ def handle_message(event):
         ]
         line_bot_api.reply_message(
             event.reply_token,
-            TextSendMessage(
-                text=f"第1問！🔥\n{q.get('question')}",
-                quick_reply=QuickReply(items=quick_reply_items)
-            )
+            [
+                TextSendMessage(text=reply),
+                TextSendMessage(
+                    text=f"第{progress['current_index']+1}問！🔥\n{next_q.get('question')}",
+                    quick_reply=QuickReply(items=quick_reply_items)
+                )
+            ]
         )
         return
 
@@ -222,5 +225,6 @@ def handle_message(event):
             TextSendMessage(text=reply_text)
         )
         return
+
 
 
