@@ -46,6 +46,7 @@ def handle_message(event):
     text = event.message.text.strip()
 
     # 🔍 ここからデバッグ用メッセージを追加！
+    print(f"[DEBUG] text: '{text}'")
 
     if text == "ジャンルは？":
         genre = user_state.get(user_id, {}).get("genre", "（未設定）")
@@ -262,6 +263,7 @@ def handle_message(event):
             TextSendMessage(text=reply_text)
         )
         return
+
 
 
 
