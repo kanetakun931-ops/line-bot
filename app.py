@@ -69,12 +69,12 @@ def handle_message(event):
     
     # モード切替
     if text == "モード:ask":
-    print("[DEBUG] モード:ask が押されたよ！")
-    line_bot_api.reply_message(
-        event.reply_token,
-        TextSendMessage(text="🛠️ 質問モードは現在開発中だよ！もうちょっと待っててね〜！")
-    )
-    return
+        print("[DEBUG] モード:ask が押されたよ！")
+        line_bot_api.reply_message(
+            event.reply_token,
+            TextSendMessage(text="🛠️ 質問モードは現在開発中だよ！もうちょっと待っててね〜！")
+        )
+        return
 
     if text == "ジャンル選択":
         if user_id not in user_state:
@@ -270,6 +270,7 @@ def handle_message(event):
             TextSendMessage(text=reply_text)
         )
         return
+
 
 
 
