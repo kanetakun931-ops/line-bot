@@ -60,8 +60,7 @@ def handle_message(event):
     text = event.message.text.strip()
 
     # モード切替（リッチメニューから送信されたテキスト）
-    if text == "モード:quiz":
-        user_state[user_id] = {"mode": "quiz"}
+    if text == "ジャンル選択":
         quick_reply_items = [
             QuickReplyButton(action=MessageAction(label="保健体育 🏃‍♂️", text="ジャンル:保健体育")),
             QuickReplyButton(action=MessageAction(label="歴史 📜", text="ジャンル:歴史")),
@@ -74,11 +73,12 @@ def handle_message(event):
         line_bot_api.reply_message(
             event.reply_token,
             TextSendMessage(
-                text="🎯 クイズモードに切り替えたよ！ジャンルを選んでね👇",
+                text="ジャンルを選んでね！👇",
                 quick_reply=QuickReply(items=quick_reply_items)
             )
         )
         return
+
 
     elif user_state.get(user_id, {}).get("mode") == "ask":
         reply_text = "🛠️ 質問モードは現在開発中だよ！もうちょっと待っててね〜！"
@@ -206,6 +206,7 @@ def handle_message(event):
                 )
             )
             return
+
 
 
 
