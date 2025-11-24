@@ -69,14 +69,12 @@ def handle_message(event):
     
     # モード切替
     if text == "モード:ask":
-        user_state[user_id] = {"mode": "ask"}
-        if user_id in quiz_state:
-            del quiz_state[user_id]
-        line_bot_api.reply_message(
-            event.reply_token,
-            TextSendMessage(text="🧠 質問モードに切り替えたよ！なんでも聞いてね〜！")
-        )
-        return
+    print("[DEBUG] モード:ask が押されたよ！")
+    line_bot_api.reply_message(
+        event.reply_token,
+        TextSendMessage(text="🛠️ 質問モードは現在開発中だよ！もうちょっと待っててね〜！")
+    )
+    return
 
     if text == "ジャンル選択":
         if user_id not in user_state:
@@ -105,18 +103,20 @@ def handle_message(event):
 
     # ジャンル選択メニュー
     if text == "ジャンル選択":
-        print("[DEBUG] ジャンル選択が押されたよ！")
-        if user_id not in user_state:
-            user_state[user_id] = {}
-        user_state[user_id]["mode"] = "quiz"
+    print("[DEBUG] ジャンル選択が押されたよ！")
+    if user_id not in user_state:
+        user_state[user_id] = {}
+    user_state[user_id]["mode"] = "quiz"
+
+    try:
         quick_reply_items = [
-            QuickReplyButton(action=MessageAction(label="保健体育 🏃‍♂️", text="ジャンル:保健体育")),
-            QuickReplyButton(action=MessageAction(label="歴史 📜", text="ジャンル:歴史")),
-            QuickReplyButton(action=MessageAction(label="地理 🗾", text="ジャンル:地理")),
-            QuickReplyButton(action=MessageAction(label="国語 📖", text="ジャンル:国語")),
-            QuickReplyButton(action=MessageAction(label="数学 ➗", text="ジャンル:数学")),
-            QuickReplyButton(action=MessageAction(label="理科 🔬", text="ジャンル:理科")),
-            QuickReplyButton(action=MessageAction(label="英語 🇬🇧", text="ジャンル:英語"))
+            QuickReplyButton(action=MessageAction(label="保健体育", text="ジャンル:保健体育")),
+            QuickReplyButton(action=MessageAction(label="歴史", text="ジャンル:歴史")),
+            QuickReplyButton(action=MessageAction(label="地理", text="ジャンル:地理")),
+            QuickReplyButton(action=MessageAction(label="国語", text="ジャンル:国語")),
+            QuickReplyButton(action=MessageAction(label="数学", text="ジャンル:数学")),
+            QuickReplyButton(action=MessageAction(label="理科", text="ジャンル:理科")),
+            QuickReplyButton(action=MessageAction(label="英語", text="ジャンル:英語"))
         ]
         line_bot_api.reply_message(
             event.reply_token,
@@ -125,7 +125,10 @@ def handle_message(event):
                 quick_reply=QuickReply(items=quick_reply_items)
             )
         )
-        return
+    except Exception as e:
+        print("[ERROR] クイックリプライ送信失敗:", e)
+    return
+
 
     # ジャンルを選んだとき
     if text.startswith("ジャンル:"):
@@ -267,6 +270,7 @@ def handle_message(event):
             TextSendMessage(text=reply_text)
         )
         return
+
 
 
 
