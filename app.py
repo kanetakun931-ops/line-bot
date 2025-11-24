@@ -46,24 +46,24 @@ def handle_message(event):
 
     # 🔽 ジャンル選択メニュー
     if text == "ジャンル選択":
-    print("[DEBUG] ジャンル選択ブロックに入った！")
-    quick_reply_items = [
-        QuickReplyButton(action=MessageAction(label=genre, text=f"ジャンル:{genre}"))
-        for genre in genre_list
-    ]
-    print("[DEBUG] QuickReply items:", [btn.action.label for btn in quick_reply_items])
-    try:
-        line_bot_api.reply_message(
-            event.reply_token,
-            TextSendMessage(
-                text="📚 ジャンルを選んでね！",
-                quick_reply=QuickReply(items=quick_reply_items)
+        print("[DEBUG] ジャンル選択ブロックに入った！")
+        quick_reply_items = [
+            QuickReplyButton(action=MessageAction(label=genre, text=f"ジャンル:{genre}"))
+            for genre in genre_list
+        ]
+        print("[DEBUG] QuickReply items:", [btn.action.label for btn in quick_reply_items])
+        try:
+            line_bot_api.reply_message(
+                event.reply_token,
+                TextSendMessage(
+                    text="📚 ジャンルを選んでね！",
+                    quick_reply=QuickReply(items=quick_reply_items)
+                )
             )
-        )
-        print("[DEBUG] 応答送信成功！")
-    except Exception as e:
-        print("[ERROR] 応答失敗:", e)
-    return
+            print("[DEBUG] 応答送信成功！")
+        except Exception as e:
+            print("[ERROR] 応答失敗:", e)
+        return
 
     # 🔽 ジャンル設定
     if text.startswith("ジャンル:"):
@@ -208,5 +208,6 @@ def handle_message(event):
             ]
         )
         return
+
 
 
