@@ -13,6 +13,10 @@ import logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
+def load_questions():
+    with open("questions.json", encoding="utf-8") as f:
+        return json.load(f)
+
 app = Flask(__name__)
 # ユーザーごとの状態管理
 user_state = {}
@@ -298,6 +302,7 @@ def send_next_question(event, state, feedback=""):
         )
     )
     line_bot_api.reply_message(event.reply_token, messages)
+
 
 
 
