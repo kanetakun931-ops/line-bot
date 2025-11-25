@@ -14,6 +14,9 @@ logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 app = Flask(__name__)
+# ユーザーごとの状態管理
+user_state = {}
+quiz_state = {}
 line_bot_api = LineBotApi(os.getenv("LINE_CHANNEL_ACCESS_TOKEN"))
 handler = WebhookHandler(os.getenv("LINE_CHANNEL_SECRET"))
 
@@ -295,6 +298,7 @@ def send_next_question(event, state, feedback=""):
         )
     )
     line_bot_api.reply_message(event.reply_token, messages)
+
 
 
 
