@@ -20,6 +20,13 @@ handler = WebhookHandler(LINE_CHANNEL_SECRET)
 user_state = {}
 
 @app.route("/callback", methods=['POST'])
+def load_questions(genre):
+    # ジャンルごとのファイルを読み込む
+    path = f"question/{genre}.json"
+    if not os.path.exists(path):
+        return []
+    with open(path, encoding="utf-8") as f:
+        return json.load(f)
 def callback():
     signature = request.headers['X-Line-Signature']
     body = request.get_data(as_text=True)
@@ -74,36 +81,27 @@ if __name__ == "__main__":
         # ...
         return
 
-    # スタート
     if text == "スタート":
         genre = user_state[user_id].get("genre")
-        all_questions = load_questions()
-
-        # フィルタ方式を明確化（完全一致推奨）
-        filtered = [q for q in all_questions if q.get("genre") == genre] if genre else all_questions
-
-        # 検証（choices/answer）
-        for i, q in enumerate(filtered):
-            if not q.get("choices"):
-                logger.warning(f"Empty choices at index {i}: {q}")
-            if q.get("answer") not in q.get("choices", []):
-                logger.warning(f"Answer not in choices at index {i}: {q}")
-
-        if len(filtered) < 20:
+        all_questions = load_questions(genre)  # ← ジャンルごとのファイルを読む
+        if not all_questions:
             line_bot_api.reply_message(event.reply_token,
-                TextSendMessage(text=f"{genre}ジャンルの問題が足りないみたい💦（{len(filtered)}問）"))
+                TextSendMessage(text=f"{genre}ジャンルの問題ファイルが見つからないよ💦"))
             return
 
-        selected = random.sample(filtered, 20)
+        selected = random.sample(all_questions, min(20, len(all_questions)))
         quiz_state[user_id] = {"questions": selected, "current_index": 0}
 
         q = selected[0]
         choices = q.get("choices", [])
-        quick_reply_items = [QuickReplyButton(action=MessageAction(label=shorten_label(c), text=c)) for c in choices]
+        quick_reply_items = [QuickReplyButton(action=MessageAction(label=c, text=c)) for c in choices]
 
-        line_bot_api.reply_message(event.reply_token,
+        line_bot_api.reply_message(
+            event.reply_token,
             TextSendMessage(text=f"第1問！🔥\n{q.get('question')}",
-                            quick_reply=QuickReply(items=quick_reply_items)))
+                            quick_reply=QuickReply(items=quick_reply_items))
+        )
+
         logger.info(f"Start quiz user={user_id} genre={genre} total=20")
         return
 
@@ -269,6 +267,7 @@ def send_next_question(event, state, feedback=""):
         )
     )
     line_bot_api.reply_message(event.reply_token, messages)
+
 
 
 
