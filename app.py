@@ -9,10 +9,21 @@ import json
 import random
 import time
 from state import UserState, user_states
+import logging
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 app = Flask(__name__)
 line_bot_api = LineBotApi(os.getenv("LINE_CHANNEL_ACCESS_TOKEN"))
 handler = WebhookHandler(os.getenv("LINE_CHANNEL_SECRET"))
+
+processed_events = set()
+def is_duplicate(event):
+    event_id = getattr(event, 'reply_token', None) or f"{event.source.user_id}-{event.timestamp}"
+    if event_id in processed_events:
+        return True
+    processed_events.add(event_id)
+    return False
 
 # クイズデータ読み込み
 def load_quiz_data(folder="questions"):
@@ -46,10 +57,125 @@ def callback():
 
 @handler.add(MessageEvent, message=TextMessage)
 def handle_message(event):
+
+    if is_duplicate(event):
+        logger.info("Duplicate event detected; skipping.")
+        return
     user_id = event.source.user_id
     text = event.message.text.strip()
-    state = user_states.setdefault(user_id, UserState())
 
+    # 安全な初期化
+    if user_id not in user_state:
+        user_state[user_id] = {"mode": None, "genre": None}
+
+    # モード切替
+    if text == "モード:quiz":
+        user_state[user_id].update({"mode": "quiz", "genre": None})
+        # （ジャンルQuickReplyは既存のままでOK）
+        # ...
+        return
+
+    if text == "モード:ask":
+        user_state[user_id].update({"mode": "ask"})
+        # ...
+        return
+
+    # 質問モード
+    if user_state[user_id].get("mode") == "ask":
+        # 外部呼び出しが遅い場合はタイムアウト対策を（後述）
+        # ...
+        return
+
+    # クイズモード以外はここで誘導
+    if user_state[user_id].get("mode") != "quiz":
+        line_bot_api.reply_message(event.reply_token,
+            TextSendMessage(text="今はメニューにいるよ。🎯クイズか💡質問を選んでね！"))
+        return
+
+    # ジャンル選択
+    if text.startswith("ジャンル:"):
+        genre = text.replace("ジャンル:", "").strip()
+        user_state[user_id]["genre"] = genre
+        # スタート/戻るQuickReply
+        # ...
+        return
+
+    # スタート
+    if text == "スタート":
+        genre = user_state[user_id].get("genre")
+        all_questions = load_questions()
+
+        # フィルタ方式を明確化（完全一致推奨）
+        filtered = [q for q in all_questions if q.get("genre") == genre] if genre else all_questions
+
+        # 検証（choices/answer）
+        for i, q in enumerate(filtered):
+            if not q.get("choices"):
+                logger.warning(f"Empty choices at index {i}: {q}")
+            if q.get("answer") not in q.get("choices", []):
+                logger.warning(f"Answer not in choices at index {i}: {q}")
+
+        if len(filtered) < 20:
+            line_bot_api.reply_message(event.reply_token,
+                TextSendMessage(text=f"{genre}ジャンルの問題が足りないみたい💦（{len(filtered)}問）"))
+            return
+
+        selected = random.sample(filtered, 20)
+        quiz_state[user_id] = {"questions": selected, "current_index": 0}
+
+        q = selected[0]
+        choices = q.get("choices", [])
+        quick_reply_items = [QuickReplyButton(action=MessageAction(label=shorten_label(c), text=c)) for c in choices]
+
+        line_bot_api.reply_message(event.reply_token,
+            TextSendMessage(text=f"第1問！🔥\n{q.get('question')}",
+                            quick_reply=QuickReply(items=quick_reply_items)))
+        logger.info(f"Start quiz user={user_id} genre={genre} total=20")
+        return
+
+    # 進行（防御的に）
+    if user_id in quiz_state:
+        progress = quiz_state[user_id]
+        idx = progress["current_index"]
+        questions = progress["questions"]
+
+        # 境界防御
+        if idx < 0 or idx >= len(questions):
+            line_bot_api.reply_message(event.reply_token,
+                TextSendMessage(text="進行がずれちゃったみたい。もう一度スタートしてね🙏"))
+            logger.error(f"Index out of range user={user_id} idx={idx}")
+            del quiz_state[user_id]
+            return
+
+        answer_text = text
+        correct = questions[idx]["answer"]
+        result = "⭕✨ 正解！" if answer_text == correct else f"❌😅 不正解… 正解は「{correct}」"
+
+        # 次へ
+        progress["current_index"] += 1
+        next_idx = progress["current_index"]
+
+        if next_idx >= len(questions):
+            # 終了
+            quick_reply_items = [
+                QuickReplyButton(action=MessageAction(label="もう一度 🚀", text="スタート")),
+                QuickReplyButton(action=MessageAction(label="メニューへ ↩️", text="モード:quiz"))
+            ]
+            line_bot_api.reply_message(event.reply_token,
+                TextSendMessage(text=f"{result}\nクイズ終了！🎉 また挑戦する？👇",
+                                quick_reply=QuickReply(items=quick_reply_items)))
+            logger.info(f"Finish quiz user={user_id}")
+            del quiz_state[user_id]
+            return
+        else:
+            next_q = questions[next_idx]
+            choices = next_q.get("choices", [])
+            quick_reply_items = [QuickReplyButton(action=MessageAction(label=shorten_label(c), text=c)) for c in choices]
+            line_bot_api.reply_message(event.reply_token,
+                TextSendMessage(text=f"{result}\n第{next_idx+1}問！🔥\n{next_q.get('question')}",
+                                quick_reply=QuickReply(items=quick_reply_items)))
+            logger.info(f"Next question user={user_id} idx={next_idx}")
+            return
     # ジャンル選択
     if "ジャンル" in text and ":" not in text:
         quick_reply_items = [
@@ -169,5 +295,6 @@ def send_next_question(event, state, feedback=""):
         )
     )
     line_bot_api.reply_message(event.reply_token, messages)
+
 
 
