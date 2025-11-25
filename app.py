@@ -79,7 +79,6 @@ if __name__ == "__main__":
         user_state[user_id]["genre"] = genre
         # スタート/戻るQuickReply
         # ...
-        return
 
     if text == "スタート":
         genre = user_state[user_id].get("genre")
@@ -267,6 +266,7 @@ def send_next_question(event, state, feedback=""):
         )
     )
     line_bot_api.reply_message(event.reply_token, messages)
+
 
 
 
