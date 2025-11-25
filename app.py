@@ -2,90 +2,57 @@
 
 from flask import Flask, request, abort
 from linebot import LineBotApi, WebhookHandler
-from linebot.models import *
 from linebot.exceptions import InvalidSignatureError
-import os
+from linebot.models import MessageEvent, TextMessage, TextSendMessage
 import json
-import random
-import time
-from state import UserState, user_states
-import logging
-logging.basicConfig(level=logging.INFO)
-logger = logging.getLogger(__name__)
-
-def load_questions():
-    with open("questions.json", encoding="utf-8") as f:
-        return json.load(f)
+import os
 
 app = Flask(__name__)
-# ユーザーごとの状態管理
+
+# 環境変数からLINEの設定を取得
+LINE_CHANNEL_ACCESS_TOKEN = os.getenv("LINE_CHANNEL_ACCESS_TOKEN")
+LINE_CHANNEL_SECRET = os.getenv("LINE_CHANNEL_SECRET")
+
+line_bot_api = LineBotApi(LINE_CHANNEL_ACCESS_TOKEN)
+handler = WebhookHandler(LINE_CHANNEL_SECRET)
+
+# ユーザー状態（最低限）
 user_state = {}
-quiz_state = {}
-line_bot_api = LineBotApi(os.getenv("LINE_CHANNEL_ACCESS_TOKEN"))
-handler = WebhookHandler(os.getenv("LINE_CHANNEL_SECRET"))
 
-processed_events = set()
-def is_duplicate(event):
-    event_id = getattr(event, 'reply_token', None) or f"{event.source.user_id}-{event.timestamp}"
-    if event_id in processed_events:
-        return True
-    processed_events.add(event_id)
-    return False
-
-# クイズデータ読み込み
-def load_quiz_data(folder="questions"):
-    quiz_data = {}
-    for filename in os.listdir(folder):
-        if filename.endswith(".json"):
-            genre = filename.replace(".json", "")
-            with open(os.path.join(folder, filename), encoding="utf-8") as f:
-                quiz_data[genre] = json.load(f)
-    return quiz_data
-
-quiz_data = load_quiz_data()
-genre_list = list(quiz_data.keys())
-
-# 問題IDから1問取得
-def get_question_by_id(genre, qid):
-    for q in quiz_data[genre]:
-        if q["id"] == qid:
-            return q
-    return None
-
-@app.route("/callback", methods=["POST"])
+@app.route("/callback", methods=['POST'])
 def callback():
-    signature = request.headers["X-Line-Signature"]
+    signature = request.headers['X-Line-Signature']
     body = request.get_data(as_text=True)
     try:
         handler.handle(body, signature)
     except InvalidSignatureError:
         abort(400)
-    return "OK"
+    return 'OK'
 
 @handler.add(MessageEvent, message=TextMessage)
 def handle_message(event):
-
-    if is_duplicate(event):
-        logger.info("Duplicate event detected; skipping.")
-        return
-    user_id = event.source.user_id
     text = event.message.text.strip()
 
-    # 安全な初期化
-    if user_id not in user_state:
-        user_state[user_id] = {"mode": None, "genre": None}
-
-    # モード切替
     if text == "モード:quiz":
-        user_state[user_id].update({"mode": "quiz", "genre": None})
-        # （ジャンルQuickReplyは既存のままでOK）
-        # ...
-        return
+        user_state[event.source.user_id] = {"mode": "quiz"}
+        line_bot_api.reply_message(
+            event.reply_token,
+            TextSendMessage(text="🎯 クイズモードに切り替えたよ！")
+        )
+    elif text == "モード:ask":
+        user_state[event.source.user_id] = {"mode": "ask"}
+        line_bot_api.reply_message(
+            event.reply_token,
+            TextSendMessage(text="💡 質問モードに切り替えたよ！")
+        )
+    else:
+        line_bot_api.reply_message(
+            event.reply_token,
+            TextSendMessage(text="今はメニューにいるよ。モードを選んでね！")
+        )
 
-    if text == "モード:ask":
-        user_state[user_id].update({"mode": "ask"})
-        # ...
-        return
+if __name__ == "__main__":
+    app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 5000)))
 
     # 質問モード
     if user_state[user_id].get("mode") == "ask":
@@ -302,6 +269,7 @@ def send_next_question(event, state, feedback=""):
         )
     )
     line_bot_api.reply_message(event.reply_token, messages)
+
 
 
 
