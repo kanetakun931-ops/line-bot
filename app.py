@@ -39,6 +39,10 @@ def callback():
 @handler.add(MessageEvent, message=TextMessage)
 def handle_message(event):
     text = event.message.text.strip()
+    line_bot_api.reply_message(
+        event.reply_token,
+        TextSendMessage(text=f"受け取ったよ: {text}")
+    )
 
     if text == "モード:quiz":
         user_state[event.source.user_id] = {"mode": "quiz"}
@@ -267,6 +271,7 @@ def send_next_question(event, state, feedback=""):
         )
     )
     line_bot_api.reply_message(event.reply_token, messages)
+
 
 
 
