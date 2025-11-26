@@ -19,7 +19,13 @@ user_state = {}
 quiz_state = {}
 
 def load_questions(genre):
-    path = f"questions/{genre}.json"
+    genre_map = {
+        "漢字": "kanji",
+        "地理": "chiri",
+        "英語": "eigo"
+    }
+    filename = genre_map.get(genre, genre)
+    path = f"questions/{filename}.json"
     if not os.path.exists(path):
         return []
     with open(path, encoding="utf-8") as f:
@@ -135,3 +141,4 @@ def handle_message(event):
     # その他
     line_bot_api.reply_message(event.reply_token,
         TextSendMessage(text="今はメニューにいるよ。モードを選んでね！"))
+
