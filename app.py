@@ -49,16 +49,23 @@ def handle_message(event):
     if user_id not in user_state:
         user_state[user_id] = {"mode": None, "genre": None}
 
-    if text == "モード:quiz":
-        user_state[user_id]["mode"] = "quiz"
+    if text == "ジャンル選択":
         quick_reply_items = [
             QuickReplyButton(action=MessageAction(label="漢字", text="ジャンル:漢字")),
-            QuickReplyButton(action=MessageAction(label="地理", text="ジャンル:chiri")),
-            QuickReplyButton(action=MessageAction(label="英語", text="ジャンル:eigo")),
+            QuickReplyButton(action=MessageAction(label="地理", text="ジャンル:地理")),
+            QuickReplyButton(action=MessageAction(label="英語", text="ジャンル:英語")),
+            QuickReplyButton(action=MessageAction(label="保健", text="ジャンル:保健")),
+            QuickReplyButton(action=MessageAction(label="国語", text="ジャンル:国語")),
+            QuickReplyButton(action=MessageAction(label="歴史", text="ジャンル:歴史")),
+            QuickReplyButton(action=MessageAction(label="理科", text="ジャンル:理科")),
+            QuickReplyButton(action=MessageAction(label="数学", text="ジャンル:数学")),
         ]
         line_bot_api.reply_message(
             event.reply_token,
-            TextSendMessage(text="ジャンルを選んでね👇", quick_reply=QuickReply(items=quick_reply_items))
+            TextSendMessage(
+                text="📚 ジャンルを選んでね！",
+                quick_reply=QuickReply(items=quick_reply_items)
+            )
         )
         return
 
@@ -122,23 +129,38 @@ def handle_message(event):
         next_idx = progress["current_index"]
 
         if next_idx >= len(questions):
-            line_bot_api.reply_message(event.reply_token,
-                TextSendMessage(text=f"{result}\n🎉 クイズ終了！お疲れさま！"))
+            quick_reply_items = [
+                QuickReplyButton(action=MessageAction(label="もう一度 🚀", text="スタート")),
+                QuickReplyButton(action=MessageAction(label="ジャンル選択 ↩️", text="ジャンル選択")),
+            ]
+            line_bot_api.reply_message(
+                event.reply_token,
+                TextSendMessage(
+                    text=f"{result}\n🎉 クイズ終了！また挑戦する？👇",
+                    quick_reply=QuickReply(items=quick_reply_items)
+                )
+            )
             del quiz_state[user_id]
             return
 
         next_q = questions[next_idx]
-        choices = next_q.get("choices", []).copy()
-        random.shuffle(choices)  # ← 次の問題でもランダムに並び替える
-        quick_reply_items = [QuickReplyButton(action=MessageAction(label=c, text=c)) for c in choices]
-
+        choices = question["choices"].copy()
+        random.shuffle(choices)
+        quick_reply_items = [
+            QuickReplyButton(action=MessageAction(label=choice, text=choice))
+            for choice in choices
+        ]
         line_bot_api.reply_message(
             event.reply_token,
-            TextSendMessage(text=f"{result}\n第{next_idx+1}問！🔥\n{next_q.get('question')}", quick_reply=QuickReply(items=quick_reply_items))
+            TextSendMessage(
+                text=f"第{idx+1}問！🔥\n{question['question']}",
+                quick_reply=QuickReply(items=quick_reply_items)
+            )
         )
         return
 
     # その他
     line_bot_api.reply_message(event.reply_token,
         TextSendMessage(text="今はメニューにいるよ。モードを選んでね！"))
+
 
