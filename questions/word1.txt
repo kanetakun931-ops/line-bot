@@ -1,0 +1,402 @@
+[
+  {
+    "id": "word001",
+    "genre": "単語1",
+    "question": "📘「study」の意味は？",
+    "choices": ["勉強する", "遊ぶ", "走る", "食べる"],
+    "answer": "勉強する",
+    "explanation": "💡「study」は「勉強する」という意味で、英検4級の超基本単語だよ！"
+  },
+  {
+    "id": "word002",
+    "genre": "単語1",
+    "question": "👶「baby」の意味は？",
+    "choices": ["赤ちゃん", "先生", "友だち", "兄"],
+    "answer": "赤ちゃん",
+    "explanation": "💡「baby」は「赤ちゃん」って意味。かわいい響きだよね！"
+  },
+  {
+    "id": "word003",
+    "genre": "単語1",
+    "question": "🤝「meet」の意味は？",
+    "choices": ["会う", "見る", "作る", "読む"],
+    "answer": "会う",
+    "explanation": "💡「meet」は「会う」って意味で、友だちと会うときによく使うよ！"
+  },
+  {
+    "id": "word004",
+    "genre": "単語1",
+    "question": "❄️「cold」の意味は？",
+    "choices": ["寒い", "暑い", "楽しい", "速い"],
+    "answer": "寒い",
+    "explanation": "💡「cold」は「寒い」って意味。冬によく使う単語だね！"
+  },
+  {
+    "id": "word005",
+    "genre": "単語1",
+    "question": "❓「ask」の意味は？",
+    "choices": ["たずねる", "答える", "書く", "読む"],
+    "answer": "たずねる",
+    "explanation": "💡「ask」は「たずねる」や「質問する」って意味だよ！"
+  },
+  {
+    "id": "word006",
+    "genre": "単語1",
+    "question": "📤「send」の意味は？",
+    "choices": ["送る", "受け取る", "買う", "開ける"],
+    "answer": "送る",
+    "explanation": "💡「send」は「送る」って意味。メールや手紙でよく使うよ！"
+  },
+  {
+    "id": "word007",
+    "genre": "単語1",
+    "question": "🌟「popular」の意味は？",
+    "choices": ["人気がある", "静かな", "高い", "新しい"],
+    "answer": "人気がある",
+    "explanation": "💡「popular」は「人気がある」って意味。アイドルや映画にも使うね！"
+  },
+  {
+    "id": "word008",
+    "genre": "単語1",
+    "question": "❌「wrong」の意味は？",
+    "choices": ["間違っている", "正しい", "遅い", "楽しい"],
+    "answer": "間違っている",
+    "explanation": "💡「wrong」は「間違っている」って意味。テストで使うことが多いよ！"
+  },
+  {
+    "id": "word009",
+    "genre": "単語1",
+    "question": "🏢「building」の意味は？",
+    "choices": ["建物", "道", "橋", "車"],
+    "answer": "建物",
+    "explanation": "💡「building」は「建物」って意味。学校や病院もbuildingだよ！"
+  },
+  {
+    "id": "word010",
+    "genre": "単語1",
+    "question": "😄「funny」の意味は？",
+    "choices": ["おかしい", "悲しい", "怖い", "つまらない"],
+    "answer": "おかしい",
+    "explanation": "💡「funny」は「おかしい」「笑える」って意味。ジョークにぴったり！"
+  },
+  {
+    "id": "word011",
+    "genre": "単語1",
+    "question": "🙋‍♀️「help」の意味は？",
+    "choices": ["助ける", "止める", "話す", "待つ"],
+    "answer": "助ける",
+    "explanation": "💡「help」は「助ける」って意味。困ってる人に使おう！"
+  },
+  {
+    "id": "word012",
+    "genre": "単語1",
+    "question": "🌈「hope」の意味は？",
+    "choices": ["望む", "走る", "笑う", "怒る"],
+    "answer": "望む",
+    "explanation": "💡「hope」は「望む」「願う」って意味。未来に期待するときに使うよ！"
+  },
+  {
+    "id": "word013",
+    "genre": "単語1",
+    "question": "🚉「station」の意味は？",
+    "choices": ["駅", "店", "学校", "病院"],
+    "answer": "駅",
+    "explanation": "💡「station」は「駅」って意味。train stationって言うよ！"
+  },
+  {
+    "id": "word014",
+    "genre": "単語1",
+    "question": "📏「long」の意味は？",
+    "choices": ["長い", "短い", "高い", "広い"],
+    "answer": "長い",
+    "explanation": "💡「long」は「長い」って意味。時間や距離にも使えるよ！"
+  },
+  {
+    "id": "word015",
+    "genre": "単語1",
+    "question": "📏「tall」の意味は？",
+    "choices": ["背が高い", "速い", "重い", "広い"],
+    "answer": "背が高い",
+    "explanation": "💡「tall」は「背が高い」って意味。人や建物に使うよ！"
+  },
+  {
+    "id": "word016",
+    "genre": "単語2",
+    "question": "📧「email」の意味は？",
+    "choices": ["電子メール", "電話", "手紙", "新聞"],
+    "answer": "電子メール",
+    "explanation": "💡「email」は「電子メール」って意味。毎日使うよね！"
+  },
+  {
+    "id": "word017",
+    "genre": "単語2",
+    "question": "⏰「before」の意味は？",
+    "choices": ["〜の前に", "〜の後に", "〜の中に", "〜のそばに"],
+    "answer": "〜の前に",
+    "explanation": "💡「before」は「〜の前に」って意味。時間や順番で使うよ！"
+  },
+  {
+    "id": "word018",
+    "genre": "単語2",
+    "question": "👥「everyone」の意味は？",
+    "choices": ["みんな", "だれか", "先生", "友だち"],
+    "answer": "みんな",
+    "explanation": "💡「everyone」は「みんな」って意味。全員を指すよ！"
+  },
+  {
+    "id": "word019",
+    "genre": "単語2",
+    "question": "🔢「some」の意味は？",
+    "choices": ["いくつかの", "すべての", "1つの", "多くの"],
+    "answer": "いくつかの",
+    "explanation": "💡「some」は「いくつかの」って意味。数がはっきりしないときに使うよ！"
+  },
+  {
+    "id": "word020",
+    "genre": "単語2",
+    "question": "🏠「address」の意味は？",
+    "choices": ["住所", "名前", "電話", "国"],
+    "answer": "住所",
+    "explanation": "💡「address」は「住所」って意味。手紙を書くときに必要だね！"
+  },
+  {
+    "id": "word021",
+    "genre": "単語2",
+    "question": "🌍「world」の意味は？",
+    "choices": ["世界", "国", "町", "道"],
+    "answer": "世界",
+    "explanation": "💡「world」は「世界」って意味。地球全体のことを指すよ！"
+  },
+  {
+    "id": "word022",
+    "genre": "単語2",
+    "question": "👨‍🦳「uncle」の意味は？",
+    "choices": ["おじ", "おば", "いとこ", "兄"],
+    "answer": "おじ",
+    "explanation": "💡「uncle」は「おじ」って意味。家族の単語もよく出るよ！"
+  },
+  {
+    "id": "word023",
+    "genre": "単語2",
+    "question": "🌇「afternoon」の意味は？",
+    "choices": ["午後", "朝", "夜", "昼食"],
+    "answer": "午後",
+    "explanation": "💡「afternoon」は「午後」って意味。good afternoon! ってあいさつするよね！"
+  },
+  {
+    "id": "word024",
+    "genre": "単語2",
+    "question": "🔁「always」の意味は？",
+    "choices": ["いつも", "ときどき", "まれに", "一度も"],
+    "answer": "いつも",
+    "explanation": "💡「always」は「いつも」って意味。頻度を表す副詞だよ！"
+  },
+  {
+    "id": "word025",
+    "genre": "単語2",
+    "question": "🔵「blue」の意味は？",
+    "choices": ["青い", "赤い", "黒い", "白い"],
+    "answer": "青い",
+    "explanation": "💡「blue」は「青い」って意味。空や海の色だね！"
+  },
+  {
+    "id": "word026",
+    "genre": "単語2",
+    "question": "🙂「easy」の意味は？",
+    "choices": ["簡単な", "難しい", "遅い", "高い"],
+    "answer": "簡単な",
+    "explanation": "💡「easy」は「簡単な」って意味。英検4級ではよく出るよ！"
+  },
+  {
+    "id": "word027",
+    "genre": "単語2",
+    "question": "📦「over」の意味は？",
+    "choices": ["〜の上に", "〜の下に", "〜の中に", "〜のそばに"],
+    "answer": "〜の上に",
+    "explanation": "💡「over」は「〜の上に」って意味。位置を表す前置詞だよ！"
+  },
+  {
+    "id": "word028",
+    "genre": "単語2",
+    "question": "🚌「bus」の意味は？",
+    "choices": ["バス", "車", "電車", "自転車"],
+    "answer": "バス",
+    "explanation": "💡「bus」は「バス」って意味。通学や通勤で使うね！"
+  },
+  {
+    "id": "word029",
+    "genre": "単語2",
+    "question": "👧「girl」の意味は？",
+    "choices": ["女の子", "男の子", "先生", "母"],
+    "answer": "女の子",
+    "explanation": "💡「girl」は「女の子」って意味。boyの反対だよ！"
+  },
+  {
+    "id": "word030",
+    "genre": "単語2",
+    "question": "👐「have」の意味は？",
+    "choices": ["持っている", "見る", "作る", "話す"],
+    "answer": "持っている",
+    "explanation": "💡「have」は「持っている」って意味。とってもよく使う動詞だよ！"
+  },
+  {
+    "id": "word031",
+    "genre": "単語3",
+    "question": "👷‍♂️「engineer」の意味は？",
+    "choices": ["技術者", "医者", "先生", "運転手"],
+    "answer": "技術者",
+    "explanation": "💡「engineer」は「技術者」って意味。ものづくりのプロだね！"
+  },
+  {
+    "id": "word032",
+    "genre": "単語3",
+    "question": "😊「happy」の意味は？",
+    "choices": ["うれしい", "悲しい", "怒っている", "眠い"],
+    "answer": "うれしい",
+    "explanation": "💡「happy」は「うれしい」って意味。笑顔になる単語だね！"
+  },
+  {
+    "id": "word033",
+    "genre": "単語3",
+    "question": "👟「shoe」の意味は？",
+    "choices": ["くつ", "シャツ", "ズボン", "かばん"],
+    "answer": "くつ",
+    "explanation": "💡「shoe」は「くつ」って意味。左右でpair of shoesって言うよ！"
+  },
+  {
+    "id": "word034",
+    "genre": "単語3",
+    "question": "📖「story」の意味は？",
+    "choices": ["物語", "新聞", "写真", "歌"],
+    "answer": "物語",
+    "explanation": "💡「story」は「物語」って意味。絵本や映画にもよく出てくるよ！"
+  },
+  {
+    "id": "word035",
+    "genre": "単語3",
+    "question": "👧「daughter」の意味は？",
+    "choices": ["娘", "母", "姉", "妹"],
+    "answer": "娘",
+    "explanation": "💡「daughter」は「娘」って意味。家族の単語はよく出るよ！"
+  },
+  {
+    "id": "word036",
+    "genre": "単語3",
+    "question": "🖊️「pen」の意味は？",
+    "choices": ["ペン", "えんぴつ", "消しゴム", "定規"],
+    "answer": "ペン",
+    "explanation": "💡「pen」は「ペン」って意味。書くときの必需品！"
+  },
+  {
+    "id": "word037",
+    "genre": "単語3",
+    "question": "🎁「bring」の意味は？",
+    "choices": ["持ってくる", "買う", "作る", "読む"],
+    "answer": "持ってくる",
+    "explanation": "💡「bring」は「持ってくる」って意味。おみやげをbringするよ！"
+  },
+  {
+    "id": "word038",
+    "genre": "単語3",
+    "question": "🏁「finish」の意味は？",
+    "choices": ["終える", "始める", "走る", "止まる"],
+    "answer": "終える",
+    "explanation": "💡「finish」は「終える」って意味。finish lineって聞いたことある？"
+  },
+  {
+    "id": "word039",
+    "genre": "単語3",
+    "question": "📱「phone」の意味は？",
+    "choices": ["電話", "時計", "カメラ", "テレビ"],
+    "answer": "電話",
+    "explanation": "💡「phone」は「電話」って意味。スマホもsmartphoneって言うね！"
+  },
+  {
+    "id": "word040",
+    "genre": "単語3",
+    "question": "😖「difficult」の意味は？",
+    "choices": ["難しい", "簡単な", "楽しい", "遅い"],
+    "answer": "難しい",
+    "explanation": "💡「difficult」は「難しい」って意味。反対はeasyだよ！"
+  },
+  {
+    "id": "word041",
+    "genre": "単語3",
+    "question": "📝「name」の意味は？",
+    "choices": ["名前", "住所", "電話番号", "年齢"],
+    "answer": "名前",
+    "explanation": "💡「name」は「名前」って意味。自己紹介でよく使うね！"
+  },
+  {
+    "id": "word042",
+    "genre": "単語3",
+    "question": "🌅「morning」の意味は？",
+    "choices": ["朝", "昼", "夜", "夕方"],
+    "answer": "朝",
+    "explanation": "💡「morning」は「朝」って意味。Good morning! は朝のあいさつ！"
+  },
+  {
+    "id": "word043",
+    "genre": "単語3",
+    "question": "⏰「late」の意味は？",
+    "choices": ["遅れて", "早く", "静かに", "強く"],
+    "answer": "遅れて",
+    "explanation": "💡「late」は「遅れて」って意味。Don't be late! って言われるよね！"
+  },
+  {
+    "id": "word044",
+    "genre": "単語3",
+    "question": "🎉「party」の意味は？",
+    "choices": ["パーティー", "授業", "試合", "旅行"],
+    "answer": "パーティー",
+    "explanation": "💡「party」は「パーティー」って意味。誕生日やクリスマスに！"
+  },
+  {
+    "id": "word045",
+    "genre": "単語3",
+    "question": "🧼「wash」の意味は？",
+    "choices": ["洗う", "切る", "書く", "読む"],
+    "answer": "洗う",
+    "explanation": "💡「wash」は「洗う」って意味。手をwash your hands! だね！"
+  },
+  {
+    "id": "word046",
+    "genre": "単語4",
+    "question": "👩‍🏫「teacher」の意味は？",
+    "choices": ["先生", "生徒", "医者", "運転手"],
+    "answer": "先生",
+    "explanation": "💡「teacher」は「先生」って意味。学校で毎日会うね！"
+  },
+  {
+    "id": "word047",
+    "genre": "単語4",
+    "question": "⚽「soccer」の意味は？",
+    "choices": ["サッカー", "野球", "バスケットボール", "テニス"],
+    "answer": "サッカー",
+    "explanation": "💡「soccer」は「サッカー」って意味。世界中で人気のスポーツ！"
+  },
+  {
+    "id": "word048",
+    "genre": "単語4",
+    "question": "⌚「watch」の意味は？",
+    "choices": ["腕時計", "テレビ", "カメラ", "電話"],
+    "answer": "腕時計",
+    "explanation": "💡「watch」は「腕時計」って意味。時間をチェックするのに便利！"
+  },
+  {
+    "id": "word049",
+    "genre": "単語4",
+    "question": "📅「January」の意味は？",
+    "choices": ["1月", "6月", "10月", "12月"],
+    "answer": "1月",
+    "explanation": "💡「January」は「1月」って意味。1年のはじまりだね！"
+  },
+  {
+    "id": "word050",
+    "genre": "単語4",
+    "question": "🍎「apple」の意味は？",
+    "choices": ["りんご", "バナナ", "ぶどう", "みかん"],
+    "answer": "りんご",
+    "explanation": "💡「apple」は「りんご」って意味。赤くて甘くておいしい果物！"
+  }
+]
