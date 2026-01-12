@@ -62,18 +62,18 @@ def handle_message(event):
 
     # ジャンル選択メニュー
     if text == "ジャンル選択":
-    quick_reply_items = [
-        QuickReplyButton(action=MessageAction(label="漢字", text="ジャンル:漢字")),
-        QuickReplyButton(action=MessageAction(label="地理", text="ジャンル:地理")),
-        QuickReplyButton(action=MessageAction(label="英語", text="ジャンル:英語")),
-        QuickReplyButton(action=MessageAction(label="英単語1", text="ジャンル:英単語1")),
-        QuickReplyButton(action=MessageAction(label="英単語2", text="ジャンル:英単語2")),
-        QuickReplyButton(action=MessageAction(label="保健体育", text="ジャンル:保健体育")),
-        QuickReplyButton(action=MessageAction(label="国語", text="ジャンル:国語")),
-        QuickReplyButton(action=MessageAction(label="歴史", text="ジャンル:歴史")),
-        QuickReplyButton(action=MessageAction(label="理科", text="ジャンル:理科")),
-        QuickReplyButton(action=MessageAction(label="数学", text="ジャンル:数学")),
-    ]
+        quick_reply_items = [
+            QuickReplyButton(action=MessageAction(label="漢字", text="ジャンル:漢字")),
+            QuickReplyButton(action=MessageAction(label="地理", text="ジャンル:地理")),
+            QuickReplyButton(action=MessageAction(label="英語", text="ジャンル:英語")),
+            QuickReplyButton(action=MessageAction(label="英単語1", text="ジャンル:英単語1")),
+            QuickReplyButton(action=MessageAction(label="英単語2", text="ジャンル:英単語2")),
+            QuickReplyButton(action=MessageAction(label="保健体育", text="ジャンル:保健体育")),
+            QuickReplyButton(action=MessageAction(label="国語", text="ジャンル:国語")),
+            QuickReplyButton(action=MessageAction(label="歴史", text="ジャンル:歴史")),
+            QuickReplyButton(action=MessageAction(label="理科", text="ジャンル:理科")),
+            QuickReplyButton(action=MessageAction(label="数学", text="ジャンル:数学")),
+        ]
         line_bot_api.reply_message(
             event.reply_token,
             TextSendMessage(
@@ -192,4 +192,5 @@ def handle_message(event):
         event.reply_token,
         TextSendMessage(text="今はメニューにいるよ。モードを選んでね！")
     )
+
 
