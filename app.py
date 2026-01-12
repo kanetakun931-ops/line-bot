@@ -124,7 +124,7 @@ def handle_message(event):
         line_bot_api.reply_message(
             event.reply_token,
             TextSendMessage(
-                text=f"第1問！🔥\n{q.get('question')}",
+                text=f"第1問！🔥\n{q.get('question')}\n\n（んぽちゃむ）これ、わかるちゃむ〜？",
                 quick_reply=QuickReply(items=quick_reply_items)
             )
         )
@@ -147,10 +147,11 @@ def handle_message(event):
         answer_text = text
         correct = questions[idx]["answer"]
         explanation = questions[idx].get("explanation", "")
-        result = "⭕ 正解！" if answer_text == correct else f"❌ 不正解… 正解は「{correct}」"
+        result = "⭕ 正解ちゃむ〜！すごいちゃむ〜！" if answer_text == correct else f"❌ 不正解ちゃむ… 正解は「{correct}」ちゃむ〜"
 
         if explanation:
-            result += f"\n{explanation}"
+            result += f"\n（んぽちゃむ）{explanation}ちゃむ〜"
+
 
         # 次の問題へ
         progress["current_index"] += 1
@@ -164,7 +165,7 @@ def handle_message(event):
             line_bot_api.reply_message(
                 event.reply_token,
                 TextSendMessage(
-                    text=f"{result}\n🎉 クイズ終了！また挑戦する？👇",
+                    text=f"{result}\n🎉 クイズ終了ちゃむ〜！またあそぼちゃむ〜！👇",
                     quick_reply=QuickReply(items=quick_reply_items)
                 )
             )
@@ -192,5 +193,6 @@ def handle_message(event):
         event.reply_token,
         TextSendMessage(text="今はメニューにいるよ。モードを選んでね！")
     )
+
 
 
