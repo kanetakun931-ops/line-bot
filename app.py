@@ -26,7 +26,7 @@ def load_questions(genre):
     genre_map = {
         "漢字": "kanji",
         "地理": "chiri",
-        "英語": "eijgo",  # ← これはそのままでもOK
+        "英語": "eijgo",
         "英単語1": "word1",
         "英単語2": "word2",
         "保健体育": "hoken",
@@ -121,10 +121,16 @@ def handle_message(event):
             QuickReplyButton(action=MessageAction(label=c, text=c)) for c in choices
         ]
 
+        # 選択肢をA〜Dで整形
+        question_text = f"第1問！🔥\n{q.get('question')}\n\n"
+        for i, choice in enumerate(choices):
+            question_text += f"{chr(65+i)}. {choice}\n"
+        question_text += "\n（んぽちゃむ）これ、わかるちゃむ〜？"
+
         line_bot_api.reply_message(
             event.reply_token,
             TextSendMessage(
-                text=f"第1問！🔥\n{q.get('question')}\n\n（んぽちゃむ）これ、わかるちゃむ〜？",
+                text=question_text,
                 quick_reply=QuickReply(items=quick_reply_items)
             )
         )
@@ -152,6 +158,7 @@ def handle_message(event):
         if explanation:
             result += f"\n（んぽちゃむ）{explanation}ちゃむ〜"
 
+        result += "\n\n------------------------------"
 
         # 次の問題へ
         progress["current_index"] += 1
@@ -179,12 +186,23 @@ def handle_message(event):
             QuickReplyButton(action=MessageAction(label=choice, text=choice))
             for choice in choices
         ]
+
+        # 次の問題を整形
+        next_question_text = f"第{next_idx+1}問！🔥\n{next_q['question']}\n\n"
+        for i, choice in enumerate(choices):
+            next_question_text += f"{chr(65+i)}. {choice}\n"
+        next_question_text += "\n（んぽちゃむ）これ、わかるちゃむ〜？"
+
+        # 2通に分けて送信！
         line_bot_api.reply_message(
             event.reply_token,
-            TextSendMessage(
-                text=f"{result}\n第{next_idx+1}問！🔥\n{next_q['question']}",
-                quick_reply=QuickReply(items=quick_reply_items)
-            )
+            [
+                TextSendMessage(text=result),
+                TextSendMessage(
+                    text=next_question_text,
+                    quick_reply=QuickReply(items=quick_reply_items)
+                )
+            ]
         )
         return
 
@@ -193,6 +211,3 @@ def handle_message(event):
         event.reply_token,
         TextSendMessage(text="今はメニューにいるよ。モードを選んでね！")
     )
-
-
-
