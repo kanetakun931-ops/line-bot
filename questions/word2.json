@@ -1,0 +1,402 @@
+[
+  {
+    "id": "word001",
+    "genre": "単語1",
+    "question": "🔁「always」の意味は？",
+    "choices": ["いつも", "ときどき", "まれに", "一度も"],
+    "answer": "いつも",
+    "explanation": "💡「always」は「いつも」って意味。頻度を表す副詞だよ！"
+  },
+  {
+    "id": "word002",
+    "genre": "単語1",
+    "question": "🕒「usually」の意味は？",
+    "choices": ["たいてい", "決して", "すぐに", "まったく"],
+    "answer": "たいてい",
+    "explanation": "💡「usually」は「たいてい」って意味。日常の習慣に使うよ！"
+  },
+  {
+    "id": "word003",
+    "genre": "単語1",
+    "question": "👀「look at」の意味は？",
+    "choices": ["〜を見る", "〜を探す", "〜を聞く", "〜を読む"],
+    "answer": "〜を見る",
+    "explanation": "💡「look at」は「〜を見る」って意味の熟語だよ！"
+  },
+  {
+    "id": "word004",
+    "genre": "単語1",
+    "question": "🛏️「go to bed」の意味は？",
+    "choices": ["寝る", "起きる", "出かける", "帰る"],
+    "answer": "寝る",
+    "explanation": "💡「go to bed」は「寝る」って意味。夜のルーティン！"
+  },
+  {
+    "id": "word005",
+    "genre": "単語1",
+    "question": "🍽️「have lunch」の意味は？",
+    "choices": ["昼食をとる", "朝食を作る", "夕食を買う", "おやつを食べる"],
+    "answer": "昼食をとる",
+    "explanation": "💡「have lunch」は「昼食をとる」って意味。学校でもよく使うよ！"
+  },
+  {
+    "id": "word006",
+    "genre": "単語1",
+    "question": "🏃‍♂️「run」の意味は？",
+    "choices": ["走る", "歩く", "飛ぶ", "泳ぐ"],
+    "answer": "走る",
+    "explanation": "💡「run」は「走る」って意味。運動会で大活躍！"
+  },
+  {
+    "id": "word007",
+    "genre": "単語1",
+    "question": "📚「read」の意味は？",
+    "choices": ["読む", "書く", "話す", "聞く"],
+    "answer": "読む",
+    "explanation": "💡「read」は「読む」って意味。bookとセットで覚えよう！"
+  },
+  {
+    "id": "word008",
+    "genre": "単語1",
+    "question": "🍎「fruit」の意味は？",
+    "choices": ["果物", "野菜", "肉", "魚"],
+    "answer": "果物",
+    "explanation": "💡「fruit」は「果物」って意味。appleやbananaもfruitだね！"
+  },
+  {
+    "id": "word009",
+    "genre": "単語1",
+    "question": "🏨「hotel」の意味は？",
+    "choices": ["ホテル", "病院", "図書館", "駅"],
+    "answer": "ホテル",
+    "explanation": "💡「hotel」は「ホテル」って意味。旅行で泊まる場所だよ！"
+  },
+  {
+    "id": "word010",
+    "genre": "単語1",
+    "question": "🌞「sunny」の意味は？",
+    "choices": ["晴れた", "雨の", "曇った", "雪の"],
+    "answer": "晴れた",
+    "explanation": "💡「sunny」は「晴れた」って意味。天気の表現でよく出るよ！"
+  },
+  {
+    "id": "word011",
+    "genre": "単語1",
+    "question": "📅「yesterday」の意味は？",
+    "choices": ["きのう", "きょう", "あした", "毎日"],
+    "answer": "きのう",
+    "explanation": "💡「yesterday」は「きのう」って意味。過去の出来事に使うよ！"
+  },
+  {
+    "id": "word012",
+    "genre": "単語1",
+    "question": "📆「tomorrow」の意味は？",
+    "choices": ["あした", "きのう", "きょう", "来週"],
+    "answer": "あした",
+    "explanation": "💡「tomorrow」は「明日」って意味。未来の予定に使うよ！"
+  },
+  {
+    "id": "word013",
+    "genre": "単語1",
+    "question": "📍「next to」の意味は？",
+    "choices": ["〜のとなりに", "〜の上に", "〜の中に", "〜の前に"],
+    "answer": "〜のとなりに",
+    "explanation": "💡「next to」は「〜のとなりに」って意味の前置詞句だよ！"
+  },
+  {
+    "id": "word014",
+    "genre": "単語1",
+    "question": "🚪「in front of」の意味は？",
+    "choices": ["〜の前に", "〜の後ろに", "〜の中に", "〜の上に"],
+    "answer": "〜の前に",
+    "explanation": "💡「in front of」は「〜の前に」って意味。場所を表す表現だよ！"
+  },
+  {
+    "id": "word015",
+    "genre": "単語1",
+    "question": "🚶‍♀️「on foot」の意味は？",
+    "choices": ["歩いて", "走って", "車で", "自転車で"],
+    "answer": "歩いて",
+    "explanation": "💡「on foot」は「歩いて」って意味。通学手段の表現にも出るよ！"
+  },
+  {
+    "id": "word016",
+    "genre": "単語1",
+    "question": "🚌「by bus」の意味は？",
+    "choices": ["バスで", "電車で", "車で", "飛行機で"],
+    "answer": "バスで",
+    "explanation": "💡「by bus」は「バスで」って意味。交通手段の表現だよ！"
+  },
+  {
+    "id": "word017",
+    "genre": "単語1",
+    "question": "🎵「listen to」の意味は？",
+    "choices": ["〜を聞く", "〜を見る", "〜を読む", "〜を話す"],
+    "answer": "〜を聞く",
+    "explanation": "💡「listen to」は「〜を聞く」って意味。音楽や先生の話に使うよ！"
+  },
+  {
+    "id": "word018",
+    "genre": "単語1",
+    "question": "⏳「wait for」の意味は？",
+    "choices": ["〜を待つ", "〜を探す", "〜を呼ぶ", "〜を止める"],
+    "answer": "〜を待つ",
+    "explanation": "💡「wait for」は「〜を待つ」って意味。友だちを待つときに使うよ！"
+  },
+  {
+    "id": "word019",
+    "genre": "単語1",
+    "question": "📦「a lot of」の意味は？",
+    "choices": ["たくさんの", "少しの", "1つの", "すべての"],
+    "answer": "たくさんの",
+    "explanation": "💡「a lot of」は「たくさんの」って意味。数にも量にも使えるよ！"
+  },
+  {
+    "id": "word020",
+    "genre": "単語1",
+    "question": "☕「Would you like ～?」の意味は？",
+    "choices": ["～はいかがですか？", "～を知っていますか？", "～を持っていますか？", "～を作れますか？"],
+    "answer": "～はいかがですか？",
+    "explanation": "💡「Would you like ～?」は「～はいかがですか？」って丁寧な申し出の表現だよ！"
+  },
+  {
+    "id": "word021",
+    "genre": "単語1",
+    "question": "📣「How about ～?」の意味は？",
+    "choices": ["～はどう？", "～を探してる？", "～を知ってる？", "～を持ってる？"],
+    "answer": "～はどう？",
+    "explanation": "💡「How about ～?」は「～はどう？」って提案するときの表現だよ！"
+  },
+  {
+    "id": "word022",
+    "genre": "単語1",
+    "question": "📖「study hard」の意味は？",
+    "choices": ["一生懸命勉強する", "ゆっくり読む", "暗記する", "遊びながら学ぶ"],
+    "answer": "一生懸命勉強する",
+    "explanation": "💡「study hard」は「一生懸命勉強する」って意味。試験前にぴったり！"
+  },
+  {
+    "id": "word023",
+    "genre": "単語1",
+    "question": "📷「take a picture」の意味は？",
+    "choices": ["写真を撮る", "絵を描く", "見る", "保存する"],
+    "answer": "写真を撮る",
+    "explanation": "💡「take a picture」は「写真を撮る」って意味。旅行やイベントでよく使うよ！"
+  },
+  {
+    "id": "word024",
+    "genre": "単語1",
+    "question": "📬「get a letter」の意味は？",
+    "choices": ["手紙をもらう", "手紙を書く", "手紙を送る", "手紙を読む"],
+    "answer": "手紙をもらう",
+    "explanation": "💡「get a letter」は「手紙をもらう」って意味。昔ながらのやりとりだね！"
+  },
+  {
+    "id": "word025",
+    "genre": "単語1",
+    "question": "📞「call my friend」の意味は？",
+    "choices": ["友だちに電話する", "友だちを訪ねる", "友だちを待つ", "友だちに会う"],
+    "answer": "友だちに電話する",
+    "explanation": "💡「call my friend」は「友だちに電話する」って意味。スマホでよく使うね！"
+  },
+  {
+    "id": "word026",
+    "genre": "単語1",
+    "question": "📚「learn English」の意味は？",
+    "choices": ["英語を学ぶ", "英語を話す", "英語を読む", "英語を書く"],
+    "answer": "英語を学ぶ",
+    "explanation": "💡「learn English」は「英語を学ぶ」って意味。英検の基本だね！"
+  },
+  {
+    "id": "word027",
+    "genre": "単語1",
+    "question": "🧃「drink juice」の意味は？",
+    "choices": ["ジュースを飲む", "ジュースを作る", "ジュースを買う", "ジュースをこぼす"],
+    "answer": "ジュースを飲む",
+    "explanation": "💡「drink juice」は「ジュースを飲む」って意味。おやつタイムにぴったり！"
+  },
+  {
+    "id": "word028",
+    "genre": "単語1",
+    "question": "🍚「eat dinner」の意味は？",
+    "choices": ["夕食を食べる", "昼食を作る", "朝食を買う", "おやつを食べる"],
+    "answer": "夕食を食べる",
+    "explanation": "💡「eat dinner」は「夕食を食べる」って意味。夜ごはんの時間だね！"
+  },
+  {
+    "id": "word029",
+    "genre": "単語1",
+    "question": "🎧「hear music」の意味は？",
+    "choices": ["音楽が聞こえる", "音楽を演奏する", "音楽を作る", "音楽を止める"],
+    "answer": "音楽が聞こえる",
+    "explanation": "💡「hear music」は「音楽が聞こえる」って意味。自然に耳に入る感じだよ！"
+  },
+  {
+    "id": "word030",
+    "genre": "単語1",
+    "question": "🎬「watch TV」の意味は？",
+    "choices": ["テレビを見る", "テレビを買う", "テレビを直す", "テレビを消す"],
+    "answer": "テレビを見る",
+    "explanation": "💡「watch TV」は「テレビを見る」って意味。リラックスタイムにぴったり！"
+  },
+  {
+    "id": "word031",
+    "genre": "単語1",
+    "question": "🧼「wash hands」の意味は？",
+    "choices": ["手を洗う", "手をふく", "手を上げる", "手をつなぐ"],
+    "answer": "手を洗う",
+    "explanation": "💡「wash hands」は「手を洗う」って意味。衛生の基本だね！"
+  },
+  {
+    "id": "word032",
+    "genre": "単語1",
+    "question": "📖「open the book」の意味は？",
+    "choices": ["本を開く", "本を閉じる", "本を読む", "本を書く"],
+    "answer": "本を開く",
+    "explanation": "💡「open the book」は「本を開く」って意味。授業の始まりに使うよ！"
+  },
+  {
+    "id": "word033",
+    "genre": "単語1",
+    "question": "📕「close the book」の意味は？",
+    "choices": ["本を閉じる", "本を読む", "本を買う", "本を探す"],
+    "answer": "本を閉じる",
+    "explanation": "💡「close the book」は「本を閉じる」って意味。終わったらパタン！"
+  },
+  {
+    "id": "word034",
+    "genre": "単語1",
+    "question": "🧃「make lunch」の意味は？",
+    "choices": ["昼食を作る", "昼食を食べる", "昼食を買う", "昼食を運ぶ"],
+    "answer": "昼食を作る",
+    "explanation": "💡「make lunch」は「昼食を作る」って意味。お弁当づくりにも！"
+  },
+  {
+    "id": "word035",
+    "genre": "単語1",
+    "question": "📦「bring a bag」の意味は？",
+    "choices": ["かばんを持ってくる", "かばんを買う", "かばんを開ける", "かばんをなくす"],
+    "answer": "かばんを持ってくる",
+    "explanation": "💡「bring a bag」は「かばんを持ってくる」って意味。忘れ物注意！"
+  },
+  {
+    "id": "word036",
+    "genre": "単語1",
+    "question": "📬「send a letter」の意味は？",
+    "choices": ["手紙を送る", "手紙を読む", "手紙をもらう", "手紙を探す"],
+    "answer": "手紙を送る",
+    "explanation": "💡「send a letter」は「手紙を送る」って意味。ポストに投函！"
+  },
+  {
+    "id": "word037",
+    "genre": "単語1",
+    "question": "📞「talk on the phone」の意味は？",
+    "choices": ["電話で話す", "電話を切る", "電話をかける", "電話を探す"],
+    "answer": "電話で話す",
+    "explanation": "💡「talk on the phone」は「電話で話す」って意味。友だちとおしゃべり！"
+  },
+  {
+    "id": "word038",
+    "genre": "単語1",
+    "question": "📺「turn on the TV」の意味は？",
+    "choices": ["テレビをつける", "テレビを消す", "テレビを見る", "テレビを買う"],
+    "answer": "テレビをつける",
+    "explanation": "💡「turn on the TV」は「テレビをつける」って意味。リモコンでピッ！"
+  },
+  {
+    "id": "word039",
+    "genre": "単語1",
+    "question": "📺「turn off the TV」の意味は？",
+    "choices": ["テレビを消す", "テレビをつける", "テレビを見る", "テレビを直す"],
+    "answer": "テレビを消す",
+    "explanation": "💡「turn off the TV」は「テレビを消す」って意味。見終わったらオフ！"
+  },
+  {
+    "id": "word040",
+    "genre": "単語1",
+    "question": "📚「write a diary」の意味は？",
+    "choices": ["日記を書く", "手紙を書く", "本を読む", "作文を読む"],
+    "answer": "日記を書く",
+    "explanation": "💡「write a diary」は「日記を書く」って意味。毎日の記録にぴったり！"
+  },
+  {
+    "id": "word041",
+    "genre": "単語1",
+    "question": "📖「read a book」の意味は？",
+    "choices": ["本を読む", "本を買う", "本を書く", "本を開ける"],
+    "answer": "本を読む",
+    "explanation": "💡「read a book」は「本を読む」って意味。読書タイムにぴったり！"
+  },
+  {
+    "id": "word042",
+    "genre": "単語1",
+    "question": "📝「write a letter」の意味は？",
+    "choices": ["手紙を書く", "手紙を送る", "手紙を読む", "手紙をもらう"],
+    "answer": "手紙を書く",
+    "explanation": "💡「write a letter」は「手紙を書く」って意味。気持ちを伝える手段だね！"
+  },
+  {
+    "id": "word043",
+    "genre": "単語1",
+    "question": "📞「make a call」の意味は？",
+    "choices": ["電話をかける", "電話を切る", "電話を受ける", "電話を探す"],
+    "answer": "電話をかける",
+    "explanation": "💡「make a call」は「電話をかける」って意味。用事があるときに便利！"
+  },
+  {
+    "id": "word044",
+    "genre": "単語1",
+    "question": "📷「take a walk」の意味は？",
+    "choices": ["散歩する", "写真を撮る", "走る", "寝る"],
+    "answer": "散歩する",
+    "explanation": "💡「take a walk」は「散歩する」って意味。リフレッシュにぴったり！"
+  },
+  {
+    "id": "word045",
+    "genre": "単語1",
+    "question": "🎂「have a party」の意味は？",
+    "choices": ["パーティーを開く", "パーティーに行く", "パーティーを断る", "パーティーを見る"],
+    "answer": "パーティーを開く",
+    "explanation": "💡「have a party」は「パーティーを開く」って意味。誕生日やお祝いに！"
+  },
+  {
+    "id": "word046",
+    "genre": "単語1",
+    "question": "🎵「sing a song」の意味は？",
+    "choices": ["歌を歌う", "歌を聞く", "歌を作る", "歌を読む"],
+    "answer": "歌を歌う",
+    "explanation": "💡「sing a song」は「歌を歌う」って意味。カラオケで大活躍！"
+  },
+  {
+    "id": "word047",
+    "genre": "単語1",
+    "question": "🎸「play the guitar」の意味は？",
+    "choices": ["ギターを弾く", "ギターを買う", "ギターを聞く", "ギターを直す"],
+    "answer": "ギターを弾く",
+    "explanation": "💡「play the guitar」は「ギターを弾く」って意味。音楽好きにぴったり！"
+  },
+  {
+    "id": "word048",
+    "genre": "単語1",
+    "question": "🎮「play a game」の意味は？",
+    "choices": ["ゲームをする", "ゲームを見る", "ゲームを買う", "ゲームを作る"],
+    "answer": "ゲームをする",
+    "explanation": "💡「play a game」は「ゲームをする」って意味。楽しい時間の始まり！"
+  },
+  {
+    "id": "word049",
+    "genre": "単語1",
+    "question": "🎤「speak English」の意味は？",
+    "choices": ["英語を話す", "英語を読む", "英語を聞く", "英語を学ぶ"],
+    "answer": "英語を話す",
+    "explanation": "💡「speak English」は「英語を話す」って意味。会話の力をつけよう！"
+  },
+  {
+    "id": "word050",
+    "genre": "単語1",
+    "question": "📚「study math」の意味は？",
+    "choices": ["数学を勉強する", "数学を教える", "数学を読む", "数学を話す"],
+    "answer": "数学を勉強する",
+    "explanation": "💡「study math」は「数学を勉強する」って意味。テスト前に大事！"
+  }
+]
