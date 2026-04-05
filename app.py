@@ -57,8 +57,14 @@ def handle_message(event):
     user_id = event.source.user_id
     text = event.message.text.strip()
 
+    # 🟡 再起動検知（優しさ機能）
     if user_id not in user_state:
         user_state[user_id] = {"mode": None, "genre": None}
+        line_bot_api.reply_message(
+            event.reply_token,
+            TextSendMessage(text="😴 ちょっと寝てたみたい…準備するね！")
+        )
+        return
 
     # ジャンル選択メニュー
     if text == "ジャンル選択":
