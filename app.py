@@ -118,7 +118,7 @@ def handle_message(event):
             return
 
         selected = random.sample(all_questions, min(20, len(all_questions)))
-        quiz_state[user_id] = {"questions": selected, "current_index": 0}
+        quiz_state[user_id] = {"questions": selected, "current_index": 0,"start_time": time.time()}
 
         q = selected[0]
         choices = q.get("choices", []).copy()
