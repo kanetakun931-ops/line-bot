@@ -35,9 +35,9 @@ def load_questions(genre):
         "歴史": "rekishi",
         "理科": "rika",
         "数学": "sugaku",
-        "北英": "hokushin_english",
-        "北国": "hokushin_japanese",
-        "北数": "hokushin_math"
+        "北辰英語": "hokushin_english",
+        "北辰国語": "hokushin_japanese",
+        "北辰数学": "hokushin_math"
     }
     filename = genre_map.get(genre, genre)
     path = f"questions/{filename}.json"
@@ -61,7 +61,7 @@ def handle_message(event):
     user_id = event.source.user_id
     text = event.message.text.strip()
 
-    # 🟡 再起動検知（優しさ機能）
+    # 🟡 再起動検知
     if user_id not in user_state:
         user_state[user_id] = {"mode": None, "genre": None}
         line_bot_api.reply_message(
@@ -76,16 +76,16 @@ def handle_message(event):
             QuickReplyButton(action=MessageAction(label="漢字", text="ジャンル:漢字")),
             QuickReplyButton(action=MessageAction(label="地理", text="ジャンル:地理")),
             QuickReplyButton(action=MessageAction(label="英語", text="ジャンル:英語")),
-            QuickReplyButton(action=MessageAction(label="英単語1", text="ジャンル:英単語1")),
-            QuickReplyButton(action=MessageAction(label="英単語2", text="ジャンル:英単語2")),
-            QuickReplyButton(action=MessageAction(label="保健体育", text="ジャンル:保健体育")),
+            QuickReplyButton(action=MessageAction(label="単語1", text="ジャンル:英単語1")),
+            QuickReplyButton(action=MessageAction(label="単語2", text="ジャンル:英単語2")),
+            QuickReplyButton(action=MessageAction(label="保体", text="ジャンル:保健体育")),
             QuickReplyButton(action=MessageAction(label="国語", text="ジャンル:国語")),
             QuickReplyButton(action=MessageAction(label="歴史", text="ジャンル:歴史")),
             QuickReplyButton(action=MessageAction(label="理科", text="ジャンル:理科")),
             QuickReplyButton(action=MessageAction(label="数学", text="ジャンル:数学")),
-            QuickReplyButton(action=MessageAction(label="北英", text="ジャンル:北英")),
-            QuickReplyButton(action=MessageAction(label="北国", text="ジャンル:北国")),
-            QuickReplyButton(action=MessageAction(label="北数", text="ジャンル:北数"))
+            QuickReplyButton(action=MessageAction(label="北英", text="ジャンル:北辰英語")),
+            QuickReplyButton(action=MessageAction(label="北国", text="ジャンル:北辰国語")),
+            QuickReplyButton(action=MessageAction(label="北数", text="ジャンル:北辰数学"))
         ]
         line_bot_api.reply_message(
             event.reply_token,
@@ -101,13 +101,13 @@ def handle_message(event):
         genre = text.replace("ジャンル:", "").strip()
         user_state[user_id]["genre"] = genre
         quick_reply_items = [
-            QuickReplyButton(action=MessageAction(label="スタート 🚀", text="スタート")),
-            QuickReplyButton(action=MessageAction(label="ジャンル ↩️", text="ジャンル選択")),
+            QuickReplyButton(action=MessageAction(label="開始", text="スタート")),
+            QuickReplyButton(action=MessageAction(label="戻る", text="ジャンル選択")),
         ]
         line_bot_api.reply_message(
             event.reply_token,
             TextSendMessage(
-                text=f"{genre}ジャンルを選んだね！スタートする？👇",
+                text=f"{genre} を選んだよ！始める？👇",
                 quick_reply=QuickReply(items=quick_reply_items)
             )
         )
@@ -120,25 +120,28 @@ def handle_message(event):
         if not all_questions:
             line_bot_api.reply_message(
                 event.reply_token,
-                TextSendMessage(text=f"{genre}ジャンルの問題ファイルが見つからないよ💦")
+                TextSendMessage(text=f"{genre} の問題ファイルが見つからないよ💦")
             )
             return
 
         selected = random.sample(all_questions, min(20, len(all_questions)))
-        quiz_state[user_id] = {"questions": selected, "current_index": 0,"start_time": time.time()}
+        quiz_state[user_id] = {
+            "questions": selected,
+            "current_index": 0,
+            "start_time": time.time()
+        }
 
         q = selected[0]
         choices = q.get("choices", []).copy()
         random.shuffle(choices)
+
         quick_reply_items = [
             QuickReplyButton(action=MessageAction(label=c, text=c)) for c in choices
         ]
 
-        # 選択肢をA〜Dで整形
         question_text = f"第1問！🔥\n{q.get('question')}\n\n"
         for i, choice in enumerate(choices):
             question_text += f"{chr(65+i)}. {choice}\n"
-        question_text += "\n（んぽちゃむ）これ、わかるちゃむ〜？"
 
         line_bot_api.reply_message(
             event.reply_token,
@@ -166,51 +169,57 @@ def handle_message(event):
         answer_text = text
         correct = questions[idx]["answer"]
         explanation = questions[idx].get("explanation", "")
-        result = "⭕ 正解ちゃむ〜！すごいちゃむ〜！" if answer_text == correct else f"❌ 不正解ちゃむ… 正解は「{correct}」ちゃむ〜"
+
+        result = (
+            "⭕ 正解！すごい！"
+            if answer_text == correct
+            else f"❌ 不正解… 正解は「{correct}」だよ！"
+        )
 
         if explanation:
-            result += f"\n（んぽちゃむ）{explanation}ちゃむ〜"
+            result += f"\n💡 {explanation}"
 
         result += "\n\n------------------------------"
 
-        # 次の問題へ
         progress["current_index"] += 1
         next_idx = progress["current_index"]
 
+        # 最終問題
         if next_idx >= len(questions):
             elapsed = time.time() - progress["start_time"]
             minutes = int(elapsed // 60)
             seconds = int(elapsed % 60)
             duration_text = f"🕒 所要時間：{minutes}分{seconds}秒"
+
             quick_reply_items = [
-                QuickReplyButton(action=MessageAction(label="再挑戦 🚀", text="スタート")),
-                QuickReplyButton(action=MessageAction(label="ジャンル ↩️", text="ジャンル選択")),
+                QuickReplyButton(action=MessageAction(label="再挑戦", text="スタート")),
+                QuickReplyButton(action=MessageAction(label="戻る", text="ジャンル選択")),
             ]
+
             line_bot_api.reply_message(
                 event.reply_token,
                 TextSendMessage(
-                    text=f"{result}\n🎉 クイズ終了ちゃむ〜！またあそぼちゃむ〜！👇",
+                    text=f"{result}\n{duration_text}\n🎉 クイズ終了！また遊ぼう👇",
                     quick_reply=QuickReply(items=quick_reply_items)
                 )
             )
             del quiz_state[user_id]
             return
 
+        # 次の問題
         next_q = questions[next_idx]
         choices = next_q.get("choices", []).copy()
         random.shuffle(choices)
+
         quick_reply_items = [
             QuickReplyButton(action=MessageAction(label=choice, text=choice))
             for choice in choices
         ]
 
-        # 次の問題を整形
         next_question_text = f"第{next_idx+1}問！🔥\n{next_q['question']}\n\n"
         for i, choice in enumerate(choices):
             next_question_text += f"{chr(65+i)}. {choice}\n"
-        next_question_text += "\n（んぽちゃむ）これ、わかるちゃむ〜？"
 
-        # 2通に分けて送信！
         line_bot_api.reply_message(
             event.reply_token,
             [
@@ -226,5 +235,5 @@ def handle_message(event):
     # その他
     line_bot_api.reply_message(
         event.reply_token,
-        TextSendMessage(text="今はメニューにいるよ。モードを選んでね！")
+        TextSendMessage(text="今はメニューにいるよ。ジャンル選択してね！")
     )
