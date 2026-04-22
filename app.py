@@ -27,7 +27,7 @@ def load_questions(genre):
     genre_map = {
         "漢字": "kanji",
         "地理": "chiri",
-        "英語": "eijgo",
+        "英語": "eigo",
         "英単語1": "word1",
         "英単語2": "word2",
         "保健体育": "hoken",
