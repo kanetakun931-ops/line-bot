@@ -1,6 +1,197 @@
-{
-  "question": "次の英文の意味として正しいものを選びなさい。",
-  "choices": ["私は走ることが好きです。", "私は走るのが嫌いです。", "私は泳ぐのが好きです。"],
-  "answer": "私は走ることが好きです。",
-  "explanation": "like + 動詞ing で「〜することが好き」"
-}
+[
+  {
+    "id": "hokueigo001",
+    "genre": "北辰英語",
+    "question": "📘「私は3年間ずっとサッカーをしています。」正しい英文は？",
+    "choices": [
+      "I played soccer for three years.",
+      "I have played soccer for three years.",
+      "I was playing soccer for three years.",
+      "I am playing soccer for three years."
+    ],
+    "answer": "I have played soccer for three years.",
+    "explanation": "💡現在完了（継続）は「have + 過去分詞」で表します。"
+  },
+  {
+    "id": "hokueigo002",
+    "genre": "北辰英語",
+    "question": "📘「図書館で静かにすることは大切です。」正しい英文は？",
+    "choices": [
+      "It is important to be quiet in the library.",
+      "It is important being quiet in the library.",
+      "It is important be quiet in the library.",
+      "It is important to quiet in the library."
+    ],
+    "answer": "It is important to be quiet in the library.",
+    "explanation": "💡形式主語 It を使った「It is 形容詞 to 動詞」が頻出。"
+  },
+  {
+    "id": "hokueigo003",
+    "genre": "北辰英語",
+    "question": "📘「彼は私より速く走ることができます。」正しい英文は？",
+    "choices": [
+      "He can run faster than me.",
+      "He must run faster than me.",
+      "He is running faster than me.",
+      "He runs fast than me."
+    ],
+    "answer": "He can run faster than me.",
+    "explanation": "💡比較級 + than と can の組み合わせは頻出。"
+  },
+  {
+    "id": "hokueigo004",
+    "genre": "北辰英語",
+    "question": "📘「あなたは昨日何をしていましたか？」正しい英文は？",
+    "choices": [
+      "What did you do yesterday?",
+      "What are you doing yesterday?",
+      "What were you doing yesterday?",
+      "What do you do yesterday?"
+    ],
+    "answer": "What were you doing yesterday?",
+    "explanation": "💡北辰では過去進行形の疑問文がよく出ます。"
+  },
+  {
+    "id": "hokueigo005",
+    "genre": "北辰英語",
+    "question": "📘「私はその本を読むために図書館へ行きました。」正しい英文は？",
+    "choices": [
+      "I went to the library to read the book.",
+      "I went to the library reading the book.",
+      "I go to the library to read the book.",
+      "I went to the library to reading the book."
+    ],
+    "answer": "I went to the library to read the book.",
+    "explanation": "💡目的の to 不定詞は北辰の鉄板。"
+  },
+  {
+    "id": "hokueigo006",
+    "genre": "北辰英語",
+    "question": "📘「私はその本を読んだことがあります。」正しい英文は？",
+    "choices": [
+      "I read the book.",
+      "I have read the book.",
+      "I was reading the book.",
+      "I am reading the book."
+    ],
+    "answer": "I have read the book.",
+    "explanation": "💡経験の現在完了は「have + 過去分詞」。"
+  },
+  {
+    "id": "hokueigo007",
+    "genre": "北辰英語",
+    "question": "📘「その手紙は彼によって書かれました。」正しい英文は？",
+    "choices": [
+      "The letter wrote by him.",
+      "The letter is wrote by him.",
+      "The letter was written by him.",
+      "The letter is written by him."
+    ],
+    "answer": "The letter was written by him.",
+    "explanation": "💡受け身は「be動詞 + 過去分詞」。過去なので was written。"
+  },
+  {
+    "id": "hokueigo008",
+    "genre": "北辰英語",
+    "question": "📘「私はあなたに会うのを楽しみにしています。」正しい英文は？",
+    "choices": [
+      "I look forward to meet you.",
+      "I look forward to meeting you.",
+      "I am looking forward to meet you.",
+      "I am looking forward to meeting you."
+    ],
+    "answer": "I am looking forward to meeting you.",
+    "explanation": "💡「look forward to」は to の後ろが動名詞。北辰頻出。"
+  },
+  {
+    "id": "hokueigo009",
+    "genre": "北辰英語",
+    "question": "📘「私は昨日からずっと忙しい。」正しい英文は？",
+    "choices": [
+      "I am busy since yesterday.",
+      "I was busy since yesterday.",
+      "I have been busy since yesterday.",
+      "I have busy since yesterday."
+    ],
+    "answer": "I have been busy since yesterday.",
+    "explanation": "💡継続の現在完了は「have been + 形容詞」。"
+  },
+  {
+    "id": "hokueigo010",
+    "genre": "北辰英語",
+    "question": "📘「彼は私と同じくらい背が高い。」正しい英文は？",
+    "choices": [
+      "He is tall as me.",
+      "He is as tall as me.",
+      "He is taller as me.",
+      "He is as taller as me."
+    ],
+    "answer": "He is as tall as me.",
+    "explanation": "💡原級比較は「as + 形容詞 + as」。"
+  },
+  {
+    "id": "hokueigo011",
+    "genre": "北辰英語",
+    "question": "📘「私はその映画がとてもおもしろいと思いました。」正しい英文は？",
+    "choices": [
+      "I think the movie very interesting.",
+      "I thought the movie very interesting.",
+      "I thought the movie was very interesting.",
+      "I think the movie was very interesting."
+    ],
+    "answer": "I thought the movie was very interesting.",
+    "explanation": "💡「思った」は過去形 thought。文の中も過去に合わせる。"
+  },
+  {
+    "id": "hokueigo012",
+    "genre": "北辰英語",
+    "question": "📘「あなたはどのくらいの間英語を勉強していますか？」正しい英文は？",
+    "choices": [
+      "How long do you study English?",
+      "How long did you study English?",
+      "How long have you studied English?",
+      "How long are you studying English?"
+    ],
+    "answer": "How long have you studied English?",
+    "explanation": "💡「どのくらいの間〜している？」は現在完了の鉄板。"
+  },
+  {
+    "id": "hokueigo013",
+    "genre": "北辰英語",
+    "question": "📘「私は彼にその本を読ませました。」正しい英文は？",
+    "choices": [
+      "I made him read the book.",
+      "I made him to read the book.",
+      "I made him reading the book.",
+      "I made him reads the book."
+    ],
+    "answer": "I made him read the book.",
+    "explanation": "💡使役動詞 make は「make + 人 + 動詞の原形」。"
+  },
+  {
+    "id": "hokueigo014",
+    "genre": "北辰英語",
+    "question": "📘「その部屋はきれいに保たれている。」正しい英文は？",
+    "choices": [
+      "The room keeps clean.",
+      "The room is kept clean.",
+      "The room kept clean.",
+      "The room is keeping clean."
+    ],
+    "answer": "The room is kept clean.",
+    "explanation": "💡受け身 + 形容詞（状態）も北辰でよく出る。"
+  },
+  {
+    "id": "hokueigo015",
+    "genre": "北辰英語",
+    "question": "📘「私は彼にその箱を運んでもらいました。」正しい英文は？",
+    "choices": [
+      "I had him carry the box.",
+      "I had him to carry the box.",
+      "I had him carried the box.",
+      "I had him carrying the box."
+    ],
+    "answer": "I had him carry the box.",
+    "explanation": "💡使役動詞 have は「have + 人 + 動詞の原形」。"
+  }
+]
