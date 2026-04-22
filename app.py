@@ -28,16 +28,16 @@ def load_questions(genre):
         "漢字": "kanji",
         "地理": "chiri",
         "英語": "eigo",
-        "英単語1": "word1",
-        "英単語2": "word2",
-        "保健体育": "hoken",
+        "単語1": "word1",
+        "単語2": "word2",
+        "保体": "hoken",
         "国語": "kokugo",
         "歴史": "rekishi",
         "理科": "rika",
         "数学": "sugaku",
-        "北辰英語": "hokushin_english",
-        "北辰国語": "hokushin_japanese",
-        "北辰数学": "hokushin_math"
+        "北英": "hokushin_english",
+        "北国": "hokushin_japanese",
+        "北数": "hokushin_math"
     }
     filename = genre_map.get(genre, genre)
     path = f"questions/{filename}.json"
