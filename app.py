@@ -9,6 +9,7 @@ from linebot.models import (
 import os
 import json
 import random
+import time
 
 app = Flask(__name__)
 
