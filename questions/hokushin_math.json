@@ -1,1 +1,83 @@
+[
+  {
+    "id": "hokusuu001",
+    "genre": "北数",
+    "question": "次の計算をしなさい： 3x + 5x",
+    "choices": ["8x", "15x", "3x^5", "2x"],
+    "answer": "8x",
+    "explanation": "同類項をまとめると 3x + 5x = 8x。"
+  },
+  {
+    "id": "hokusuu002",
+    "genre": "北数",
+    "question": "一次方程式： 2x - 6 = 10 の解は？",
+    "choices": ["8", "2", "4", "-8"],
+    "answer": "8",
+    "explanation": "2x = 16 → x = 8。"
+  },
+  {
+    "id": "hokusuu003",
+    "genre": "北数",
+    "question": "比例 y = 3x のとき、x=4 のときの y は？",
+    "choices": ["12", "7", "3", "1"],
+    "answer": "12",
+    "explanation": "y = 3×4 = 12。"
+  },
+  {
+    "id": "hokusuu004",
+    "genre": "北数",
+    "question": "反比例 y = 12/x のとき、x=3 のときの y は？",
+    "choices": ["4", "36", "9", "3"],
+    "answer": "4",
+    "explanation": "12 ÷ 3 = 4。"
+  },
+  {
+    "id": "hokusuu005",
+    "genre": "北数",
+    "question": "三角形の内角の和は？",
+    "choices": ["180°", "90°", "360°", "270°"],
+    "answer": "180°",
+    "explanation": "三角形の内角の和は常に180°。"
+  },
+  {
+    "id": "hokusuu006",
+    "genre": "北数",
+    "question": "半径3cmの円の面積は？（円周率3.14）",
+    "choices": ["28.26", "18.84", "9.42", "6.28"],
+    "answer": "28.26",
+    "explanation": "3.14×3×3 = 28.26。"
+  },
+  {
+    "id": "hokusuu007",
+    "genre": "北数",
+    "question": "サイコロを1回投げる。3の目が出る確率は？",
+    "choices": ["1/6", "1/3", "1/2", "1/4"],
+    "answer": "1/6",
+    "explanation": "6通り中1通り。"
+  },
+  {
+    "id": "hokusuu008",
+    "genre": "北数",
+    "question": "一次関数 y = 2x + 1 の切片は？",
+    "choices": ["1", "2", "-1", "0"],
+    "answer": "1",
+    "explanation": "切片は b の部分 → 1。"
+  },
+  {
+    "id": "hokusuu009",
+    "genre": "北数",
+    "question": "長方形の縦4cm、横6cmの面積は？",
+    "choices": ["24", "10", "12", "20"],
+    "answer": "24",
+    "explanation": "4×6 = 24。"
+  },
+  {
+    "id": "hokusuu010",
+    "genre": "北数",
+    "question": "√49 の値は？",
+    "choices": ["7", "14", "6", "9"],
+    "answer": "7",
+    "explanation": "49 = 7×7。"
+  }
+]
 
