@@ -76,16 +76,16 @@ def handle_message(event):
             QuickReplyButton(action=MessageAction(label="漢字", text="ジャンル:漢字")),
             QuickReplyButton(action=MessageAction(label="地理", text="ジャンル:地理")),
             QuickReplyButton(action=MessageAction(label="英語", text="ジャンル:英語")),
-            QuickReplyButton(action=MessageAction(label="単語1", text="ジャンル:英単語1")),
-            QuickReplyButton(action=MessageAction(label="単語2", text="ジャンル:英単語2")),
-            QuickReplyButton(action=MessageAction(label="保体", text="ジャンル:保健体育")),
+            QuickReplyButton(action=MessageAction(label="単語1", text="ジャンル:単語1")),
+            QuickReplyButton(action=MessageAction(label="単語2", text="ジャンル:単語2")),
+            QuickReplyButton(action=MessageAction(label="保体", text="ジャンル:保体")),
             QuickReplyButton(action=MessageAction(label="国語", text="ジャンル:国語")),
             QuickReplyButton(action=MessageAction(label="歴史", text="ジャンル:歴史")),
             QuickReplyButton(action=MessageAction(label="理科", text="ジャンル:理科")),
             QuickReplyButton(action=MessageAction(label="数学", text="ジャンル:数学")),
-            QuickReplyButton(action=MessageAction(label="北英", text="ジャンル:北辰英語")),
-            QuickReplyButton(action=MessageAction(label="北国", text="ジャンル:北辰国語")),
-            QuickReplyButton(action=MessageAction(label="北数", text="ジャンル:北辰数学"))
+            QuickReplyButton(action=MessageAction(label="北英", text="ジャンル:北英")),
+            QuickReplyButton(action=MessageAction(label="北国", text="ジャンル:北国")),
+            QuickReplyButton(action=MessageAction(label="北数", text="ジャンル:北数"))
         ]
         line_bot_api.reply_message(
             event.reply_token,
