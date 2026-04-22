@@ -131,9 +131,16 @@ def handle_message(event):
         choices = q.get("choices", []).copy()
         random.shuffle(choices)
 
-        quick_reply_items = [
-            QuickReplyButton(action=MessageAction(label=c, text=c)) for c in choices
-        ]
+        quick_reply_items = []
+        for i, choice in enumerate(choices):
+            quick_reply_items.append(
+                QuickReplyButton(
+                    action=MessageAction(
+                        label=chr(65+i),   # A, B, C, D
+                        text=choice
+                    )
+                )
+            )
 
         question_text = f"第1問！🔥\n{q.get('question')}\n\n"
         for i, choice in enumerate(choices):
@@ -207,10 +214,16 @@ def handle_message(event):
         choices = next_q.get("choices", []).copy()
         random.shuffle(choices)
 
-        quick_reply_items = [
-            QuickReplyButton(action=MessageAction(label=choice, text=choice))
-            for choice in choices
-        ]
+        quick_reply_items = []
+        for i, choice in enumerate(choices):
+            quick_reply_items.append(
+                QuickReplyButton(
+                    action=MessageAction(
+                        label=chr(65+i),   # A, B, C, D
+                        text=choice
+                    )
+                )
+            )
 
         next_question_text = f"第{next_idx+1}問！🔥\n{next_q['question']}\n\n"
         for i, choice in enumerate(choices):
