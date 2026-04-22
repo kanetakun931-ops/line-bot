@@ -171,6 +171,10 @@ def handle_message(event):
         next_idx = progress["current_index"]
 
         if next_idx >= len(questions):
+            elapsed = time.time() - progress["start_time"]
+            minutes = int(elapsed // 60)
+            seconds = int(elapsed % 60)
+            duration_text = f"🕒 所要時間：{minutes}分{seconds}秒"
             quick_reply_items = [
                 QuickReplyButton(action=MessageAction(label="再挑戦 🚀", text="スタート")),
                 QuickReplyButton(action=MessageAction(label="ジャンル ↩️", text="ジャンル選択")),
