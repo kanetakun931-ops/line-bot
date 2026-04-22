@@ -35,9 +35,9 @@ def load_questions(genre):
         "歴史": "rekishi",
         "理科": "rika",
         "数学": "sugaku",
-        "北辰英語": "hokushin_english",
-        "北辰国語": "hokushin_japanese",
-        "北辰数学": "hokushin_math"
+        "北英": "hokushin_english",
+        "北国": "hokushin_japanese",
+        "北数": "hokushin_math"
     }
     filename = genre_map.get(genre, genre)
     path = f"questions/{filename}.json"
