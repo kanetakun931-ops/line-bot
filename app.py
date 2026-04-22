@@ -83,9 +83,9 @@ def handle_message(event):
             QuickReplyButton(action=MessageAction(label="歴史", text="ジャンル:歴史")),
             QuickReplyButton(action=MessageAction(label="理科", text="ジャンル:理科")),
             QuickReplyButton(action=MessageAction(label="数学", text="ジャンル:数学")),
-            QuickReplyButton(action=MessageAction(label="北辰英語", text="ジャンル:北辰英語")),
-            QuickReplyButton(action=MessageAction(label="北辰国語", text="ジャンル:北辰国語")),
-            QuickReplyButton(action=MessageAction(label="北辰数学", text="ジャンル:北辰数学"))
+            QuickReplyButton(action=MessageAction(label="北英", text="ジャンル:北英")),
+            QuickReplyButton(action=MessageAction(label="北国", text="ジャンル:北国")),
+            QuickReplyButton(action=MessageAction(label="北数", text="ジャンル:北数"))
         ]
         line_bot_api.reply_message(
             event.reply_token,
