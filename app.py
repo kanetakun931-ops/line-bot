@@ -27,7 +27,7 @@ def load_questions(genre):
     genre_map = {
         "漢字": "kanji",
         "地理": "chiri",
-        "英語": "eigo",
+        "eigo": "eigo",
         "単語1": "word1",
         "単語2": "word2",
         "保体": "hoken",
@@ -35,7 +35,7 @@ def load_questions(genre):
         "歴史": "rekishi",
         "理科": "rika",
         "数学": "sugaku",
-        "北英": "hokushin_english"
+        "hokueigo": "hokushin_english"
     }
     filename = genre_map.get(genre, genre)
     path = f"questions/{filename}.json"
@@ -73,7 +73,7 @@ def handle_message(event):
         quick_reply_items = [
             QuickReplyButton(action=MessageAction(label="漢字", text="ジャンル:漢字")),
             QuickReplyButton(action=MessageAction(label="地理", text="ジャンル:地理")),
-            QuickReplyButton(action=MessageAction(label="英語", text="ジャンル:英語")),
+            QuickReplyButton(action=MessageAction(label="eigo", text="ジャンル:eigo")),
             QuickReplyButton(action=MessageAction(label="単語1", text="ジャンル:単語1")),
             QuickReplyButton(action=MessageAction(label="単語2", text="ジャンル:単語2")),
             QuickReplyButton(action=MessageAction(label="保体", text="ジャンル:保体")),
@@ -81,7 +81,7 @@ def handle_message(event):
             QuickReplyButton(action=MessageAction(label="歴史", text="ジャンル:歴史")),
             QuickReplyButton(action=MessageAction(label="理科", text="ジャンル:理科")),
             QuickReplyButton(action=MessageAction(label="数学", text="ジャンル:数学")),
-            QuickReplyButton(action=MessageAction(label="北英", text="ジャンル:北英"))
+            QuickReplyButton(action=MessageAction(label="hokueigo", text="ジャンル:hokueigo"))
         ]
         line_bot_api.reply_message(
             event.reply_token,
