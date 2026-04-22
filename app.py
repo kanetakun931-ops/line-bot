@@ -35,9 +35,7 @@ def load_questions(genre):
         "歴史": "rekishi",
         "理科": "rika",
         "数学": "sugaku",
-        "北英": "hokushin_english",
-        "北国": "hokushin_japanese",
-        "北数": "hokushin_math"
+        "北英": "hokushin_english"
     }
     filename = genre_map.get(genre, genre)
     path = f"questions/{filename}.json"
@@ -83,9 +81,7 @@ def handle_message(event):
             QuickReplyButton(action=MessageAction(label="歴史", text="ジャンル:歴史")),
             QuickReplyButton(action=MessageAction(label="理科", text="ジャンル:理科")),
             QuickReplyButton(action=MessageAction(label="数学", text="ジャンル:数学")),
-            QuickReplyButton(action=MessageAction(label="北英", text="ジャンル:北英")),
-            QuickReplyButton(action=MessageAction(label="北国", text="ジャンル:北国")),
-            QuickReplyButton(action=MessageAction(label="北数", text="ジャンル:北数"))
+            QuickReplyButton(action=MessageAction(label="北英", text="ジャンル:北英"))
         ]
         line_bot_api.reply_message(
             event.reply_token,
